@@ -1,0 +1,6 @@
+rs  construcción  18 s · rueda  292 KB · ema_rs-0.1.0-cp314-cp314-linux_aarch64.whl
+pb  construcción   8 s · rueda   65 KB · ema_pb-0.1.0-cp314-cp314-linux_aarch64.whl
+nb  construcción   6 s · rueda   51 KB · ema_nb-0.1.0-cp314-cp314-linux_aarch64.whl
+PyO3        5.4 ms · llamada mínima 0.31 µs · igual: False
+pybind11    5.1 ms · llamada mínima 0.38 µs · igual: True
+nanobind    5.1 ms · llamada mínima 0.63 µs · igual: True

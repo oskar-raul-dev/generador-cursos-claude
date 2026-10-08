@@ -1,0 +1,11 @@
+ConfigMap/grafana-dashboards
+ConfigMap/grafana-provisioning
+ConfigMap/prometheus
+ConfigMap/tempo
+Deployment/grafana
+Deployment/prometheus
+Deployment/tempo
+Service/grafana
+Service/prometheus
+Service/tempo
+ServiceAccount/prometheus

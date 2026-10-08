@@ -1,0 +1,13 @@
+# La segunda cadena (D24, Fase 14): el mismo chart, como release tenant-b en apps-b. Solo lo que la
+# cadena cambia. La tabla de topes es la misma, porque la regulación es nacional.
+global:
+  # Sus propios hosts: con los de La Vecina, las dos cadenas compiten por las mismas rutas en la misma
+  # puerta, y gana la ruta más vieja (Fase 14, sección 8).
+  hosts:
+    api: api.tenant-b.localhost
+    storefront: storefront.tenant-b.localhost
+storefront:
+  brandName: Droguerías Río Negro
+# Sus droguerías: cuarenta, en el seed.
+seed:
+  stores: 40

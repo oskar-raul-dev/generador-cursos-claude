@@ -1,0 +1,581 @@
+# Punto de entrada único del laboratorio. Cada tarea es corta a propósito: ábrela y verás el
+# comando que corre debajo, que puedes ejecutar sin el Taskfile si lo prefieres.
+version: '3'
+
+# El motor activo lo deja `task engine:use` en este archivo (no se versiona).
+dotenv: ['.engine.env']
+
+vars:
+  ENGINE: '{{.LAB_ENGINE | default "docker"}}'
+  # El intérprete del sistema y el del entorno virtual cambian de nombre en Windows.
+  PYTHON: '{{if eq OS "windows"}}python{{else}}python3{{end}}'
+  VENV_PY: '{{if eq OS "windows"}}.venv\Scripts\python.exe{{else}}.venv/bin/python{{end}}'
+  PROFILES: minimo lab
+  COMPOSE: '{{.ENGINE}} compose -f compose/compose.yaml'
+  # Los cinco servicios nuevos, en el orden de la matriz: el piloto primero.
+  SERVICES: pricing inventory catalog replenish storefront
+  # El último paso de generación que cambió cada servicio: su imagen lleva ese tag, y su manifiesto lo
+  # pide. Desde G2 no avanzan juntos (G2 solo toca storefront, Fase 11).
+  STEP_TAGS: pricing:g10 inventory:g13 catalog:g10 replenish:g13 storefront:g5
+  # Lo que corre en compose: los cinco más el nginx de catalog (Fase 04).
+  COMPOSE_SERVICES: pricing inventory catalog catalog-nginx replenish storefront
+  # Con Podman, las imágenes se nombran docker.io/lab/<svc> para que kind las vea con el mismo nombre (D32).
+  IMAGE_PREFIX: '{{if eq .ENGINE "podman"}}docker.io/{{end}}lab'
+  LEGACY_SERVICES: contingencia-db contingencia portal braqui braqui-traslados
+  # Las cuatro imágenes del patrimonio: servicio de compose y carpeta de su Dockerfile.
+  LEGACY_IMAGES: contingencia:legacy/contingencia portal:legacy/portal braqui:legacy/braqui braqui-traslados:legacy/braqui/transfers
+
+env:
+  # kind usa Docker por defecto; con Podman hay que decírselo en cada llamada.
+  KIND_EXPERIMENTAL_PROVIDER: '{{.ENGINE}}'
+
+tasks:
+  default:
+    cmds: [task --list]
+
+  # ── Motores ───────────────────────────────────────────────────────────
+  engine:status:
+    desc: Qué motor está activo y si responde (la primera línea de cualquier diagnóstico)
+    cmds: ['{{.PYTHON}} scripts/engine/engine.py status']
+
+  engine:use:
+    desc: 'Activa un motor y lo arranca si hace falta: task engine:use -- docker|podman'
+    cmds: ['{{.PYTHON}} scripts/engine/engine.py use {{.CLI_ARGS}}']
+
+  engine:stop:
+    desc: 'Detiene un motor: task engine:stop -- docker|podman'
+    cmds: ['{{.PYTHON}} scripts/engine/engine.py stop {{.CLI_ARGS}}']
+
+  # ── Cluster ───────────────────────────────────────────────────────────
+  cluster:up:
+    desc: 'Crea el cluster de un perfil con el motor activo: task cluster:up -- minimo|lab'
+    vars:
+      PROFILE: '{{.CLI_ARGS | default "minimo"}}'
+    preconditions:
+      - sh: '{{if has .PROFILE (splitList " " .PROFILES)}}true{{else}}false{{end}}'
+        msg: 'Perfil desconocido: {{.PROFILE}}. Usa minimo o lab.'
+    cmds:
+      - kind create cluster --config kind/cluster-{{.PROFILE}}.yaml
+      - kubectl --context kind-{{.PROFILE}} wait --for=condition=Ready nodes --all --timeout=180s
+
+  cluster:down:
+    desc: 'Borra el cluster de un perfil: task cluster:down -- minimo|lab'
+    vars:
+      PROFILE: '{{.CLI_ARGS | default "minimo"}}'
+    cmds: ['kind delete cluster --name {{.PROFILE}}']
+
+  cluster:list:
+    desc: Los clusters de kind del motor activo
+    cmds: [kind get clusters]
+
+  images:load:
+    desc: 'Carga las imágenes de los cinco servicios en el cluster de un perfil: task images:load -- minimo'
+    vars:
+      PROFILE: '{{.CLI_ARGS | default "minimo"}}'
+    cmds:
+      - cmd: mkdir -p .images
+        if: '{{if eq .ENGINE "podman"}}true{{else}}false{{end}}'
+      # Docker: kind lee la imagen del motor. Podman: kind no ve sus imágenes ("not present locally"),
+      # así que viajan como archivo, y ya se llaman docker.io/lab/<svc> como las pide el pod (D32, Fase 05).
+      # Cada ITEM es servicio:tag, de STEP_TAGS.
+      - for: {var: STEP_TAGS, split: ' '}
+        cmd: >-
+          {{if eq .ENGINE "podman"}}podman save -o .images/{{index (splitList ":" .ITEM) 0}}.tar {{.IMAGE_PREFIX}}/{{.ITEM}} &&
+          kind load image-archive .images/{{index (splitList ":" .ITEM) 0}}.tar --name {{.PROFILE}} && rm .images/{{index (splitList ":" .ITEM) 0}}.tar{{else}}kind
+          load docker-image {{.IMAGE_PREFIX}}/{{.ITEM}} --name {{.PROFILE}}{{end}}
+
+  # ── Los servicios en compose (Partes 0 y I) ────────────────────────────
+  build:
+    desc: 'Construye la imagen de un servicio con el motor activo: task build -- pricing'
+    preconditions:
+      - sh: '{{if has .CLI_ARGS (splitList " " .SERVICES)}}true{{else}}false{{end}}'
+        msg: 'Servicio desconocido: {{.CLI_ARGS}}. Usa uno de: {{.SERVICES}}.'
+    vars:
+      # El tag del servicio en STEP_TAGS.
+      TAG: '{{range splitList " " .STEP_TAGS}}{{if hasPrefix (print $.CLI_ARGS ":") .}}{{trimPrefix (print $.CLI_ARGS ":") .}}{{end}}{{end}}'
+    # --build-context proto: los contratos gRPC (Fase 23), que inventory compila al construir.
+    cmds: ['{{.ENGINE}} build --build-context proto=contracts/proto -t {{.IMAGE_PREFIX}}/{{.CLI_ARGS}} -t {{.IMAGE_PREFIX}}/{{.CLI_ARGS}}:{{.TAG}} services/{{.CLI_ARGS}}']
+
+  build:all:
+    desc: Construye las imágenes de los cinco servicios con el motor activo
+    cmds:
+      - for: {var: STEP_TAGS, split: ' '}
+        cmd: '{{.ENGINE}} build -q --build-context proto=contracts/proto -t {{.IMAGE_PREFIX}}/{{index (splitList ":" .ITEM) 0}} -t {{.IMAGE_PREFIX}}/{{.ITEM}} services/{{index (splitList ":" .ITEM) 0}}'
+
+  compose:up:
+    desc: Construye los cinco servicios y los levanta en compose
+    cmds:
+      - task: build:all
+      - '{{.COMPOSE}} up -d {{.COMPOSE_SERVICES}}'
+
+  compose:down:
+    desc: Apaga y borra los contenedores de los cinco servicios (el patrimonio sigue corriendo)
+    cmds: ['{{.COMPOSE}} rm --stop --force {{.COMPOSE_SERVICES}}']
+
+  conformance:
+    desc: 'Corre la suite de un paso: task conformance -- G1 (compose) o task conformance TARGET=cluster -- G1'
+    vars:
+      STEP: '{{.CLI_ARGS | default "G0" | lower}}'
+      TARGET: '{{.TARGET | default "compose"}}'
+      KCTX: 'kubectl --context kind-{{.PROFILE | default "minimo"}} -n apps'
+      # ghcr.io/orange-opensource/hurl:8.0.1
+      HURL: ghcr.io/orange-opensource/hurl@sha256:49a02dc39d7084e5a6e8c57e2d4754ef102e4ee3761a02ef6dc0e305ab1a832d
+    env:
+      STEP: '{{.STEP}}'   # compose lo interpola en el comando de la suite al leer el archivo
+    cmds:
+      - cmd: '{{.COMPOSE}} --profile conformance run --rm conformance'
+        if: '{{if eq .TARGET "compose"}}true{{else}}false{{end}}'
+      # En el cluster, la suite corre en un pod de `apps`, con los archivos montados desde un ConfigMap.
+      - cmd: '{{.KCTX}} create configmap conformance --from-file=contracts/conformance --dry-run=client -o yaml | {{.KCTX}} apply -f -'
+        if: '{{if eq .TARGET "cluster"}}true{{else}}false{{end}}'
+      # Sin -i: con un paso corto, el pod terminaba antes de que kubectl se conectara y la salida se perdía
+      # (el código de salida sí llegaba). Se espera a que el contenedor termine, se leen los logs y se sale
+      # con su código.
+      - cmd: '{{.KCTX}} delete pod conformance --ignore-not-found --wait'
+        if: '{{if eq .TARGET "cluster"}}true{{else}}false{{end}}'
+      - cmd: >-
+          {{.KCTX}} run conformance --restart=Never --quiet --image={{.HURL}}
+          --overrides='{"spec":{"volumes":[{"name":"suite","configMap":{"name":"conformance"}}],"containers":[{"name":"conformance","image":"{{.HURL}}","args":["--test","--variables-file","/suite/cluster.env","--glob","/suite/*.{{.STEP}}.hurl"],"volumeMounts":[{"name":"suite","mountPath":"/suite"}]}]}}'
+        if: '{{if eq .TARGET "cluster"}}true{{else}}false{{end}}'
+      - cmd: "{{.KCTX}} wait --for=jsonpath='{.status.containerStatuses[0].state.terminated}' pod/conformance --timeout=180s > /dev/null"
+        if: '{{if eq .TARGET "cluster"}}true{{else}}false{{end}}'
+      - cmd: '{{.KCTX}} logs pod/conformance'
+        if: '{{if eq .TARGET "cluster"}}true{{else}}false{{end}}'
+      - cmd: "code=$({{.KCTX}} get pod conformance -o jsonpath='{.status.containerStatuses[0].state.terminated.exitCode}'); {{.KCTX}} delete pod conformance --wait=false > /dev/null; exit $code"
+        if: '{{if eq .TARGET "cluster"}}true{{else}}false{{end}}'
+      # G7 (Fase 18): la mitad de la suite que Hurl no puede ver, el log de cada servicio.
+      - cmd: '{{.PYTHON}} scripts/conformance/logs.py --context kind-{{.PROFILE | default "minimo"}}'
+        if: '{{if and (eq .TARGET "cluster") (eq .STEP "g7")}}true{{else}}false{{end}}'
+
+  contracts:docs:
+    desc: Swagger UI con los cuatro contratos, en http://localhost:8090
+    cmds: ['{{.COMPOSE}} --profile docs up -d contracts-docs']
+
+  # ── El patrimonio (a16) ───────────────────────────────────────────────
+  legacy:up:
+    desc: 'Construye y levanta el patrimonio en compose; con TARGET=cluster, en el namespace legacy (Fase 10)'
+    vars:
+      TARGET: '{{.TARGET | default "compose"}}'
+      KCTX: 'kubectl --context kind-{{.PROFILE | default "minimo"}}'
+    cmds:
+      # Se construye con el motor activo y después compose solo arranca: con Podman, `podman compose`
+      # delega en el compose de Docker y no conviene que construya él (a02). Tag a16: el del patrimonio.
+      - for: {var: LEGACY_IMAGES, split: ' '}
+        cmd: '{{.ENGINE}} build -q -t {{.IMAGE_PREFIX}}/legacy-{{index (splitList ":" .ITEM) 0}} -t {{.IMAGE_PREFIX}}/legacy-{{index (splitList ":" .ITEM) 0}}:a16 {{index (splitList ":" .ITEM) 1}}'
+      # Se nombran los servicios: un perfil activo también levanta los servicios sin perfil.
+      - cmd: '{{.COMPOSE}} --profile legacy up -d {{.LEGACY_SERVICES}}'
+        if: '{{if eq .TARGET "compose"}}true{{else}}false{{end}}'
+      # En el cluster: las imágenes al nodo, los .sql de a16 como ConfigMap, y los manifiestos.
+      - for: [contingencia, portal, braqui, braqui-traslados]
+        cmd: >-
+          {{if eq .TARGET "cluster"}}{{if eq .ENGINE "podman"}}mkdir -p .images && podman save -o .images/legacy-{{.ITEM}}.tar {{.IMAGE_PREFIX}}/legacy-{{.ITEM}}:a16 &&
+          kind load image-archive .images/legacy-{{.ITEM}}.tar --name {{.PROFILE | default "minimo"}} && rm .images/legacy-{{.ITEM}}.tar{{else}}kind
+          load docker-image {{.IMAGE_PREFIX}}/legacy-{{.ITEM}}:a16 --name {{.PROFILE | default "minimo"}}{{end}}{{else}}true{{end}}
+      - cmd: '{{.KCTX}} apply -f deploy/legacy/namespace.yaml'
+        if: '{{if eq .TARGET "cluster"}}true{{else}}false{{end}}'
+      - cmd: '{{.KCTX}} -n legacy create configmap contingencia-db-init --from-file=legacy/contingencia/db --dry-run=client -o yaml | {{.KCTX}} apply -f -'
+        if: '{{if eq .TARGET "cluster"}}true{{else}}false{{end}}'
+      - cmd: '{{.KCTX}} -n legacy create configmap contingencia-fachada --from-file=default.conf=deploy/legacy/fachada-nginx.conf --dry-run=client -o yaml | {{.KCTX}} apply -f -'
+        if: '{{if eq .TARGET "cluster"}}true{{else}}false{{end}}'
+      # Las credenciales del portal (Fase 11), de un archivo que no se versiona. Sin él, el portal no arranca.
+      - cmd: >-
+          {{if eq .TARGET "cluster"}}test -f .secrets/portal-contingencia.env &&
+          {{.KCTX}} -n legacy create secret generic portal-contingencia --from-env-file=.secrets/portal-contingencia.env --dry-run=client -o yaml | {{.KCTX}} apply -f - ||
+          echo "⚠️ falta .secrets/portal-contingencia.env: el portal no va a arrancar (Fase 11, incidente 10)"{{else}}true{{end}}
+      - cmd: '{{.KCTX}} apply -f deploy/legacy/'
+        if: '{{if eq .TARGET "cluster"}}true{{else}}false{{end}}'
+
+  legacy:down:
+    desc: Apaga el patrimonio; los datos quedan en sus volúmenes (task legacy:down -- -v los borra)
+    cmds:
+      - '{{.COMPOSE}} --profile legacy rm --stop --force {{.LEGACY_SERVICES}}'
+      - cmd: '{{.ENGINE}} volume rm lab_contingencia-data lab_traslados lab_braqui-estado'
+        if: '{{if eq .CLI_ARGS "-v"}}true{{else}}false{{end}}'
+
+  # ── El cluster: manifiestos e incidentes (Parte II) ───────────────────
+  deploy:
+    desc: 'Instala o actualiza el sistema con el chart, con los valores de un perfil: task deploy -- minimo|lab|medicion'
+    vars:
+      PROFILE: '{{.CLI_ARGS | default "minimo"}}'
+      # El cluster: el del perfil; medicion usa minimo salvo que digas otro (task deploy CLUSTER=lab -- medicion).
+      CLUSTER: '{{.CLUSTER | default (eq .PROFILE "medicion" | ternary "minimo" .PROFILE)}}'
+      # Los tags de STEP_TAGS como --set <svc>.image.tag=<tag>: el chart no tiene otro lugar de dónde sacarlos.
+      TAG_SETS: '{{range splitList " " .STEP_TAGS}} --set {{index (splitList ":" .) 0}}.image.tag={{index (splitList ":" .) 1}}{{end}}'
+      # La segunda cadena (Fase 14): TENANT=tenant-b instala el mismo chart como otro release, en apps-b,
+      # con un archivo de valores más. Sin TENANT, el release lab en apps.
+      TENANT: '{{.TENANT | default ""}}'
+      RELEASE: '{{if .TENANT}}{{.TENANT}}{{else}}lab{{end}}'
+      NS: '{{if eq .TENANT "tenant-b"}}apps-b{{else}}apps{{end}}'
+      TENANT_VALUES: '{{if .TENANT}} -f charts/platform/values-{{.TENANT}}.yaml{{end}}'
+      # Los interruptores de observabilidad de esta máquina (task obs:on, Fase 17). Solo para el release
+      # lab: las piezas son del cluster, y la segunda cadena las comparte.
+      OBS_FILE:
+        sh: '{{if .TENANT}}echo{{else}}{{.PYTHON}} scripts/obs/switch.py file{{end}}'
+    preconditions:
+      - sh: 'test -f charts/platform/values-{{.PROFILE}}.yaml'
+        msg: 'Perfil desconocido: {{.PROFILE}}. Usa minimo, lab o medicion.'
+      - sh: '{{if .TENANT}}test -f charts/platform/values-{{.TENANT}}.yaml{{else}}true{{end}}'
+        msg: 'Cadena desconocida: {{.TENANT}}. La única es tenant-b.'
+    cmds:
+      # El namespace lo crea plataforma, con sus labels (y desde la Fase 15, sus cuotas): no es del chart.
+      - cmd: kubectl --context kind-{{.CLUSTER}} apply -f deploy/manifests/namespace.yaml -f platform/observability/namespace.yaml
+        if: '{{if .TENANT}}false{{else}}true{{end}}'
+      - cmd: kubectl --context kind-{{.CLUSTER}} apply -f platform/tenants/{{.NS}}.yaml
+        if: '{{if .TENANT}}true{{else}}false{{end}}'
+      # La imagen del seed, que el chart corre después de instalar.
+      - task: seed:image
+        vars: {CLI_ARGS: '{{.CLUSTER}}'}
+      # Desde la Fase 13: un release `lab` en `apps`. Las migraciones son hooks: corren antes, solas.
+      # --wait: no termina hasta que los Deployment están listos (y el seed corre después de eso).
+      # --rollback-on-failure (Fase 14): si algo falla, vuelve solo a la última revisión buena, en vez de
+      # dejar el release a medias. --history-max: diez revisiones guardadas, las más viejas se borran.
+      # FORCE=true: le devuelve a Helm los campos que alguien cambió a mano (--force-conflicts, Fase 13).
+      - >-
+        helm upgrade --install {{.RELEASE}} charts/platform -n {{.NS}} --kube-context kind-{{.CLUSTER}}
+        -f charts/platform/values-{{.PROFILE}}.yaml{{.TENANT_VALUES}}{{if .OBS_FILE}} -f {{.OBS_FILE}}{{end}}{{.TAG_SETS}} --wait --timeout 10m
+        --rollback-on-failure --history-max 10{{if .FORCE}} --force-conflicts{{end}}
+
+  obs:on:
+    desc: 'Enciende una pieza de observabilidad y redespliega: task obs:on -- metrics|dashboards|logs|traces|all (PROFILE=lab)'
+    cmds:
+      - '{{.PYTHON}} scripts/obs/switch.py on {{.CLI_ARGS}}'
+      - task: deploy
+        vars: {CLI_ARGS: '{{.PROFILE | default "lab"}}'}
+
+  obs:off:
+    desc: 'Apaga una pieza de observabilidad y redespliega: task obs:off -- metrics|dashboards|logs|traces|all (PROFILE=lab)'
+    cmds:
+      - '{{.PYTHON}} scripts/obs/switch.py off {{.CLI_ARGS}}'
+      - task: deploy
+        vars: {CLI_ARGS: '{{.PROFILE | default "lab"}}'}
+
+  obs:status:
+    desc: Qué piezas de observabilidad están encendidas en esta máquina
+    cmds: ['{{.PYTHON}} scripts/obs/switch.py show']
+
+  obs:trace:
+    desc: 'Una traza de Tempo como árbol de tiempos, por su trace_id: task obs:trace -- <trace_id> (Fase 23)'
+    cmds: ['{{.PYTHON}} scripts/obs/trace.py {{.CLI_ARGS}}']
+
+  deploy:diff:
+    desc: 'Lo que cambiaría task deploy, sin aplicar nada (helm-diff, con lo que hay en el cluster): task deploy:diff -- minimo'
+    vars:
+      PROFILE: '{{.CLI_ARGS | default "minimo"}}'
+      CLUSTER: '{{.CLUSTER | default (eq .PROFILE "medicion" | ternary "minimo" .PROFILE)}}'
+      TAG_SETS: '{{range splitList " " .STEP_TAGS}} --set {{index (splitList ":" .) 0}}.image.tag={{index (splitList ":" .) 1}}{{end}}'
+      TENANT: '{{.TENANT | default ""}}'
+      RELEASE: '{{if .TENANT}}{{.TENANT}}{{else}}lab{{end}}'
+      NS: '{{if eq .TENANT "tenant-b"}}apps-b{{else}}apps{{end}}'
+      TENANT_VALUES: '{{if .TENANT}} -f charts/platform/values-{{.TENANT}}.yaml{{end}}'
+    cmds:
+      # --three-way-merge: compara también contra lo que hay vivo, y así muestra lo que alguien cambió a mano.
+      - >-
+        helm diff upgrade {{.RELEASE}} charts/platform -n {{.NS}} --kube-context kind-{{.CLUSTER}}
+        -f charts/platform/values-{{.PROFILE}}.yaml{{.TENANT_VALUES}}{{.TAG_SETS}} --three-way-merge --context 2
+
+  chart:compare:
+    desc: Compara el chart renderizado con el YAML plano de la Fase 12, objeto por objeto
+    deps: [{task: venv, vars: {DIR: scripts/chart}}]
+    vars:
+      TAG_SETS: '{{range splitList " " .STEP_TAGS}} --set {{index (splitList ":" .) 0}}.image.tag={{index (splitList ":" .) 1}}{{end}}'
+    cmds:
+      - helm template lab charts/platform -n apps -f charts/platform/values-minimo.yaml{{.TAG_SETS}} | scripts/chart/{{.VENV_PY}} scripts/chart/compare.py
+
+  migrate:
+    desc: 'Las migraciones como Jobs sueltos, como en la Fase 12 (desde la 13 son hooks del chart): task migrate -- minimo'
+    vars:
+      PROFILE: '{{.CLI_ARGS | default "minimo"}}'
+      KCTX: 'kubectl --context kind-{{.PROFILE}} -n apps'
+    cmds:
+      # Un Job terminado no se puede volver a aplicar: se borra y se crea de nuevo. De a uno, en orden.
+      - for: [pricing, inventory, catalog, replenish]
+        cmd: >-
+          {{.KCTX}} delete job {{.ITEM}}-migrate --ignore-not-found --wait &&
+          {{.KCTX}} apply -f deploy/jobs/{{.ITEM}}-migrate.yaml &&
+          {{.KCTX}} wait --for=condition=complete job/{{.ITEM}}-migrate --timeout=180s &&
+          {{.KCTX}} logs job/{{.ITEM}}-migrate --tail=4
+
+  seed:image:
+    desc: 'Construye la imagen del seed y la carga en el cluster: task seed:image -- minimo'
+    vars:
+      PROFILE: '{{.CLI_ARGS | default "minimo"}}'
+    cmds:
+      - '{{.ENGINE}} build -q -t {{.IMAGE_PREFIX}}/seed:g3 scripts/seed'
+      - >-
+        {{if eq .ENGINE "podman"}}mkdir -p .images && podman save -o .images/seed.tar {{.IMAGE_PREFIX}}/seed:g3 &&
+        kind load image-archive .images/seed.tar --name {{.PROFILE}} && rm .images/seed.tar{{else}}kind
+        load docker-image {{.IMAGE_PREFIX}}/seed:g3 --name {{.PROFILE}}{{end}}
+
+  seed:job:
+    desc: 'El seed como Job suelto, como en la Fase 12 (desde la 13 lo corre el chart al instalar): task seed:job -- minimo'
+    vars:
+      PROFILE: '{{.CLI_ARGS | default "minimo"}}'
+      KCTX: 'kubectl --context kind-{{.PROFILE}} -n apps'
+    cmds:
+      - task: seed:image
+        vars: {CLI_ARGS: '{{.PROFILE}}'}
+      - '{{.KCTX}} delete job seed --ignore-not-found --wait'
+      - '{{.KCTX}} apply -f deploy/jobs/seed.yaml'
+      - '{{.KCTX}} wait --for=condition=complete job/seed --timeout=300s'
+      - '{{.KCTX}} logs job/seed'
+
+  inc:break:
+    desc: 'Lleva el laboratorio al estado roto de un incidente: task inc:break -- 05 (PROFILE=lab si solo tienes ese cluster; CLUSTER= si los valores son de otro perfil)'
+    env: {INC_CONTEXT: 'kind-{{.CLUSTER | default .PROFILE | default "minimo"}}', INC_VALUES: '{{.PROFILE | default "minimo"}}'}
+    cmds: ['{{.PYTHON}} scripts/incidents/inc.py break {{.CLI_ARGS}}']
+
+  inc:fix:
+    desc: 'Repara un incidente provocado con inc:break: task inc:fix -- 05 (con el mismo PROFILE)'
+    env: {INC_CONTEXT: 'kind-{{.CLUSTER | default .PROFILE | default "minimo"}}', INC_VALUES: '{{.PROFILE | default "minimo"}}'}
+    cmds: ['{{.PYTHON}} scripts/incidents/inc.py fix {{.CLI_ARGS}}']
+
+  platform:gateway:
+    desc: 'Instala Envoy Gateway y la puerta compartida del sistema: task platform:gateway -- minimo'
+    vars:
+      PROFILE: '{{.CLI_ARGS | default "minimo"}}'
+    cmds:
+      # El controlador, con la versión de a01; trae las CRD de Gateway API.
+      - helm upgrade --install eg oci://docker.io/envoyproxy/gateway-helm --version v1.9.2 -n gateway --create-namespace --kube-context kind-{{.PROFILE}} --wait --timeout 10m
+      - kubectl --context kind-{{.PROFILE}} apply -f platform/gateway/
+      - kubectl --context kind-{{.PROFILE}} -n gateway wait --for=condition=Programmed gateway/lab --timeout=300s
+
+  platform:metrics:
+    desc: 'metrics-server, para kubectl top y el HPA: task platform:metrics -- lab'
+    vars:
+      PROFILE: '{{.CLI_ARGS | default "minimo"}}'
+      KCTX: 'kubectl --context kind-{{.PROFILE}}'
+    cmds:
+      - '{{.KCTX}} apply -f platform/metrics-server/components.yaml'
+      # El kubelet de kind presenta un certificado autofirmado sin la IP del nodo: metrics-server no lo
+      # acepta (incidente 17). En el laboratorio se le dice que no lo verifique; en una nube, no hace falta.
+      - >-
+        {{.KCTX}} -n kube-system patch deployment metrics-server --type=json
+        -p '[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
+      - '{{.KCTX}} -n kube-system rollout status deployment/metrics-server --timeout=180s'
+
+  platform:certs:
+    desc: 'cert-manager y trust-manager, con la CA del laboratorio como emisor: task platform:certs -- lab'
+    deps: [tls:ca]
+    vars:
+      PROFILE: '{{.CLI_ARGS | default "minimo"}}'
+      KCTX: 'kubectl --context kind-{{.PROFILE}}'
+    cmds:
+      - >-
+        helm upgrade --install cert-manager oci://quay.io/jetstack/charts/cert-manager --version v1.21.2
+        -n cert-manager --create-namespace --kube-context kind-{{.PROFILE}}
+        -f platform/cert-manager/cert-manager-values.yaml --wait
+      - >-
+        helm upgrade --install trust-manager oci://quay.io/jetstack/charts/trust-manager --version v0.25.0
+        -n cert-manager --kube-context kind-{{.PROFILE}} -f platform/cert-manager/trust-manager-values.yaml --wait
+      # La CA, como Secret del emisor. La clave privada de la CA sale de .secrets/ solo hacia aquí.
+      - >-
+        {{.KCTX}} -n cert-manager create secret tls lab-ca --cert=.secrets/tls/ca.crt --key=.secrets/tls/ca.key
+        --dry-run=client -o yaml | {{.KCTX}} apply -f -
+      - '{{.KCTX}} apply -f platform/cert-manager/issuer.yaml -f platform/cert-manager/bundle.yaml'
+      - '{{.KCTX}} -n gateway wait --for=condition=Ready certificate/lab-tls --timeout=120s'
+
+  platform:postgres:
+    desc: 'Postgres del sistema en data, con una base por servicio: task platform:postgres -- minimo (TENANT=tenant-b: las bases de la segunda cadena)'
+    vars:
+      PROFILE: '{{.CLI_ARGS | default "minimo"}}'
+      KCTX: 'kubectl --context kind-{{.PROFILE}}'
+      TENANT: '{{.TENANT | default ""}}'
+    cmds:
+      # Con TENANT (Fase 14): el namespace de la cadena, sus Secret y sus bases en el Postgres que ya corre.
+      - task: platform:tenant
+        vars: {TENANT: '{{.TENANT}}', KCTX: '{{.KCTX}}'}
+      - cmd: '{{.KCTX}} apply -f platform/data/postgres/namespace.yaml -f deploy/manifests/namespace.yaml'
+        if: '{{if .TENANT}}false{{else}}true{{end}}'
+      # Las contraseñas viven en .secrets/postgres.env (se crea la primera vez, fuera de git).
+      - cmd: '{{.PYTHON}} scripts/data/credentials.py | {{.KCTX}} apply -f -'
+        if: '{{if .TENANT}}false{{else}}true{{end}}'
+      - cmd: '{{.KCTX}} -n data create configmap postgres-init --from-file=platform/data/postgres/init.sh --dry-run=client -o yaml | {{.KCTX}} apply -f -'
+        if: '{{if .TENANT}}false{{else}}true{{end}}'
+      - cmd: '{{.KCTX}} apply -f platform/data/postgres/'
+        if: '{{if .TENANT}}false{{else}}true{{end}}'
+      - cmd: '{{.KCTX}} -n data rollout status statefulset/postgres --timeout=300s'
+        if: '{{if .TENANT}}false{{else}}true{{end}}'
+
+  platform:tenant:
+    internal: true
+    cmds:
+      - cmd: '{{.KCTX}} apply -f platform/tenants/apps-b.yaml'
+        if: '{{if .TENANT}}true{{else}}false{{end}}'
+      - cmd: '{{.PYTHON}} scripts/data/credentials.py --tenant {{.TENANT}} | {{.KCTX}} apply -f -'
+        if: '{{if .TENANT}}true{{else}}false{{end}}'
+      # init.sh ya corrió: las bases nuevas se crean con psql, de forma que repetir no haga nada.
+      - cmd: '{{.PYTHON}} scripts/data/credentials.py --tenant {{.TENANT}} --sql | {{.KCTX}} -n data exec -i postgres-0 -- psql -q -U postgres -v ON_ERROR_STOP=1'
+        if: '{{if .TENANT}}true{{else}}false{{end}}'
+
+
+  # ── Pruebas de los servicios (Fase 12) ─────────────────────────────────
+  test:pricing:
+    desc: 'Las pruebas de pricing en un contenedor: task test:pricing (SQLite) o task test:pricing DB=postgres (Testcontainers)'
+    vars:
+      DB: '{{.DB | default "sqlite"}}'
+      # golang:1.27.1-alpine, el de la etapa de build de pricing
+      GO: golang@sha256:8a5910f31396cd4d89662f56c68b3ae31d374308270a1c3bd96672ee5ed43414
+    cmds:
+      # Las cachés de módulos y de compilación, en volúmenes con la label del curso.
+      - '{{.ENGINE}} volume create --label curso=lab-docker-kubernetes lab-gomod > /dev/null'
+      - '{{.ENGINE}} volume create --label curso=lab-docker-kubernetes lab-gocache > /dev/null'
+      # Con Postgres, Testcontainers le pide al motor un contenedor hermano: por eso el socket.
+      - >-
+        {{.ENGINE}} run --rm -v "{{.ROOT_DIR}}/services/pricing:/src" -v lab-gomod:/go/pkg/mod -v lab-gocache:/root/.cache/go-build
+        {{if eq .DB "postgres"}}-v /var/run/docker.sock:/var/run/docker.sock -e TEST_DATABASE=postgres -e TESTCONTAINERS_HOST_OVERRIDE=host.docker.internal{{end}}
+        -w /src {{.GO}} go test -count=1 -v ./...
+
+  # ── Scripts de Python ─────────────────────────────────────────────────
+  venv:
+    internal: true
+    desc: Crea el .venv de un directorio de scripts e instala su requirements.txt
+    dir: '{{.DIR}}'
+    cmds:
+      - '{{.PYTHON}} -m venv .venv'
+      - '{{.VENV_PY}} -m pip install --quiet --disable-pip-version-check -r requirements.txt'
+    sources: [requirements.txt]
+    generates: ['.venv/pyvenv.cfg']
+
+  tls:ca:
+    desc: La CA del laboratorio en .secrets/tls/ (una vez; no la pisa)
+    deps: [{task: venv, vars: {DIR: scripts/tls}}]
+    cmds: ['scripts/tls/{{.VENV_PY}} scripts/tls/certs.py ca']
+
+  tls:gateway:
+    desc: 'El certificado de la puerta firmado por la CA, como Secret TLS en gateway: task tls:gateway -- lab'
+    deps: [{task: venv, vars: {DIR: scripts/tls}}]
+    vars:
+      PROFILE: '{{.CLI_ARGS | default "minimo"}}'
+      HOSTS: api.localhost,storefront.localhost,grafana.localhost,prometheus.localhost,api.tenant-b.localhost,storefront.tenant-b.localhost
+    cmds:
+      - 'scripts/tls/{{.VENV_PY}} scripts/tls/certs.py leaf gateway --dns {{.HOSTS}}'
+      - >-
+        kubectl --context kind-{{.PROFILE}} -n gateway create secret tls lab-tls
+        --cert=.secrets/tls/gateway.crt --key=.secrets/tls/gateway.key --dry-run=client -o yaml |
+        kubectl --context kind-{{.PROFILE}} apply -f -
+
+  registry:up:
+    desc: 'El registry propio con la CA del laboratorio (Fase 19), en la red de kind y en 127.0.0.1:5001'
+    deps: [{task: venv, vars: {DIR: scripts/tls}}, tls:ca]
+    vars:
+      # registry:3
+      IMAGE: registry@sha256:ddf754342cfc8acc51a56d5d0ab6af06826461864460636d8bd5c546dab2a7b8
+    cmds:
+      # El certificado del registry: el nombre con que lo llaman los nodos (lab-registry) y los del host.
+      - 'scripts/tls/{{.VENV_PY}} scripts/tls/certs.py leaf registry --dns lab-registry,localhost,127.0.0.1'
+      - >-
+        {{.ENGINE}} run -d --name lab-registry --network kind --restart unless-stopped
+        -p 127.0.0.1:5001:5000 --label app.kubernetes.io/part-of=lab
+        -v "{{.ROOT_DIR}}/.secrets/tls:/certs:ro"
+        -e REGISTRY_HTTP_TLS_CERTIFICATE=/certs/registry.crt -e REGISTRY_HTTP_TLS_KEY=/certs/registry.key
+        {{.IMAGE}}
+    status: ['{{.ENGINE}} container inspect lab-registry']
+
+  registry:down:
+    desc: Borra el registry propio (y las imágenes que tenía)
+    cmds: ['{{.ENGINE}} rm -f lab-registry']
+
+  registry:push:
+    desc: 'Sube la imagen de un servicio al registry propio, con su tag de STEP_TAGS: task registry:push -- pricing'
+    vars:
+      TAG: '{{range splitList " " .STEP_TAGS}}{{if hasPrefix (print $.CLI_ARGS ":") .}}{{trimPrefix (print $.CLI_ARGS ":") .}}{{end}}{{end}}'
+    cmds:
+      # localhost:5001 desde el host; lab-registry:5000 desde los nodos. Docker no valida la CA en
+      # 127.0.0.0/8; Podman sí, y necesita la CA dentro de su máquina (Fase 19).
+      - '{{.ENGINE}} tag {{.IMAGE_PREFIX}}/{{.CLI_ARGS}}:{{.TAG}} localhost:5001/lab/{{.CLI_ARGS}}:{{.TAG}}'
+      - '{{.ENGINE}} push localhost:5001/lab/{{.CLI_ARGS}}:{{.TAG}}'
+
+  registry:untrust:
+    desc: 'Quita la CA del registry de los nodos (el estado del incidente 24): task registry:untrust -- lab'
+    vars:
+      PROFILE: '{{.CLI_ARGS | default "minimo"}}'
+      NODES:
+        sh: kind get nodes --name {{.PROFILE}}
+    cmds:
+      - for: {var: NODES}
+        cmd: '{{.ENGINE}} exec {{.ITEM}} rm -rf /etc/containerd/certs.d/lab-registry:5000'
+
+  registry:trust:
+    desc: 'Que el containerd de cada nodo confíe en la CA del registry: task registry:trust -- lab'
+    vars:
+      PROFILE: '{{.CLI_ARGS | default "minimo"}}'
+      NODES:
+        sh: kind get nodes --name {{.PROFILE}}
+    cmds:
+      # Un hosts.toml y la CA en la carpeta del registry: containerd la lee en cada pull (config_path,
+      # que los archivos de kind activan desde el principio). No hace falta reiniciar nada.
+      - for: {var: NODES}
+        cmd: >-
+          {{.ENGINE}} exec {{.ITEM}} mkdir -p /etc/containerd/certs.d/lab-registry:5000 &&
+          {{.ENGINE}} cp .secrets/tls/ca.crt {{.ITEM}}:/etc/containerd/certs.d/lab-registry:5000/ca.crt &&
+          {{.ENGINE}} cp platform/registry/hosts.toml {{.ITEM}}:/etc/containerd/certs.d/lab-registry:5000/hosts.toml
+
+  chaos:on:
+    desc: 'Construye y carga el generador de caos, y lo pone entre inventory y catalog (o TARGET=replenish): task chaos:on (PROFILE=minimo, CLUSTER=lab)'
+    cmds:
+      - '{{.ENGINE}} build -q -t {{.IMAGE_PREFIX}}/chaos:f22 chaos'
+      - '{{if eq .ENGINE "podman"}}mkdir -p .images && podman save -o .images/chaos.tar {{.IMAGE_PREFIX}}/chaos:f22 && kind load image-archive .images/chaos.tar --name {{.CLUSTER | default "lab"}} && rm .images/chaos.tar{{else}}kind load docker-image {{.IMAGE_PREFIX}}/chaos:f22 --name {{.CLUSTER | default "lab"}}{{end}}'
+      - '{{.PYTHON}} scripts/obs/switch.py chaos on {{.TARGET | default "catalog"}}'
+      - task: deploy
+        vars: {CLI_ARGS: '{{.PROFILE | default "minimo"}}', CLUSTER: '{{.CLUSTER | default "lab"}}'}
+
+  chaos:off:
+    desc: 'Saca el generador de caos del medio: task chaos:off'
+    cmds:
+      - '{{.PYTHON}} scripts/obs/switch.py chaos off'
+      - task: deploy
+        vars: {CLI_ARGS: '{{.PROFILE | default "minimo"}}', CLUSTER: '{{.CLUSTER | default "lab"}}'}
+
+  chaos:set:
+    desc: 'Cambia las fallas en caliente: task chaos:set -- latencyMs=5000 latencyPercent=100 · -- clear · -- show · -- perfil sogamoso-con-lluvia'
+    cmds: ['{{.PYTHON}} scripts/chaos/chaos.py {{if or (eq .CLI_ARGS "clear") (eq .CLI_ARGS "show") (hasPrefix "perfil " .CLI_ARGS)}}{{.CLI_ARGS}}{{else}}set {{.CLI_ARGS}}{{end}}']
+
+  bus:on:
+    desc: 'Instala el bus en data y lo enciende para los servicios: task bus:on -- valkey|nats (PROFILE=minimo, CLUSTER=lab)'
+    vars:
+      BUS: '{{.CLI_ARGS}}'
+    preconditions:
+      - sh: '{{if has .BUS (list "valkey" "nats")}}true{{else}}false{{end}}'
+        msg: 'Bus desconocido: {{.BUS}}. Usa valkey o nats.'
+    cmds:
+      - 'kubectl --context kind-{{.CLUSTER | default "lab"}} apply -f platform/data/{{.BUS}}/'
+      - 'kubectl --context kind-{{.CLUSTER | default "lab"}} -n data rollout status {{if eq .BUS "nats"}}statefulset{{else}}deployment{{end}}/{{.BUS}} --timeout=180s'
+      - '{{.PYTHON}} scripts/obs/switch.py bus on {{.BUS}}'
+      - task: deploy
+        vars: {CLI_ARGS: '{{.PROFILE | default "minimo"}}', CLUSTER: '{{.CLUSTER | default "lab"}}'}
+
+  bus:off:
+    desc: 'Apaga el bus para los servicios (el aviso vuelve a HTTP) y lo borra de data: task bus:off -- valkey|nats'
+    vars:
+      BUS: '{{.CLI_ARGS}}'
+    cmds:
+      - '{{.PYTHON}} scripts/obs/switch.py bus off {{.BUS}}'
+      - task: deploy
+        vars: {CLI_ARGS: '{{.PROFILE | default "minimo"}}', CLUSTER: '{{.CLUSTER | default "lab"}}'}
+      # El PVC de NATS queda (es un StatefulSet): se borra a mano si se quiere empezar de cero.
+      - 'kubectl --context kind-{{.CLUSTER | default "lab"}} delete -f platform/data/{{.BUS}}/ --ignore-not-found'
+
+  proto:
+    desc: 'Genera el código de Go de los contratos gRPC (contracts/proto/) en services/pricing/pricingv1, en un contenedor'
+    vars:
+      # golang:1.27.1-alpine, con protoc de Alpine y los dos generadores de Go en las versiones de a01.
+      GO: golang@sha256:8a5910f31396cd4d89662f56c68b3ae31d374308270a1c3bd96672ee5ed43414
+    cmds:
+      - >-
+        {{.ENGINE}} run --rm -v "{{.ROOT_DIR}}:/lab" -w /lab {{.GO}} sh -c
+        'apk add --no-cache protobuf protobuf-dev >/dev/null &&
+        go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.12 &&
+        go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.6.1 &&
+        protoc -I contracts/proto --go_out=services/pricing --go_opt=module=lab/pricing
+        --go-grpc_out=services/pricing --go-grpc_opt=module=lab/pricing pricing/v1/pricing.proto'
+
+  seed:generate:
+    desc: 'Genera droguerías y productos sintéticos con Faker (es_CO): task seed:generate -- --stores 20'
+    deps: [{task: venv, vars: {DIR: scripts/seed}}]
+    dir: scripts/seed
+    cmds: ['{{.VENV_PY}} generate.py {{.CLI_ARGS}}']
+
+  # ── Mediciones ────────────────────────────────────────────────────────
+  measure:
+    desc: 'Corre una medición y deja el crudo en bench/: task measure -- B-00 [--profile lab] [--runs 3]'
+    cmds: ['{{.PYTHON}} scripts/measure/measure.py --engine {{.ENGINE}} {{.CLI_ARGS}}']

@@ -1,0 +1,38 @@
+0-ESTRUCTURA-CURSO.md: necesita, porque el formato "diciendo y haciendo" pierde sentido si hay que saltar
+01-sintaxis-y-valores.md: hay que decidir estructura de datos con criterio de concurrencia.
+02-structs-interfaces-composicion.md: interfaces. El veredicto está pre-escrito en §6.1 y hay que sostenerlo con los
+04-testing-dobles-cobertura.md: el ejercicio queda huérfano y hay que decirlo.
+04-testing-dobles-cobertura.md: - **"Hay que mockear el almacén"** — el reflejo raíz de la fase. Coste medido: 12
+06-concurrencia.md: trate formalmente.** Decidir: o se queda como ejercicio 🔴 aquí, o se le da una
+07-context-y-ciclo-de-vida.md: apagado hay que justificarlo contra algo.
+08-migracion-a-go-moderno.md: huérfano y hay que quitarlo de `docs/rechazos.md` o resolverlo aquí.
+08-migracion-a-go-moderno.md: observabilidad. **Decidir antes de publicar.**
+08-migracion-a-go-moderno.md: Hay que añadirlo allí.
+08-migracion-a-go-moderno.md: - **"Los tests hay que adaptarlos a la migración"** — si migrar obliga a cambiar
+08-migracion-a-go-moderno.md: "no mejoró nada medible", **esa es la entrada que hay que escribir**, y el
+09-sql-postgres-sqlite.md: tests siguen con `if got != want`. Decidir: o se introduce explícitamente allí
+09-sql-postgres-sqlite.md: corrige la guía. **Recomiendo introducirlo en §6.11** con un párrafo corto: es
+09-sql-postgres-sqlite.md: detecta. **No está en el `.golangci.yml` de la Fase 00.** Hay que añadirlo aquí o
+10-clientes-http-y-apis-externas.md: didáctica de la fase** y hoy no está en el plan. **Propuesta: B-25.**
+10-clientes-http-y-apis-externas.md: **Decidir antes de publicar.**
+11-mongodb-y-modelado-documental.md: suelta. **Hay que actualizar el compose** con `--replSet` y su inicialización, o
+13-lotes-scheduling-y-asincronia.md: para esta fase, en el generador de CSV. **No se ha usado en §6.6.** Decidir: o se
+13-lotes-scheduling-y-asincronia.md: **Recomiendo aplicarlo**, es literal el caso de uso del artículo.
+13-lotes-scheduling-y-asincronia.md: Recomiendo añadir un párrafo al ⚖️ que los nombre junto a Kafka: son la misma
+13-lotes-scheduling-y-asincronia.md: - **`container/heap`** — pendiente sin resolver desde la Fase 01, reabierto en la
+13-lotes-scheduling-y-asincronia.md: segundo" incumple la regla de medición del curso. **Propuesta: B-27, o encajarla en
+14-observabilidad-y-hardening.md: | Hook de pre-commit | Fase 00 📌 | **NO cerrada** | ⚠️ |
+14-observabilidad-y-hardening.md: > promesa era explícita. **Decidir: añadirlo a §6.6 (son diez líneas con un
+14-observabilidad-y-hardening.md: > Recomiendo añadirlo.
+14-observabilidad-y-hardening.md: explícitamente prohibido en el texto y hay que sostenerlo en la entrada. Añadir
+14-observabilidad-y-hardening.md: tipados no). **Decidir antes de publicar.**
+15-rendimiento-y-profiling.md: **Decisión necesaria: asignarle ID (¿B-28?) y medirlo aquí, o retirarlo de las
+15-rendimiento-y-profiling.md: tres fases.** Es la anotación más repetida del curso sin resolver.
+15-rendimiento-y-profiling.md: ejercicio**, lo que técnicamente incumple la regla de medición del curso. **Recomiendo
+15-rendimiento-y-profiling.md: decisión pendiente.
+15-rendimiento-y-profiling.md: - **"Esto asigna mucho, hay que hacer un pool"** — el reflejo raíz de la fase. En
+17-capstone.md: > 00 para la Fase 14 y quedó implícito en `make ci`. **Decidir antes de publicar:**
+17-capstone.md: > las tres afirmaciones** a lo que sí es verificable estructuralmente. Recomiendo lo
+17-capstone.md: ## 📌 Pendientes sin resolver al cierre
+17-capstone.md: param. **Contradicción sin resolver entre las dos fases.**
+17-capstone.md: siete propuestas sin asignar, que son la decisión editorial pendiente más grande

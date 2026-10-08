@@ -1,0 +1,8 @@
+=== pruebas de todo el track ds ===
+  ds01-numpy-y-el-modelo-vectorizado      40 passed in 12.83s
+  ds02-pandas                             10 passed in 2.28s
+  ds03-polars-y-el-modelo-lazy            11 passed in 5.07s
+  ds04-embudo                             23 passed in 2.32s
+  ds07-scikit-learn                       19 passed in 0.55s
+  ds05-visualizacion                      15 passed in 0.94s
+  ds06-notebooks                          15 passed in 8.10s

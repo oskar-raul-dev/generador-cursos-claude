@@ -1,0 +1,62 @@
+=== propuesta-fases-y-alcance.md:36-42 ===
+la unidad de práctica es un encargo completo, no un ejercicio de rellenar huecos. El formato y
+su prueba de calibración están en [`formato-de-miniproyectos.md`](formato-de-miniproyectos.md).
+
+> 📝 **Y una nota de origen.** El curso de Go partió de un esqueleto producido por otro modelo
+> y se fue ordenando sobre la marcha. Aquí la estructura viene **antes** que el contenido: el
+> alcance, la guía de estilo, la plantilla y el formato de miniproyectos ya están escritos, y
+> este documento es el último eslabón que falta para empezar a redactar.
+
+=== :96-113 ===
+
+## 4. 🪜 La secuencia — 18 fases
+
+> 🧭 **Esta secuencia no es la del curso de Go con otros nombres.** Se diseñó desde las
+> necesidades de este curso, y la prueba está en las fases que aquí existen y allá no tendrían
+> sentido, y en las que allá existen y aquí se fueron al material opcional.
+
+Lo que este curso necesita y el de Go no:
+
+- **La frontera de Go es la versión del lenguaje; la de Python es el empaquetado.** Allá
+  "migrar a Go moderno" es una fase; aquí el equivalente no existe, y en su lugar el Bloque B
+  es donde vive la tesis.
+- **Go entrega un binario y se acabó la conversación.** Python no, y por eso hay una fase
+  entera —la 09— dedicada a **entregarle la herramienta a alguien que no es ingeniero**. Es la
+  fase que más se parece al trabajo real del lector después del curso, y no tiene ningún
+  análogo en un curso de Go.
+- **Python tiene dos registros web legítimos y Go no.** La fase 12 existe para que la
+  comparación se viva en vez de leerse.
+
+=== :526-532 ===
+#### 🎁 Fase 09 ⭐ — Entregarle la herramienta a Patricia
+
+**Registro:** herramienta · **Proyecto:** CLI
+
+**Propósito.** La fase que no existe en un curso de Go y que más se parece al trabajo real del
+lector: entregar software a alguien que no es ingeniero, en una máquina que no controlas.
+
+
+=== :816-820 ===
+| Comparación de gestores | Fuera del camino base: track opcional `pk` |
+| Diccionario Java ⇄ Python | 📖 repartido: cada fase trae el suyo, del tema que enseña |
+| `asyncio` de referencia | Fase 14, con su medición |
+| Convención de git y tags | `00-convencion-de-git-y-tags.md`, en la raíz del curso — no es apéndice, es un documento de encuadre que el lector sí lee, igual que en `go-for-java-devs` |
+
+
+=== tracks:425-432 ===
+
+## 📌 Lo que este documento deja abierto
+
+1. **Las mediciones van con `⏳` hasta que alguien las corra.** Es la misma decisión que tomó el
+   curso hermano de C#, y aquí pesa más porque tres de estas mediciones cuestan dinero real. Cada
+   sección deja la spec completa y el comando; el número entra después, y `BENCHMARKS.md` marca
+   cuáles están pendientes.
+2. **`src/` en las diecisiete.** Casi todo en estos tracks es código ejecutable, y una sección de
+
+=== alcance:183-188 ===
+
+- **El lector no necesita material de consulta de nivel básico.** Los apéndices de un curso de
+  Angular existen para el backend que nunca tocó RxJS. Aquí el equivalente no existe: quien
+  necesite la API de `pathlib` la lee en la documentación oficial, y el curso enlaza en vez de
+  transcribir.
+- **Un apéndice de herramientas envejece peor que una fase.** El ecosistema de empaquetado de

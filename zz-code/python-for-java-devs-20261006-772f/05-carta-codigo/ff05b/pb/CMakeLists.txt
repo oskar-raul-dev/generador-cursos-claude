@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.15...3.31)
+project(ema_pb LANGUAGES CXX)
+find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
+find_package(pybind11 CONFIG REQUIRED)
+pybind11_add_module(ema_pb ema_pb.cpp)
+install(TARGETS ema_pb LIBRARY DESTINATION .)

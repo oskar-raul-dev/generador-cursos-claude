@@ -1,0 +1,4 @@
+flowchart TD
+    C["CUSTOMER"] -- "PLACES" --> O["SALES-ORDER"]
+    O -- "CONTAINS" --> L["ORDER-LINE"]
+    P["PART"] -- "APPEARS-IN" --> L

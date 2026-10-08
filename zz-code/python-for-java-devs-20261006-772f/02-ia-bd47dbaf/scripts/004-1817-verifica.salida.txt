@@ -1,0 +1,14 @@
+=== una pregunta de cada tipo ===
+{"id": "p001", "texto": "¿El código 237101 está cubierto en el plan complementario de Prepagada Altamira?", "fragmento_correcto": 5, "tipo": "lexica"}
+{"id": "p002", "texto": "233101 en Prepagada Altamira: ¿cuánto es el copago?", "fragmento_correcto": 6, "tipo": "lexica"}
+{"id": "p003", "texto": "¿Prepagada Altamira pide autorización previa para el 992101?", "fragmento_correcto": 7, "tipo": "lexica"}
+{"id": "p004", "texto": "¿Prepagada Altamira cubre el corona libre de metal en el plan complementario?", "fragmento_correcto": 8, "tipo": "mixta"}
+{"id": "p005", "texto": "Un paciente del plan complementario de Prepagada Altamira necesita retiro de aparatología ortodóncica fija. ¿Qué le cobramos?", "fragmento_correcto": 9, "tipo": "mixta"}
+{"id": "p006", "texto": "Si a un paciente de Salud Meridiano le vamos a quitar los brackets, ¿eso lo paga él o la prepagada?", "fragmento_correcto": 10, "tipo": "semantica"}
+
+=== ¿el troceado de ia05 encuentra las cláusulas? ===
+8 documentos -> 47 fragmentos, 0 sin estructura
+
+primer fragmento:
+'CLÁUSULA 4.1 Exclusiones expresas\nEl procedimiento 992310 — control mensual de ortodoncia — no está cubierto por el póliza de salud oral y su valor será asumido'
+cláusula: Cláusula 4.1 — Exclusiones expresas

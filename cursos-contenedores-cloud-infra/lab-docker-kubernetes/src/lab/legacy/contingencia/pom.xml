@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Contingencia (SIGA Contingencia, "Asclepio"): el Siga reducido que opera en un solo sitio. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>co.coodrosan</groupId>
+  <artifactId>contingencia</artifactId>
+  <version>2016.4</version>
+  <packaging>war</packaging>
+
+  <properties>
+    <!-- El JDK de la imagen de GlassFish (a01), no el del resto del curso. -->
+    <maven.compiler.release>21</maven.compiler.release>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <failOnMissingWebXml>false</failOnMissingWebXml>
+  </properties>
+
+  <dependencies>
+    <!-- La plataforma la pone el servidor. -->
+    <dependency>
+      <groupId>jakarta.platform</groupId>
+      <artifactId>jakarta.jakartaee-api</artifactId>
+      <version>11.0.0</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- Los servicios SOAP: Jakarta EE 11 los dejó como opcionales, y GlassFish los sigue trayendo. -->
+    <dependency>
+      <groupId>jakarta.xml.ws</groupId>
+      <artifactId>jakarta.xml.ws-api</artifactId>
+      <version>4.0.3</version>
+      <scope>provided</scope>
+    </dependency>
+    <!-- GlassFish trae EclipseLink; el Siga siempre usó Hibernate, y lo lleva consigo. -->
+    <dependency>
+      <groupId>org.hibernate.orm</groupId>
+      <artifactId>hibernate-core</artifactId>
+      <version>7.4.11.Final</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>contingencia</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.16.0</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>3.5.1</version>
+      </plugin>
+    </plugins>
+  </build>
+</project>

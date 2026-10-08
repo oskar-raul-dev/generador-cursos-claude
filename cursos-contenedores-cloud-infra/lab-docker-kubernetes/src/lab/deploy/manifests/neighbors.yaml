@@ -1,0 +1,15 @@
+# Las direcciones de los vecinos (Fase 09). Nadie las usa todavía: la primera llamada entre servicios
+# es la venta de la Fase 16. Van con el nombre completo del Service, que resuelve desde cualquier
+# namespace; el nombre corto solo resuelve dentro de `apps` (incidente 07).
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: neighbors
+  namespace: apps
+  labels:
+    app.kubernetes.io/part-of: lab
+data:
+  CATALOG_URL: http://catalog.apps.svc.cluster.local:8080
+  INVENTORY_URL: http://inventory.apps.svc.cluster.local:8080
+  PRICING_URL: http://pricing.apps.svc.cluster.local:8080
+  REPLENISH_URL: http://replenish.apps.svc.cluster.local:8080

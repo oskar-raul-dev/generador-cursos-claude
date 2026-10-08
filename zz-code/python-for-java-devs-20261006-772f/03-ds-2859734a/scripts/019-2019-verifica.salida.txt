@@ -1,0 +1,7 @@
+2,000,000 filas · 3,857 ms
+--- referencia: el bucle honesto a 2M ---
+opción               mediana         p95       pico
+bucle             290.977 ms  290.977 ms    0.00 MB
+comprehension     547.330 ms  547.330 ms    0.00 MB
+vectorizado         9.524 ms    9.524 ms   16.00 MB
+vectorizado+conv  715.559 ms  715.559 ms   64.00 MB

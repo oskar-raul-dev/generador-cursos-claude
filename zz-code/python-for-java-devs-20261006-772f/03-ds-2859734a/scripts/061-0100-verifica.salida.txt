@@ -1,0 +1,13 @@
+src/13-integraciones/socio_falible.py:73:                received.clear(); processed_keys.clear(); attempts.clear()
+13-integraciones.md:600:                received.clear(); processed_keys.clear(); attempts.clear()
+=== ¿qué más del camino base falla con la config del curso? ===
+   1    --> src/ia04-embeddings-y-busqueda-semantica/generar_corpus.py:307:101
+   1    --> src/ia04-embeddings-y-busqueda-semantica/generar_corpus.py:308:101
+   1    --> src/ia05-normarag/bench_answers.py:100:101
+   1    --> src/ia08-produccion-y-el-veredicto/test_produccion.py:173:36
+   1    --> src/ia08-produccion-y-el-veredicto/test_produccion.py:173:37
+   1   --> src/13-integraciones/socio_falible.py:73:33
+   1   --> src/13-integraciones/socio_falible.py:73:57
+   1   --> src/ia01-el-modelo-de-acceso-de-un-llm/bench_models.py:18:1
+   1   --> src/ia01-el-modelo-de-acceso-de-un-llm/count_and_price.py:3:1
+   1   --> src/ia01-el-modelo-de-acceso-de-un-llm/llm.py:7:1

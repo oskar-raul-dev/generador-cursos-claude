@@ -1,0 +1,18 @@
+=== CADENA 'Que sigue' -> menciona la fase siguiente ===
+OK   00-ambiente-y-tooling.md -> Fase 01
+OK   01-sintaxis-y-valores.md -> Fase 02
+OK   02-structs-interfaces-composicion.md -> Fase 03
+OK   03-errores-paquetes-io.md -> Fase 04
+OK   04-testing-dobles-cobertura.md -> Fase 05
+OK   05-http-rest-stdlib.md -> Fase 06
+OK   06-concurrencia.md -> Fase 07
+OK   07-context-y-ciclo-de-vida.md -> Fase 08
+OK   08-migracion-a-go-moderno.md -> Fase 09
+OK   09-sql-postgres-sqlite.md -> Fase 10
+OK   10-clientes-http-y-apis-externas.md -> Fase 11
+OK   11-mongodb-y-modelado-documental.md -> Fase 12
+OK   12-cache-con-valkey.md -> Fase 13
+OK   13-lotes-scheduling-y-asincronia.md -> Fase 14
+OK   14-observabilidad-y-hardening.md -> Fase 15
+OK   15-rendimiento-y-profiling.md -> Fase 16
+OK   16-go-frente-a-spring-boot.md -> Fase 17

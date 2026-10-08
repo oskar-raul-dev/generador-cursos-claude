@@ -1,0 +1,21 @@
+# 🔥 inventory compilado de forma nativa con GraalVM (apéndice a08): un ejecutable, sin JVM en la imagen.
+# ── Etapa de build: GraalVM con native-image ──
+# ghcr.io/graalvm/native-image-community:25 (GraalVM CE 25.0.2)
+FROM ghcr.io/graalvm/native-image-community@sha256:0d936f32bb8acb5bc60c41b33e05f064d7a6aaf36b726538296c54949bd4a3c0 AS build
+WORKDIR /src
+COPY .mvn .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw -q -B dependency:go-offline
+COPY src src
+COPY --from=proto pricing src/main/proto/pricing
+# El perfil native de Spring Boot: el procesamiento AOT de Spring y native-image con los metadatos de alcance.
+RUN ./mvnw -B -Pnative -DskipTests native:compile
+# La carpeta de los datos (G1), vacía: distroless no tiene shell para crearla en la etapa final.
+RUN mkdir -p /out/data
+# ── Etapa final: glibc y nada más; el ejecutable trae su propio recolector y su propio "JRE" ──
+# gcr.io/distroless/base-debian13:nonroot
+FROM gcr.io/distroless/base-debian13@sha256:a0d70d6a97cd697d9362bc2aae4a6560dd65817e365d0043b07325a97975dc91
+COPY --from=build /src/target/inventory /inventory
+COPY --from=build --chown=65532:65532 /out/data /var/lib/inventory
+EXPOSE 8080
+CMD ["/inventory"]

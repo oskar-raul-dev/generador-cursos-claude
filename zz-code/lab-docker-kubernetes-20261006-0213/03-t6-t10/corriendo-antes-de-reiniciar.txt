@@ -1,0 +1,3 @@
+lab-worker
+lab-control-plane
+lab-worker2

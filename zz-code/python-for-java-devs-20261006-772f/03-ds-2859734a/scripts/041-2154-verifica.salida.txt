@@ -1,0 +1,8 @@
+intérprete solo                               26.3 ms
+import duckdb                                 84.7 ms
+import duckdb + connect                       85.3 ms
+import duckdb + connect + query trivial       87.3 ms
+import polars                                129.2 ms
+import polars + lazy trivial                 130.9 ms
+import pandas                                342.7 ms
+import pandas + frame trivial                328.9 ms

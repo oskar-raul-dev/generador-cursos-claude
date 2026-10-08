@@ -1,0 +1,30 @@
+# Lo regenerable no se versiona: es lo mismo que limpiar.py puede borrar.
+# Salidas de las pruebas (logs, copias para comparar): se rehacen corriendo la prueba
+salidas/
+node_modules/
+.pnpm-store/
+.next/
+.nuxt/
+.angular/
+.parcel-cache/
+target/
+.gradle/
+build/
+dist/
+out/
+.venv/
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+bin/
+obj/
+vendor/
+coverage/
+.nyc_output/
+# Secretos y archivos de entorno de las pruebas
+.env
+*.env

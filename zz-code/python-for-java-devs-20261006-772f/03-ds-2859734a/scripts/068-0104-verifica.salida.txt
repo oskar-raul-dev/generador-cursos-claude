@@ -1,0 +1,6 @@
+{"opcion": "tabla", "mediana_ms": 0.06741599645465612, "p95_ms": 0.0892080133780837, "pico_rss_mb": 22.626304, "salida_kb": 0.3515625, "lineas": 6, "frio_ms": 30.147625016979873}
+{"opcion": "matplotlib", "mediana_ms": 57.45420802850276, "p95_ms": 69.17729193810374, "pico_rss_mb": 112.689152, "salida_kb": 29.25, "lineas": 18, "frio_ms": 456.72724989708513}
+{"opcion": "plotly", "mediana_ms": 14.6286659874022, "p95_ms": 14.763792045414448, "pico_rss_mb": 111.362048, "salida_kb": 9.443359375, "lineas": 15, "frio_ms": 192.7440830040723}
+{"opcion": "altair", "mediana_ms": 9.670792031101882, "p95_ms": 11.662499979138374, "pico_rss_mb": 107.741184, "salida_kb": 2.29296875, "lineas": 13, "frio_ms": 274.59379204083234}
+--- plotly con el JS embebido (sin CDN) ---
+  4.10 MB

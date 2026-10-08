@@ -1,0 +1,2 @@
+Command did not complete within its 120s timeout and was moved to the background (ID: bwgxt1nji). Output is being written to: /private/tmp/claude-501/-Users-oskar-Developer-Learning-courses-ia-generated/2859734a-d7e6-4986-b771-4890bf56e42b/tasks/bwgxt1nji.output. You will be notified when it completes. To check interim output, use Read on that file path.
+Session cwd remains /Users/oskar/Developer/Learning/courses-ia-generated/cursos-algoritmos-lenguajes/python-for-java-devs; directory changes made by the backgrounded command do not apply to subsequent commands.

@@ -1,0 +1,11 @@
+=== lint ===
+All checks passed!
+  ds01-numpy-y-el-modelo-vectorizado            OK
+  ds02-pandas                                   OK
+  ds03-polars-y-el-modelo-lazy                  OK
+  ds04-embudo                                   OK
+  ds05-visualizacion                            OK
+  ds06-notebooks-y-reproducibilidad             OK
+  ds07-scikit-learn                             OK
+  ds08-ausentismo                               OK
+  ds09-servir-el-modelo                         OK

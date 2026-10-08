@@ -1,0 +1,40 @@
+# Lo que es de pricing y no cambia por perfil ni por cadena (Fase 13). Lo que sí cambia va en los
+# valores del chart paraguas.
+component: backend
+replicaCount: 1
+image:
+  repository: lab/pricing
+  tag: ""                       # lo pone task deploy desde STEP_TAGS
+migrate:
+  command: ["/pricing", "migrate"]
+# La página le pide los precios desde el navegador (G5): la puerta autoriza su origen.
+route:
+  cors:
+    allowMethods: [GET]
+# El tope regulado (D23, Fase 11): encendido. La tabla de topes es dato del sistema, no de pricing: vive
+# en los valores del chart paraguas, y la cambia cada circular.
+regulatedCap:
+  enabled: true
+  caps: {}
+
+# Las sondas (Fase 15): la readiness pregunta por la base (G4) y decide el tráfico; la liveness pregunta
+# solo por el proceso y decide la vida. pricing arranca en milisegundos: no necesita startupProbe.
+probes:
+  readiness: {path: /health/ready, periodSeconds: 5, timeoutSeconds: 2, failureThreshold: 2}
+  liveness: {path: /health/live, periodSeconds: 10, timeoutSeconds: 2, failureThreshold: 3}
+# Recursos (Fase 15), medidos: 6 MiB en reposo y 13 MiB con veinte usuarios. Con 1.500 peticiones por
+# segundo llegó a 64 MiB, y con ese límite murió OOMKilled antes de que el HPA reaccionara (Fase 16).
+# Sin límite de CPU.
+resources:
+  requests: {cpu: 50m, memory: 32Mi}
+  limits: {memory: 128Mi}
+
+# El ciclo de vida (Fase 16): el rollout sin bajar capacidad, el plazo para declararlo atascado, la pausa
+# antes de SIGTERM, y el autoescalado, apagado por defecto (el HPA es dueño de las réplicas cuando existe).
+rollout: {maxSurge: 1, maxUnavailable: 0, progressDeadlineSeconds: 120}
+shutdown: {preStopSeconds: 5}
+autoscaling: {enabled: false, minReplicas: 1, maxReplicas: 4, cpuPercent: 70}
+
+# El usuario con que corre (Fase 20): el número, no el nombre que dice la imagen. Es el mismo usuario.
+securityContext:
+  runAsUser: 65532

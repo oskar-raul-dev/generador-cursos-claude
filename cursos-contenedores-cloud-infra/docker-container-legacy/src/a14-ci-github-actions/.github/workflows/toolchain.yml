@@ -1,0 +1,132 @@
+name: toolchain
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+
+env:
+  IMAGE_NAME: ghcr.io/${{ github.repository }}/legacy-node-toolchain
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      # construye SIN caché: comprueba que el repositorio está completo (F12 §11)
+      - name: Build desde cero
+        run: |
+          docker buildx build \
+            --platform linux/amd64 \
+            --no-cache \
+            --build-arg IMAGE_VERSION="${GITHUB_REF_NAME}" \
+            --build-arg VCS_REF="${GITHUB_SHA::7}" \
+            --build-arg BUILD_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
+            --load \
+            -t legacy-node-toolchain:ci \
+            .
+
+      - name: Guardar la imagen para los jobs siguientes
+        run: docker save legacy-node-toolchain:ci | gzip > /tmp/image.tar.gz
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: image
+          path: /tmp/image.tar.gz
+          retention-days: 1
+
+  validate:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false                      # ⚠️ queremos la matriz ENTERA, no la primera rota
+      matrix:
+        node: ['10.24.1', '12.22.12', '14.21.3', '16.20.2']
+        fixture: ['00-node-smoke', '10-vue2-min', '30-react16-min']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with: { name: image, path: /tmp }
+
+      - run: gunzip -c /tmp/image.tar.gz | docker load
+
+      - name: Volumen limpio por combinación
+        run: |
+          VOL="ci-${{ matrix.fixture }}-node${{ matrix.node }}-amd64"
+          docker volume rm "$VOL" 2>/dev/null || true
+          docker volume create "$VOL"
+          echo "VOL=$VOL" >> "$GITHUB_ENV"
+
+      - name: Protocolo de validación
+        run: |
+          set -o pipefail                   # ← §3.1
+          run_step() {
+            local etapa="$1"; shift
+            docker run --rm --platform linux/amd64 \
+              -e "NODE_VERSION=${{ matrix.node }}" \
+              --mount "type=bind,src=$PWD/src/11-validar-tu-proyecto/${{ matrix.fixture }},dst=/workspace" \
+              --mount "type=volume,src=${VOL},dst=/workspace/node_modules" \
+              legacy-node-toolchain:ci "$@" 2>&1 | tee "evidencia/${etapa}.log"
+            local code=${PIPESTATUS[0]}     # ← §3.1: el de docker, no el de tee
+            echo "${etapa}=${code}" >> evidencia/exit-codes.txt
+            return $code
+          }
+
+          mkdir -p evidencia
+          run_step install npm ci || echo "install falló"
+          run_step build npm run build || echo "build falló"
+          cat evidencia/exit-codes.txt
+
+      - uses: actions/upload-artifact@v4
+        if: always()                        # ← §3.2: la evidencia del fallo es la que importa
+        with:
+          name: evidencia-${{ matrix.fixture }}-node${{ matrix.node }}
+          path: evidencia/
+
+  publish:
+    needs: [build, validate]                # ← solo si las DOS pasaron
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write                       # ← para la firma keyless de F29 §7
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-qemu-action@v3    # emulación para construir arm64
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha,prefix=git-
+
+      - name: Build y push multi-plataforma
+        id: push
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          sbom: true                        # F29 §4.5
+          provenance: mode=max              # F29 §6
+
+      - name: Firmar por digest
+        run: cosign sign --yes "${IMAGE_NAME}@${{ steps.push.outputs.digest }}"

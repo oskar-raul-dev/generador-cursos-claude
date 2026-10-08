@@ -1,0 +1,25 @@
+# .NET
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
+*.user
+*.suo
+.vs/
+artifacts/
+
+# Perfilado y diagnóstico
+*.diagsession
+*.psess
+*.vspx
+*.nettrace
+*.speedscope.json
+BenchmarkDotNet.Artifacts/
+
+# Secretos: nunca, ni de desarrollo (F16)
+appsettings.*.local.json
+*.env
+.env
+
+# Datos generados: se versiona el generador y su semilla, no su salida (F07)
+src/legacy/Sige.Database/datos-generados/

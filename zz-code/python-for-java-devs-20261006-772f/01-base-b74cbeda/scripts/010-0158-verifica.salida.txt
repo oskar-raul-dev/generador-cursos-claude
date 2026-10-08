@@ -1,0 +1,3 @@
+estilo_java.py       líneas  54 · sentencias  53 · clases 7 · funciones 15
+estilo_python.py     líneas  22 · sentencias  19 · clases 0 · funciones 6
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

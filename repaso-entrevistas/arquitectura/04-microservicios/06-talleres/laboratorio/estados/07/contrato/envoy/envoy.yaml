@@ -1,0 +1,152 @@
+# api-gateway del bloque 06 (taller 02 en adelante). Solo configuración: ningún código.
+# Escucha en :8080 dentro del contenedor (28080 en el host); consola de administración en :9901 (29901).
+admin:
+  address: { socket_address: { address: 0.0.0.0, port_value: 9901 } }
+
+static_resources:
+  listeners:
+    - name: api
+      address: { socket_address: { address: 0.0.0.0, port_value: 8080 } }
+      filter_chains:
+        - filters:
+            - name: envoy.filters.network.http_connection_manager
+              typed_config:
+                "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+                stat_prefix: api
+                # taller 07: el gateway abre la traza (o continúa la que traiga el cliente en
+                # traceparent), la propaga al servicio y manda su span al collector por OTLP/gRPC.
+                tracing:
+                  provider:
+                    name: envoy.tracers.opentelemetry
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.config.trace.v3.OpenTelemetryConfig
+                      grpc_service:
+                        envoy_grpc: { cluster_name: otel_collector }
+                        timeout: 1s
+                      service_name: envoy
+                  random_sampling: { value: 100 }   # todas: en el laboratorio no se muestrea
+                # Las respuestas que genera Envoy (un 401 del filtro JWT, un 503 sin upstream) salen por
+                # defecto en texto plano ("Jwt is missing"). El contrato promete problem+json con un
+                # `code` estable: el gateway también lo cumple. Solo afecta a respuestas LOCALES; lo que
+                # responde un servicio pasa tal cual.
+                local_reply_config:
+                  mappers:
+                    - filter:
+                        status_code_filter:
+                          comparison: { op: EQ, value: { default_value: 401, runtime_key: local_reply_401 } }
+                      body_format_override:
+                        json_format: { type: "about:blank", title: "Unauthenticated", status: 401, code: "UNAUTHENTICATED", instance: "%REQ(:PATH)%" }
+                        content_type: "application/problem+json"
+                    - filter:
+                        status_code_filter:
+                          comparison: { op: EQ, value: { default_value: 504, runtime_key: local_reply_504 } }
+                      body_format_override:
+                        json_format: { type: "about:blank", title: "Gateway timeout", status: 504, code: "GATEWAY_TIMEOUT", detail: "%RESPONSE_FLAGS%", instance: "%REQ(:PATH)%" }
+                        content_type: "application/problem+json"
+                    - filter:
+                        status_code_filter:
+                          comparison: { op: EQ, value: { default_value: 503, runtime_key: local_reply_503 } }
+                      body_format_override:
+                        json_format: { type: "about:blank", title: "Service unavailable", status: 503, code: "SERVICE_UNAVAILABLE", detail: "%RESPONSE_FLAGS%", instance: "%REQ(:PATH)%" }
+                        content_type: "application/problem+json"
+                # una línea por petición: método, ruta, código, duración, a qué instancia fue (- si respondió el propio Envoy) y por qué
+                access_log:
+                  - name: envoy.access_loggers.stdout
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.access_loggers.stream.v3.StdoutAccessLog
+                      log_format:
+                        text_format_source:
+                          inline_string: "%START_TIME(%H:%M:%S)% %REQ(:METHOD)% %REQ(:PATH)% → %RESPONSE_CODE% %DURATION%ms upstream=%UPSTREAM_HOST% attempts=%UPSTREAM_REQUEST_ATTEMPT_COUNT% %RESPONSE_FLAGS% %RESPONSE_CODE_DETAILS% trace=%TRACE_ID%\n"
+                route_config:
+                  name: routes
+                  virtual_hosts:
+                    - name: api
+                      domains: ["*"]
+                      routes:
+                        # taller 04: pedidos, pagos y notificaciones son de orders. Rutas más
+                        # específicas que la general, y por eso van ANTES: Envoy usa la primera que casa.
+                        - match: { prefix: "/api/v1/orders" }
+                          route:
+                            cluster: orders
+                            timeout: 10s
+                            # taller 05: el gateway reintenta SOLO lo que no llegó al servicio (no se pudo
+                            # conectar, o el servicio rechazó el stream antes de procesarlo). Reintentar un
+                            # 5xx aquí multiplica los reintentos que orders ya hace (lab.py envoy-retries).
+                            retry_policy: { retry_on: "connect-failure,refused-stream", num_retries: 1 }
+                        - match: { prefix: "/api/v1/notifications" }
+                          route: { cluster: orders, timeout: 10s }
+                        # strangler fig, día uno: el 100 % al monolito. Cada extracción añade una ruta
+                        # más específica ENCIMA de esta, y el cliente no se entera.
+                        - match: { prefix: "/" }
+                          route: { cluster: monolith, timeout: 10s }
+                http_filters:
+                  # El JWT se valida en el borde (decisión A3): una petición sin token válido no llega a
+                  # ningún servicio. El token sigue viajando (forward) y su contenido va además en
+                  # x-jwt-payload, para los servicios que confíen en el gateway.
+                  - name: envoy.filters.http.jwt_authn
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.jwt_authn.v3.JwtAuthentication
+                      providers:
+                        ms_monolith:
+                          local_jwks:
+                            # la misma clave HS256 que firma el monolito, como JWK simétrica (base64url del secreto)
+                            inline_string: '{"keys":[{"kty":"oct","alg":"HS256","k":"bXMtbGFiLWRldi1zZWNyZXQtY2hhbmdlLW1lLTAxMjM0NTY3ODk"}]}'
+                          forward: true
+                          forward_payload_header: x-jwt-payload
+                      rules:
+                        - match: { prefix: "/health" }
+                        - match: { path: "/api/v1/auth/login" }
+                        - match: { prefix: "/api/" }
+                          requires: { provider_name: ms_monolith }
+                  - name: envoy.filters.http.router
+                    typed_config:
+                      "@type": type.googleapis.com/envoy.extensions.filters.http.router.v3.Router
+
+  clusters:
+    - name: monolith
+      type: STRICT_DNS
+      # host.docker.internal resuelve a IPv4 e IPv6; por defecto Envoy prefiere la v6, y el servicio del
+      # host no es alcanzable por ahí desde el contenedor (06/02 §9): solo IPv4
+      dns_lookup_family: V4_ONLY
+      connect_timeout: 1s
+      load_assignment:
+        cluster_name: monolith
+        endpoints:
+          - lb_endpoints:
+              - endpoint: { address: { socket_address: { address: host.docker.internal, port_value: 28081 } } }
+    - name: orders
+      type: STRICT_DNS
+      dns_lookup_family: V4_ONLY
+      connect_timeout: 1s
+      # taller 05: chequeo activo contra la READINESS de orders. Una instancia que no está lista deja de
+      # recibir tráfico; por eso la readiness no puede depender de lo que no es suyo.
+      health_checks:
+        - timeout: 1s
+          interval: 2s
+          no_traffic_interval: 2s      # por defecto 60 s mientras el clúster no ha tenido tráfico (06/05 §10)
+          unhealthy_threshold: 2
+          healthy_threshold: 1
+          http_health_check: { path: /actuator/health/readiness }
+      # Sin esto, si NINGUNA instancia está sana Envoy entra en "modo pánico" y enruta a todas igualmente
+      # (umbral por defecto: 50 % sanas). Con 0, una instancia no lista deja de recibir tráfico, como
+      # hace un Service de Kubernetes con un pod que no pasa la readiness.
+      common_lb_config:
+        healthy_panic_threshold: { value: 0 }
+      load_assignment:
+        cluster_name: orders
+        endpoints:
+          - lb_endpoints:
+              - endpoint: { address: { socket_address: { address: host.docker.internal, port_value: 28082 } } }
+    # taller 07: el collector, dentro de la red de Compose. OTLP/gRPC exige HTTP/2 hacia él.
+    - name: otel_collector
+      type: STRICT_DNS
+      connect_timeout: 1s
+      typed_extension_protocol_options:
+        envoy.extensions.upstreams.http.v3.HttpProtocolOptions:
+          "@type": type.googleapis.com/envoy.extensions.upstreams.http.v3.HttpProtocolOptions
+          explicit_http_config: { http2_protocol_options: {} }
+      load_assignment:
+        cluster_name: otel_collector
+        endpoints:
+          - lb_endpoints:
+              - endpoint: { address: { socket_address: { address: ms-otel-collector, port_value: 4317 } } }

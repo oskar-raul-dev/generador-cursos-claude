@@ -1,0 +1,55 @@
+=== 7. Ejercicios: declarado vs real, dentro de la banda 20-25 ===
+  ❌ 00-ambiente-visual-studio-y-ecosistema.md decl= real=25
+  ❌ 01-tipos-valor-y-referencia.md decl= real=25
+  ❌ 02-nullable-y-pattern-matching.md decl= real=25
+  ❌ 03-linq-y-evaluacion-diferida.md decl= real=25
+  ❌ 04-ceremonia-delegados-y-recursos.md decl= real=25
+  ❌ 05-async-await-y-cancelacion.md decl= real=25
+  ❌ 06-memoria-span-y-flujo.md decl= real=25
+  ❌ 07-el-sistema-que-heredas.md decl= real=25
+  ❌ 08-caracterizar-y-probar.md decl= real=25
+  ❌ 09-acceso-a-datos-esquema-hostil.md decl= real=25
+  ❌ 10-strangler-fig.md decl= real=25
+  ❌ 11-migrar-el-runtime.md decl= real=25
+  ❌ 12-winforms-en-net-10.md decl= real=25
+  ❌ 13-wpf-y-mvvm.md decl= real=25
+  ❌ 14-veredicto-del-escritorio.md decl= real=25
+  ❌ 15-aspnet-core-minimal-apis.md decl= real=25
+  ❌ 16-identidad-secretos-y-configuracion.md decl= real=25
+  ❌ 17-trabajo-de-fondo.md decl= real=25
+  ❌ 18-blazor-server-wasm-mvc.md decl= real=25
+  ❌ 19-observabilidad-y-operacion.md decl= real=24
+  ❌ 20-contenedor-y-la-factura.md decl= real=25
+  ❌ 21-datos-y-onnx.md decl= real=24
+  ❌ 22-ia-aplicada.md decl= real=25
+  ❌ 23-el-duelo.md decl= real=24
+  ❌ 24-veredicto-y-defensa.md decl= real=22
+  ✅ las 25 coinciden y caen en 20-25
+
+=== 8. Tags ===
+  ✅ fase-NN y mini-NN en las 25
+
+=== 9. Cifras del dominio ===
+  24 340 formularios
+  17 90 equipos
+   7 700 procedimientos
+   5 690 procedimientos
+   4 339 formularios
+   2 18.000 títulos
+   2 11.000 títulos
+   1 8 títulos
+   1 6 procedimientos
+   1 340 empleados
+  -- años de contratos --
+  11 47 años
+   2 cuarenta y siete años
+   2 Cuarenta y siete años
+
+=== 10. Conteos escritos ===
+   1 veinticinco documentos
+  13 veinticinco fases
+   1 veinticinco miniproyectos
+   7 veinticuatro entradas
+  14 veinticuatro fases
+   5 veinticuatro mediciones
+   3 veinticuatro tablas

@@ -1,0 +1,29 @@
+1:# 🏷️ Convención de git y tags
+2:## Python para desarrolladores Java senior
+9:## 📌 Por qué hay un repositorio
+28:## 🗂️ El repositorio
+37:# El entorno virtual NUNCA se versiona: es una carpeta con rutas absolutas
+38:# de tu máquina adentro, y en otra máquina no sirve para nada.
+50:# Datos de Áurea: entran generados, no versionados (el generador sí se versiona).
+70:## ✍️ Commits
+89:## 🏷️ Tags
+94:### `fase-NN` — cierra la fase
+107:### `mini-NN` — cierra el miniproyecto
+121:### Ramas
+130:## 🔧 Los tres usos, con su comando
+158:## ✅ El cierre de fase, en cuatro líneas
+---
+     168 00-convencion-de-git-y-tags.md
+=== cuántas secciones prometen esa convención ===
+ia04-embeddings-y-busqueda-semantica.md:1
+ia01-el-modelo-de-acceso-de-un-llm.md:1
+ia06-evaluacion.md:1
+ia07-recepcion-asistida.md:1
+ia05-normarag.md:1
+ds06-notebooks-y-reproducibilidad.md:1
+ds03-polars-y-el-modelo-lazy.md:1
+ds01-numpy-y-el-modelo-vectorizado.md:1
+ds07-scikit-learn.md:1
+ds05-visualizacion.md:1
+ds08-ausentismo.md:1
+ds09-servir-el-modelo.md:1

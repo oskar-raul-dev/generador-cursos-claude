@@ -1,0 +1,5 @@
+nada     Installed 7 packages in 32ms
+   25.0 ms de arranque (proceso + import)
+pandas     351.9 ms de arranque (proceso + import)
+polars     132.8 ms de arranque (proceso + import)
+duckdb      80.8 ms de arranque (proceso + import)

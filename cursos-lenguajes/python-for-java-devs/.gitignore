@@ -1,0 +1,23 @@
+# Lo que generan los scripts del curso. Cada README de `src/` lo dice: los archivos
+# generados no se versionan — se regeneran con su semilla fija, que es el punto.
+data/
+modelos/
+salida/
+cuadernos/
+resultado.json
+*.png
+*.html
+*.parquet
+*.pkl
+*.onnx
+
+# El entorno y las cachés de las herramientas.
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# El arnés de la Fase 02 se copia a la carpeta de la sección que lo use.
+src/ds*/bench.py

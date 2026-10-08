@@ -1,0 +1,15 @@
+# Grafana en el namespace observability (Fase 17). Lo enciende observability.dashboards.enabled.
+component: observability
+# grafana/grafana:13.2.3
+image: grafana/grafana@sha256:b28bae15e219c998fb0e0424ed724930cc61b1f61fb404d47c862f9a23f9e572
+host: grafana.localhost
+# Sin usuario: el laboratorio entra como anónimo con rol de Editor (puede explorar y editar, no
+# administrar). En un cluster compartido, esto no se hace (Fase 20).
+anonymousRole: Editor
+resources:
+  requests: {cpu: 50m, memory: 192Mi}
+  limits: {memory: 512Mi}
+# Las fuentes de datos además de Prometheus. task obs:on -- logs enciende la de Loki (Fase 18).
+datasources:
+  loki: false
+  tempo: false

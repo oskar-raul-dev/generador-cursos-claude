@@ -1,0 +1,12 @@
+--- Fase 17: cómo se llama su diccionario ---
+1238:### 📖 El diccionario completo
+
+--- Fase 15: busca 'funciona igual' ---
+
+--- Encabezados de §4 en la fase 15 ---
+3:### El método, antes que las herramientas
+22:### `testing.B` bien usado
+82:### `benchstat`: por qué una corrida no es un resultado
+128:### 🪞 Tu instinto de Java dice… y esta vez se equivoca
+216:### Escape analysis: la herramienta que Java no te da
+280:### `pprof`: cinco perfiles, cinco preguntas

@@ -1,0 +1,5 @@
+apiVersion: v2
+name: prometheus
+description: Prometheus del laboratorio (Fase 17), con su scrape_config escrito a mano
+type: application
+version: 0.17.0

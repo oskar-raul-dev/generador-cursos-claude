@@ -1,0 +1,101 @@
+{
+  "date": "2026-10-04T18:53:58",
+  "rate": 20,
+  "pricing_replicas": 3,
+  "modes": {
+    "http": [
+      {
+        "calls": {
+          "pricing-d598f5466-dtbwf": 601,
+          "pricing-d598f5466-lv7j5": 0,
+          "pricing-d598f5466-wml8l": 0
+        },
+        "share": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "med_ms": 23.4375,
+        "p95_ms": 41.548249999999996,
+        "failed": 0
+      },
+      {
+        "calls": {
+          "pricing-d598f5466-dtbwf": 1,
+          "pricing-d598f5466-lv7j5": 600,
+          "pricing-d598f5466-wml8l": 0
+        },
+        "share": [
+          0.998,
+          0.002,
+          0.0
+        ],
+        "med_ms": 23.98,
+        "p95_ms": 39.443,
+        "failed": 0
+      },
+      {
+        "calls": {
+          "pricing-d598f5466-dtbwf": 0,
+          "pricing-d598f5466-lv7j5": 600,
+          "pricing-d598f5466-wml8l": 0
+        },
+        "share": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "med_ms": 23.679,
+        "p95_ms": 41.323,
+        "failed": 0
+      }
+    ],
+    "service+age": [
+      {
+        "calls": {
+          "pricing-f9d6cf87-7h92g": 0,
+          "pricing-f9d6cf87-ndjx7": 600,
+          "pricing-f9d6cf87-qmb75": 0
+        },
+        "share": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "med_ms": 24.731,
+        "p95_ms": 43.654,
+        "failed": 0
+      },
+      {
+        "calls": {
+          "pricing-f9d6cf87-7h92g": 601,
+          "pricing-f9d6cf87-ndjx7": 0,
+          "pricing-f9d6cf87-qmb75": 0
+        },
+        "share": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "med_ms": 25.747,
+        "p95_ms": 44.00699999999999,
+        "failed": 0
+      },
+      {
+        "calls": {
+          "pricing-f9d6cf87-7h92g": 183,
+          "pricing-f9d6cf87-ndjx7": 418,
+          "pricing-f9d6cf87-qmb75": 0
+        },
+        "share": [
+          0.696,
+          0.304,
+          0.0
+        ],
+        "med_ms": 24.060000000000002,
+        "p95_ms": 40.91854999999999,
+        "failed": 0
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "engine": "podman",
+  "profile": "servicios",
+  "date": "2026-10-03T04:24:05",
+  "before": {
+    "total_mib": 3886,
+    "used_mib": 618
+  },
+  "ready_seconds": 6.7,
+  "after": {
+    "total_mib": 3886,
+    "used_mib": 1016
+  },
+  "containers_mib": {
+    "lab-pricing-1": 1.7,
+    "lab-catalog-1": 55.5,
+    "lab-replenish-1": 42.9,
+    "lab-storefront-1": 90.1,
+    "lab-inventory-1": 211.5
+  }
+}

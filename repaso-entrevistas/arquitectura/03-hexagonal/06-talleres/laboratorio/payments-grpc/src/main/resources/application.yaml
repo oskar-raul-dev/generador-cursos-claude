@@ -1,0 +1,9 @@
+# Servidor de pagos del taller 10. Puertos de §11: gRPC 19090, HTTP de fallos 19091.
+spring:
+  application:
+    name: hex-payments-grpc
+  grpc:
+    server:
+      port: 19090
+server:
+  port: 19091

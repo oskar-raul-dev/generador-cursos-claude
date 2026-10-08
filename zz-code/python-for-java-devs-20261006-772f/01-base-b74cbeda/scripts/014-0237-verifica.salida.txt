@@ -1,0 +1,6 @@
+SyntaxError: 'break', 'continue' and 'return' cannot appear in an except* block
+--- ¿y el acceso a los atributos del subgrupo? ---
+tipo de g: ExceptionGroup
+g.exceptions: ['E', 'E']
+acceso directo g.n: NO EXISTE
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

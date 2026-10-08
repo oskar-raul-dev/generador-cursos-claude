@@ -1,0 +1,19 @@
+=== REFERENCIAS CRUZADAS: 'Fase NN' citada desde cada archivo ===
+00-ambiente-y-tooling.md               propia=00  cita: 00 01 02 03 04 07 08 09 10 14 16 
+01-sintaxis-y-valores.md               propia=01  cita: 00 01 02 03 04 06 08 09 11 15 
+02-structs-interfaces-composicion.md   propia=02  cita: 01 02 03 04 05 06 08 09 10 13 14 15 16 
+03-errores-paquetes-io.md              propia=03  cita: 00 01 02 03 04 05 06 08 10 13 14 15 
+04-testing-dobles-cobertura.md         propia=04  cita: 00 01 02 03 04 05 06 07 08 09 10 12 14 15 
+05-http-rest-stdlib.md                 propia=05  cita: 00 02 03 04 05 06 07 08 09 10 12 13 14 15 
+06-concurrencia.md                     propia=06  cita: 00 01 04 05 06 07 08 09 13 15 16 
+07-context-y-ciclo-de-vida.md          propia=07  cita: 00 05 06 07 08 09 10 13 14 15 16 
+08-migracion-a-go-moderno.md           propia=08  cita: 00 01 02 03 04 05 06 07 08 09 13 14 15 
+09-sql-postgres-sqlite.md              propia=09  cita: 00 01 02 03 04 06 07 08 09 10 11 12 13 14 16 
+10-clientes-http-y-apis-externas.md    propia=10  cita: 00 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 
+11-mongodb-y-modelado-documental.md    propia=11  cita: 00 03 08 09 10 11 12 13 14 16 
+12-cache-con-valkey.md                 propia=12  cita: 05 09 10 11 12 13 14 
+13-lotes-scheduling-y-asincronia.md    propia=13  cita: 00 01 02 03 05 06 07 08 09 10 11 12 13 14 15 16 
+14-observabilidad-y-hardening.md       propia=14  cita: 00 02 03 04 05 07 09 10 12 13 14 15 16 
+15-rendimiento-y-profiling.md          propia=15  cita: 01 02 05 07 08 09 10 12 13 14 15 16 
+16-go-frente-a-spring-boot.md          propia=16  cita: 01 05 07 09 10 11 13 14 15 16 17 
+17-capstone.md                         propia=17  cita: 00 01 02 03 04 05 06 07 08 09 10 13 14 15 16 17

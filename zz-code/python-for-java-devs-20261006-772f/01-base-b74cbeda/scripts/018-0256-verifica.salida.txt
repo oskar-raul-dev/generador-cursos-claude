@@ -1,0 +1,7 @@
+Julián (superusuario) ve: 40 planes · status 200
+Édgar (Suba) ve: 20 planes · status 200
+Édgar abre un plan de Centro -> 302
+Édgar abre uno de Suba -> 200 · ¿aparece la nota clínica? False
+Julián abre el mismo -> ¿ve la nota? True
+accesos auditados: 3
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

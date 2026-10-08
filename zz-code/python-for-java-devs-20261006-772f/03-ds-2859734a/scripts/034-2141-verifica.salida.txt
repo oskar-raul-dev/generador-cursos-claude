@@ -1,0 +1,43 @@
+comprehension       0.196 ms    0.196 ms    0.00 MB
+vectorizado         0.007 ms    0.009 ms    0.01 MB
+vectorizado+conv    0.276 ms    0.278 ms    0.03 MB
+
+--- 10,000 filas · 5 repeticiones ---
+opción               mediana         p95       pico
+bucle               1.286 ms    1.362 ms    0.00 MB
+comprehension       1.997 ms    2.221 ms    0.00 MB
+vectorizado         0.049 ms    0.050 ms    0.08 MB
+vectorizado+conv    2.840 ms    3.189 ms    0.32 MB
+
+--- 100,000 filas · 5 repeticiones ---
+opción               mediana         p95       pico
+bucle              14.806 ms   14.848 ms    0.00 MB
+comprehension      29.917 ms   30.485 ms    0.00 MB
+vectorizado         0.526 ms    0.571 ms    0.80 MB
+vectorizado+conv   38.183 ms   39.624 ms    3.20 MB
+
+--- 1,000,000 filas · 5 repeticiones ---
+opción               mediana         p95       pico
+bucle             150.047 ms  150.814 ms    0.00 MB
+comprehension     273.016 ms  277.733 ms    0.00 MB
+vectorizado         4.862 ms    5.075 ms    8.00 MB
+vectorizado+conv  395.254 ms  395.965 ms   32.00 MB
+
+--- 5,000,000 filas · 3 repeticiones ---
+opción               mediana         p95       pico
+bucle             786.550 ms  786.550 ms    0.00 MB
+comprehension    1387.315 ms 1387.315 ms    0.00 MB
+vectorizado        24.204 ms   24.204 ms   40.00 MB
+vectorizado+conv 1864.604 ms 1864.604 ms  160.00 MB
+
+### ejercicio 16
+2,000,000 filas · 3,942 ms
+### ds02
+variante             mediana         p95    pico RSS     entrada
+solo importar         0.0 ms      0.0 ms     76.9 MB      0.0 MB
+unir+apply          286.7 ms    295.8 ms    131.2 MB     17.3 MB
+unir+mascara         18.4 ms     19.6 ms    117.5 MB     17.3 MB
+agregar+unir         11.1 ms     11.5 ms    107.3 MB     10.4 MB
+
+La fila «solo importar» es la línea base: 76.9 MB los gasta pandas por existir, y hay que descontarlos de las otras tres.
+81,274 cuotas de entrada · 20 filas de salida · 5 repeticiones por variante

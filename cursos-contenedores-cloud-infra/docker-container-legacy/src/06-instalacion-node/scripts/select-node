@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+version="${1:-${NODE_VERSION:-}}"
+
+if [[ -z "${version}" ]]; then
+    echo "ERROR: debes indicar una versión de Node." >&2
+    echo "Uso: select-node <version>" >&2
+    exit 2
+fi
+
+node_home="/opt/node/${version}"
+
+# si la versión no existe, fallamos temprano y con un mensaje que ayude
+if [[ ! -x "${node_home}/bin/node" ]]; then
+    echo "ERROR: Node ${version} no está instalado en esta imagen." >&2
+    echo "Versiones disponibles:" >&2
+    find /opt/node -mindepth 1 -maxdepth 1 -type d -printf '  - %f\n' | sort >&2
+    exit 3
+fi
+
+ln -sfn "${node_home}/bin/node" /usr/local/bin/node
+
+# npx no existe en todas las generaciones: si falta, retiramos el enlace viejo
+for command in npm npx; do
+    if [[ -e "${node_home}/bin/${command}" ]]; then
+        ln -sfn "${node_home}/bin/${command}" "/usr/local/bin/${command}"
+    else
+        rm -f "/usr/local/bin/${command}"
+    fi
+done
+
+echo "Node activo: ${version}"
+node --version
+npm --version
+
+if command -v npx >/dev/null 2>&1; then
+    npx --version
+fi

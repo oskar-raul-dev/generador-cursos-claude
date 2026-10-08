@@ -1,0 +1,24 @@
+SIM113 Use `enumerate()` for index variable `visits` in `for` loop
+   --> src/ds07-scikit-learn/test_generar_ausentismo.py:109:13
+    |
+107 |             assert int(row["citas_previas"]) == visits, patient_id
+108 |             assert int(row["inasistencias_previas"]) == misses, patient_id
+109 |             visits += 1
+    |             ^^^^^^^^^^^
+110 |             misses += 1 - int(row["asistio"])
+    |
+
+Found 4 errors (3 fixed, 1 remaining).
+--- SIM113 restante ---
+SIM113 Use `enumerate()` for index variable `visits` in `for` loop
+   --> src/ds07-scikit-learn/test_generar_ausentismo.py:109:13
+    |
+107 |             assert int(row["citas_previas"]) == visits, patient_id
+108 |             assert int(row["inasistencias_previas"]) == misses, patient_id
+109 |             visits += 1
+    |             ^^^^^^^^^^^
+110 |             misses += 1 - int(row["asistio"])
+    |
+
+Found 1 error.
+[This command modified 3 files you've previously read: src/ds07-scikit-learn/test_generar_ausentismo.py, src/ds07-scikit-learn/generar_ausentismo.py, src/ds01-numpy-y-el-modelo-vectorizado/test_generar_embudo.py. Call Read before editing.]

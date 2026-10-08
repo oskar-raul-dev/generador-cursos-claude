@@ -1,0 +1,103 @@
+# Entorno común del bloque 06 · Talleres del corpus de microservicios.
+# Nombres, puertos y credenciales: §14 de la guía. Versiones verificadas el 2026-09-29 en Docker Hub
+# y en GitHub Releases. Los servicios del sistema (monolito, inventory, payments…) NO van aquí: corren
+# en el host con `lab.py`, para poder pararlos, matarlos y recompilarlos sin reconstruir imágenes.
+name: ms-lab
+
+services:
+  postgres:
+    # Un solo servidor y una base por servicio: la regla de propiedad del dato es de base y de usuario,
+    # no de servidor (03/01). init-databases.sql crea las cuatro bases y sus usuarios la primera vez.
+    image: postgres:17.11-alpine
+    container_name: ms-postgres
+    environment:
+      POSTGRES_USER: ms_admin
+      POSTGRES_PASSWORD: ms-lab-pass
+      POSTGRES_DB: ms_admin
+    ports:
+      - "25432:5432"          # 25432 en el host: 5432 es del laboratorio de bases de datos, 15432 de hexagonal
+    volumes:
+      - ./seed:/seed:ro       # esquemas y semillas accesibles para `lab.py seed`
+      - ./seed/init-databases.sql:/docker-entrypoint-initdb.d/01-init-databases.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ms_admin -d ms_admin"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  toxiproxy:
+    # Delante de cada dependencia remota, para meter latencia y cortes sin tocar el código (06/01 en
+    # adelante). Los proxies se declaran en toxiproxy/proxies.json; `lab.py` habla con la API en 28474.
+    image: ghcr.io/shopify/toxiproxy:2.12.0
+    container_name: ms-toxiproxy
+    command: ["-host=0.0.0.0", "-config=/config/proxies.json"]
+    ports:
+      - "28474:8474"          # API de control
+      - "28185:28185"         # proxy hacia psp-simulator
+      - "28183:28183"         # proxy hacia inventory (taller 02)
+      - "28184:28184"         # proxy hacia payments (taller 03)
+      - "28193:28193"         # proxy hacia inventory por gRPC (taller 04)
+    volumes:
+      - ./toxiproxy/proxies.json:/config/proxies.json:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # los servicios corren en el host; en Docker Desktop ya existe, en Linux no
+
+  envoy:
+    # api-gateway desde el taller 02: el único punto de entrada del cliente. Solo configuración.
+    image: envoyproxy/envoy:v1.39.1
+    container_name: ms-envoy
+    command: ["envoy", "-c", "/etc/envoy/envoy.yaml", "--log-level", "warn"]
+    ports:
+      - "28080:8080"          # la API, como la ve el cliente
+      - "29901:9901"          # consola de administración: /clusters, /stats, /config_dump
+    volumes:
+      - ./envoy/envoy.yaml:/etc/envoy/envoy.yaml:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  kafka:
+    # desde el taller 06: KRaft, un nodo que es broker y controlador; sin ZooKeeper. La imagen JVM
+    # trae los scripts kafka-*.sh que usa lab.py (topics, grupos, lectura, reajuste de offsets).
+    image: apache/kafka:4.3.1
+    container_name: ms-kafka
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      # Dos listeners porque un broker ANUNCIA una dirección y cada cliente tiene que poder alcanzarla:
+      # los scripts de dentro del contenedor usan 9092; los servicios del host, 29092.
+      KAFKA_LISTENERS: PLAINTEXT://:9092,HOST://:29092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,HOST://localhost:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"           # los topics los crea lab.py seed, con sus particiones
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+    ports:
+      - "29092:29092"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+
+  mock:
+    # Mock generado del contrato (solo con `lab.py mock`). -m false: en un solo proceso; el modo
+    # multiproceso de 5.15.x cae al arrancar en Docker.
+    image: stoplight/prism:5.15.10
+    container_name: ms-mock
+    profiles: ["mock"]
+    command: ["mock", "-h", "0.0.0.0", "-p", "4010", "-m", "false", "/contract/openapi.yaml"]
+    ports:
+      - "24010:4010"
+    volumes:
+      - ./openapi.yaml:/contract/openapi.yaml:ro
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:4010/health >/dev/null"]
+      interval: 2s
+      timeout: 3s
+      retries: 30

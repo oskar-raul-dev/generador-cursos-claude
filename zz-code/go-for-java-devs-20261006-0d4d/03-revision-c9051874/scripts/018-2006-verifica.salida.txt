@@ -1,0 +1,1 @@
+'- **`goleak`** — la Fase 07 dejó escrito que esta fase lo introduciría sustituyendo\n  la implementación a mano. **NO está en §6, y es un cabo suelto.** Recomendación:\n  añadirlo al salto 1.17–1.18 junto a `golang.org/x/sync` (mismo argumento: es\n  semi-oficial, de Uber, estable) **o** mover la promesa a la Fase 14, junto a la\n  observabilidad. **Decidir antes de publicar.**'

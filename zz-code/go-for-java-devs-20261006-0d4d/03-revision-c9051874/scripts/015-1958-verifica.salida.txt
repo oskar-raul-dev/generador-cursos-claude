@@ -1,0 +1,9 @@
+=== refs externas (final) ===
+  ninguna ✅
+
+=== enlaces rotos (final) ===
+  ninguno ✅
+
+=== archivos del curso ===
+0-ESTRUCTURA-CURSO.md 00-convencion-de-git-y-tags.md 00-historia-de-la-empresa-meridian.md 00-instalacion-ambiente-y-tooling.md 01-sintaxis-y-valores.md 02-structs-interfaces-composicion.md 03-errores-paquetes-io.md 04-testing-dobles-cobertura.md 05-http-rest-stdlib.md 06-concurrencia.md 07-context-y-ciclo-de-vida.md 08-migracion-a-go-moderno.md 09-sql-postgres-sqlite.md 10-clientes-http-y-apis-externas.md 11-mongodb-y-modelado-documental.md 12-cache-con-valkey.md 13-lotes-scheduling-y-asincronia.md 14-observabilidad-y-hardening.md 15-rendimiento-y-profiling.md 16-go-frente-a-spring-boot.md 17-capstone.md BENCHMARKS.md INSTINTOS.md README.md 
+alcance-del-proyecto.md aprendizaje.md formato-de-benchmarks.md guia-de-estilo-y-convenciones.md plantillas-de-capitulo.md prompts-extendidos-fases.md propuesta-fases-y-alcance.md proyecto-01-opsreport.md proyecto-02-eventrelay.md proyecto-03-atlassync.md proyecto-04-clearinghouse.md

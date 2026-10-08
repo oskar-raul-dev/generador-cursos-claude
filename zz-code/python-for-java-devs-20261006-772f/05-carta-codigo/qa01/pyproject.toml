@@ -1,0 +1,6 @@
+[tool.pytest.ini_options]
+addopts = "-ra --strict-markers"
+markers = [
+    "integration: necesita servicios reales (Postgres); corre antes de cada entrega",
+    "golden: compara contra archivos reales anonimizados",
+]

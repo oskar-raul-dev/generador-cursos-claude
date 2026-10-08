@@ -1,0 +1,8 @@
+import time:       497 |     157919 | numba
+primera llamada (compila o lee el caché):   182.5 ms
+segunda llamada:                             4.4 ms
+8 series · una tras otra   42.1 ms · prange en 8 núcleos    8.4 ms (5.0×)
+total_with_generator no compila: The use of yield in a closure is unsupported.
+total_exact no compila: Untyped global name 'Decimal': Cannot determine Numba type of <class 'type'>
+primera llamada (compila o lee el caché):    85.5 ms
+[(Array(float64, 1, 'C', False, aligned=True), float64), (Array(float32, 1, 'C', False, aligned=True), float64)]

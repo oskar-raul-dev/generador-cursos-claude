@@ -1,0 +1,271 @@
+--- 00-instalacion-ambiente-y-tooling.md (13 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (20)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 01-sintaxis-y-valores.md (13 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (24)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 02-structs-interfaces-composicion.md (13 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (26)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 03-errores-paquetes-io.md (13 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (24)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 04-testing-dobles-cobertura.md (13 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (26)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 05-http-rest-stdlib.md (13 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (26)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 06-concurrencia.md (13 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (30)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 07-context-y-ciclo-de-vida.md (13 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (24)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 08-migracion-a-go-moderno.md (22 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## io/fs como abstracción del sistema de archivos  (Go 1.16)
+    ## Repository[T] genérico  (Go 1.18)
+    ## Service[T] genérico  (Go 1.18)
+    ## errors.Join en lugar de ValidationError  (Go 1.20)
+    ## unique.Make  (Go 1.23)
+    ## go tool con herramientas en el go.mod  (Go 1.24)
+    ## testing/synctest  (Go 1.24, experimental)
+    ## Convertir todo lo que devuelve []T en iter.Seq[T]  (Go 1.23)
+    ## Reescribir la arquitectura durante la migración
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (26)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 09-sql-postgres-sqlite.md (13 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (30)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 10-clientes-http-y-apis-externas.md (13 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (28)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 11-mongodb-y-modelado-documental.md (13 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (24)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 12-cache-con-valkey.md (13 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (22)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 13-lotes-scheduling-y-asincronia.md (13 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (28)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 14-observabilidad-y-hardening.md (14 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (26)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Deudas cerradas en esta fase
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 15-rendimiento-y-profiling.md (14 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## `sync.Pool` para los buffers de conversión a JSON en OpsReport
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (26)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 16-go-frente-a-spring-boot.md (13 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra todavía
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (30)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Pendientes sugeridos
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones para `BENCHMARKS.md`
+--- 17-capstone.md (21 secciones)
+    ## 🎯 1. Propósito
+    ## ✅ 2. Qué queda listo al terminar
+    ## 🚫 3. Qué NO entra
+    ## 🧠 4. Concepto mínimo
+    ## 🛠️ 5. CLI de la fase
+    ## 💻 6. Construcción guiada
+    ## Cuándo NO usar Go
+    ## Dónde Go sí es la respuesta
+    ## Nivel 1 — Se desaprenden en un día (el compilador te obliga)
+    ## Nivel 2 — Se desaprenden en una semana (te muerden pronto y visiblemente)
+    ## Nivel 3 — Se desaprenden en un mes (funcionan hasta que no)
+    ## Nivel 4 — Cuestan meses (son modelos mentales, no hábitos)
+    ## Nivel 5 — El que no se desaprende nunca del todo
+    ## ⚰️ 7. Autopsia y errores comunes
+    ## 🧪 8. Ejercicios (20)
+    ## 📚 9. Referencias
+    ## ⚖️ 10. Veredicto y cierre
+    ## 📌 Estado del curso al cierre
+    ## 📌 Pendientes sin resolver al cierre
+    ## ☕ Reflejos para `INSTINTOS.md`
+    ## 📐 Mediciones

@@ -1,0 +1,17 @@
+-- fases sin 💸 --
+  23-el-duelo.md
+  24-veredicto-y-defensa.md
+-- fases con 🔜 --
+14-veredicto-del-escritorio.md
+18-blazor-server-wasm-mvc.md
+24-veredicto-y-defensa.md
+-- 🔜 en BENCHMARKS --
+  ocurrencias: 8
+130:### 🔜 Y las columnas que todavía no se pueden ejecutar
+133:alguien la puede correr hoy. **🔜 significa "el competidor no existe todavía"** — la medición no se puede
+142:> ⚠️ Una celda 🔜 **tampoco se cita**, por la misma razón que una ⏳: no hay dato. Y tiene una obligación
+143:> adicional — **nombrar la fase que la va a llenar**. Un 🔜 sin destino es un hueco, no un encargo.
+146:> decían 🔜 dicen ⏳: pasaron de *"no se puede medir"* a *"se puede medir y falta correrla"*. Quedó registrada
+181:| 14 | **La tabla del veredicto del escritorio**: 4 opciones × 5 criterios. Tres columnas ⏳ y la cuarta 🔜, que la **F18**
+1598:| **Citas ilegales** —una fase que use una fila ⏳ o 🔜 como argumento— | **0** ✅ | es la verificación que protegía al cur
+1599:| Celdas 🔜 sin llenar | **0** ✅ | hubo una, la cuarta columna de la F14, y la llenó la F18 |

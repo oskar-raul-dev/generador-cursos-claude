@@ -1,0 +1,18 @@
+# Prometheus en el namespace observability (Fase 17). Lo enciende observability.metrics.enabled.
+component: observability
+# prom/prometheus:v3.13.4 (LTS)
+image: prom/prometheus@sha256:87861b8cf91579109319ebc300f3f1060e6da9c05d6ae8ad15a20c879e84e32e
+# Cada cuánto pregunta, y cuánto guarda. Los datos viven en un emptyDir: si el pod se va, se van con él.
+# Es un laboratorio; en un cluster de verdad, un volumen y una retención pensada (a05).
+scrapeInterval: 15s
+retention: 2d
+# Dónde busca: los namespaces de las cadenas. Solo los pods del sistema con component=backend.
+namespaces: [apps, apps-b]
+# cAdvisor (lo que el kubelet mide de cada contenedor), recortado a las dos series que lee el tablero.
+cadvisor:
+  enabled: true
+  namespaces: [apps, apps-b, observability, data]
+host: prometheus.localhost
+resources:
+  requests: {cpu: 100m, memory: 128Mi}
+  limits: {memory: 512Mi}

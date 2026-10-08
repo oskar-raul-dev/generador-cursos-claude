@@ -1,0 +1,22 @@
+réplica-1: caché refrescada
+réplica-1: caché refrescada
+réplica-1: recordatorios enviados
+réplica-2: caché refrescada
+réplica-2: caché refrescada
+réplica-2: recordatorios — los manda otra réplica
+---
+réplica-1: caché refrescada
+réplica-1: caché refrescada
+réplica-1: recordatorios enviados
+réplica-2: caché refrescada
+réplica-2: caché refrescada
+réplica-2: recordatorios — los manda otra réplica
+---
+
+Traceback (most recent call last):
+  File "<string>", line 3, in <module>
+    j = schedule.every().day.at('08:00', 'America/Bogota').do(print)
+        ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.14/site-packages/schedule/__init__.py", line 499, in at
+    import pytz
+ModuleNotFoundError: No module named 'pytz'

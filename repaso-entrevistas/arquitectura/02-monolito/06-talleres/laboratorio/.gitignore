@@ -1,0 +1,12 @@
+# Lo que se regenera en el laboratorio no se versiona. Este es el único .gitignore del
+# laboratorio: los patrones sin "/" valen en cualquier subcarpeta, también en estados/NN/.
+
+# ── Java (Maven): legacy/ e inventory/ ───────────────────────────────────────
+target/
+
+# ── Frontend (Node): frontend/ ───────────────────────────────────────────────
+node_modules/
+dist/
+
+# ── Python: scripts/ ─────────────────────────────────────────────────────────
+__pycache__/

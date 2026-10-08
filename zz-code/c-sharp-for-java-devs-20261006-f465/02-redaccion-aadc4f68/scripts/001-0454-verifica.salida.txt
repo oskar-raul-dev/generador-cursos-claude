@@ -1,0 +1,3 @@
+18-blazor-server-wasm-mvc.md {'️': 6}
+19-observabilidad-y-operacion.md {'️': 6}
+20-contenedor-y-la-factura.md {'️': 8}

@@ -1,0 +1,12 @@
+=== links rotos ===
+sin links rotos
+=== suites ===
+src/ds01-numpy-y-el-modelo-vectorizado       39 passed in 13.63s
+src/ds02-pandas                              10 passed in 14.60s
+src/ds03-polars-y-el-modelo-lazy             11 passed in 9.57s
+src/ds07-scikit-learn                        19 passed in 0.55s
+=== wc ===
+     768 ds01-numpy-y-el-modelo-vectorizado.md
+     673 ds02-pandas.md
+     718 ds03-polars-y-el-modelo-lazy.md
+    2159 total

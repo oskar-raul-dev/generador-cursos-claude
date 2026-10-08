@@ -1,0 +1,12 @@
+=== desde la raíz del curso ===
+
+Found 7 errors.
+[*] 5 fixable with the `--fix` option.
+=== desde dentro de cada sección ===
+  ds01-numpy-y-el-modelo-vectorizado              lint OK
+  ds02-pandas                                     lint OK
+  ds03-polars-y-el-modelo-lazy                    lint OK
+  ds04-embudo                                     lint OK
+  ds05-visualizacion                              LINT FALLA
+  ds06-notebooks-y-reproducibilidad               LINT FALLA
+  ds07-scikit-learn                               lint OK

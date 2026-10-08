@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Servidor de pagos del taller 10: un servicio gRPC pequeño con el comportamiento determinista de §11 más
+     fallos inyectables. Versiones verificadas el 2026-09-28 en Maven Central; las de gRPC y protobuf las fija
+     el BOM de Boot 4.1.1 (grpc-java 1.83.1, protobuf-java 4.35.1, protobuf-maven-plugin 5.1.8). -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.1.1</version>
+    <relativePath/>
+  </parent>
+
+  <groupId>dev.hex</groupId>
+  <artifactId>hex-payments-grpc</artifactId>
+  <version>1.0.0</version>
+  <name>hex-payments-grpc</name>
+
+  <properties>
+    <java.version>25</java.version>
+  </properties>
+
+  <dependencies>
+    <!-- el servidor gRPC (Netty) autoconfigurado por Boot 4 -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-grpc-server</artifactId>
+    </dependency>
+    <!-- un endpoint HTTP mínimo para inyectar fallos desde lab.py (POST /faults) -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webmvc</artifactId>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <!-- genera los stubs desde ../contrato/proto en cada build: el .proto es el contrato, no el código generado -->
+      <plugin>
+        <groupId>io.github.ascopes</groupId>
+        <artifactId>protobuf-maven-plugin</artifactId>
+        <configuration>
+          <protocVersion>${protobuf-java.version}</protocVersion>
+          <sourceDirectories>
+            <sourceDirectory>${project.basedir}/../contrato/proto</sourceDirectory>
+          </sourceDirectories>
+          <binaryMavenPlugins>
+            <binaryMavenPlugin>
+              <groupId>io.grpc</groupId>
+              <artifactId>protoc-gen-grpc-java</artifactId>
+              <version>${grpc-java.version}</version>
+            </binaryMavenPlugin>
+          </binaryMavenPlugins>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

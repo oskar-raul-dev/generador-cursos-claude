@@ -1,0 +1,28 @@
+── E. Estilo declarado por fase vs tabla de 0-ESTRUCTURA ──
+  ✅ coinciden
+
+── F. 📌 Pendientes en cada fase ──
+  ✅ las 25
+
+── G. Referencias §9: ¿URLs completas? ──
+  ⚠️  24-veredicto-y-defensa.md solo 0 URLs
+  (vacío = todas con 5+ referencias enlazadas)
+
+── H. ¿Alguna URL sospechosa de estar inventada? ──
+ 155 https://learn.microsoft.com
+  10 https://github.com
+   5 https://xunit.net
+   3 https://www.rfc-editor.org
+   3 https://docs.spring.io
+   2 https://dotnet.microsoft.com
+   2 https://azure.microsoft.com
+   1 https://www.youtube.com
+   1 https://www.w3.org
+   1 https://www.pollydocs.org
+   1 https://opentelemetry.io
+   1 https://openjdk.org
+   1 https://openid.net
+   1 https://onnxruntime.ai
+   1 https://onnx.ai
+   1 https://nsubstitute.github.io
+   1 https://dotnet.testcontainers.org

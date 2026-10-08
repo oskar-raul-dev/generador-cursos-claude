@@ -1,0 +1,19 @@
+<Project>
+
+  <!-- El subárbol heredado. Aquí NO hay nullable, NO hay advertencias como errores y NO hay
+       analizadores: este código es de 2017 y se toca lo mínimo, en su propio estilo
+       (guía §6.1). Activar el análisis aquí produciría dos mil advertencias que nadie va a
+       atender y que solo enseñarían a apagar advertencias.
+
+       Los proyectos de `legacy/` todavía no existen: los escribe la Fase 07. Este archivo se
+       crea en la Fase 00 junto con el resto de la estructura, porque la frontera entre
+       generaciones se define antes de que haya código a los dos lados. -->
+  <PropertyGroup>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <Nullable>disable</Nullable>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <EnableNETAnalyzers>false</EnableNETAnalyzers>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+</Project>

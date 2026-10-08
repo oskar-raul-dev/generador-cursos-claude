@@ -1,0 +1,7 @@
+partición                     honestas    con fuga
+temporal                         0.799       0.862
+al azar                          0.799       0.859
+por paciente                     0.794       0.856
+
+citas por paciente en el conjunto: 8.6
+con partición al azar, un paciente aparece en los dos lados casi siempre

@@ -1,0 +1,65 @@
+=== indice historia ===
+24:## 1. Cómo llegó a existir
+85:### 1.1 🏛️ Arquitectura de Sonrisa, el producto que construyeron entre los dos
+190:## 2. Quién es quién
+227:## 3. Odontovía, y por qué no se va a morir
+249:## 4. Cómo llegaste tú
+292:### 4.1 🪞 Por qué Python, si llevas once años escribiendo Java
+350:## 5. La restricción que lo atraviesa todo: la historia clínica
+374:## 6. Los cuatro proyectos empresariales
+376:### 💼 `aur` — la caja de herramientas de Patricia · *el cierre de mes*
+415:### 🌐 AgendaAPI — la agenda de la red · *el hueco de las 3:40*
+455:### 🏛️ Consultorio — el back-office · *lo que el franquiciado no debe ver*
+502:### 🌙 Cartera — el proceso nocturno · *las glosas que vencen*
+546:## 7. Los dos proyectos de IA
+582:## 8. Los dos proyectos de datos
+628:## 9. De dónde salen los tracks opcionales
+640:## 10. El veredicto que el curso se debe a sí mismo
+=== §8 ===
+## 8. Los dos proyectos de datos
+
+**Embudo** ataca la economía real del negocio. El plan de Arquitectura de Sonrisa es una compra
+electiva y cara —entre ocho y veintidós millones de pesos— y llega por un funnel que nadie mide:
+anuncio en Instagram o TikTok → mensaje de WhatsApp → valoración gratuita en sede → simulación y
+cotización → plan aceptado → primera cuota pagada. Con un agravante que hace el análisis
+interesante: **lo que atrae es la foto de la fase 3 y lo que hay que vender es un compromiso de
+dos años que empieza con brackets**, así que la conversión se juega en explicar por qué la parte
+que el paciente no quiere es la que hace posible la que sí quiere. Áurea gasta en pauta todos los meses y **no sabe
+cuánto cuesta un paciente adquirido por canal, ni por sede**. Marcela sospecha que TikTok trae
+volumen que no convierte; Julián cree que sí convierte pero más lento. Ninguno tiene un número.
+
+La estacionalidad es un regalo didáctico: la ortodoncia adolescente se dispara en enero y
+febrero con el regreso a clases, el diseño de sonrisa se dispara en noviembre y diciembre —prima
+de fin de año y matrimonios—, y la Semana Santa es un agujero. Encima, el ingreso no llega
+cuando se acepta el tratamiento: llega en cuotas durante veinticuatro meses, así que "ventas del
+mes" es una cifra que no significa lo que parece, y la valoración gratuita —con su simulación,
+que cuesta silla y tiempo de los dos especialistas— es un costo real que nadie contabiliza.
+
+Hay una segunda pregunta de plata que cabe aquí y que hoy no tiene respuesta: **cuánto vale de
+verdad la red de aliados**. Ingreso por comisiones contra pacientes que no volvieron, por aliado,
+por especialidad y por zona — que es exactamente el número que Marcela necesita para sostener,
+o para desmentir, la intuición con la que ya dejó de mandarle casos a dos de ellos.
+
+El veredicto honesto está servido: **la atribución de marketing es, en buena medida, una mentira
+que se cuenta con gráficos bonitos**, y el curso lo va a decir con los datos en la mano y con
+Marcela en la sala.
+
+**Ausentismo** predice quién no va a venir. Con 19% de inasistencia y agendas de un mes, la
+pregunta operativa es concreta: ¿conviene sobreagendar el jueves a las cuatro, y en qué medida?
+Y detrás hay una segunda predicción más cara: el **abandono de tratamiento**, el paciente que se
+desaparece en el mes ocho de veinticuatro con los brackets puestos — un desastre financiero,
+clínico y legal a la vez, porque los aparatos siguen en su boca y la responsabilidad sigue
+siendo de Áurea.
+
+Este proyecto trae la mejor discusión ética del curso, y no es teórica: si el modelo dice que
+este paciente probablemente no va a venir, **¿qué haces con esa predicción?** Recordarle más es
+legítimo. Llamarlo el día anterior, también. Darle peor horario porque el modelo lo señaló, no
+— y esa línea hay que dibujarla explícitamente antes de que alguien la cruce sin darse cuenta.
+
+La lección técnica también está servida: una regresión logística con cinco variables —historial
+de inasistencia, día, hora, lluvia, distancia a la sede— probablemente le gana a la red
+neuronal, y hay que aceptarlo con la medición delante.
+
+---
+
+## 9. De dónde salen los tracks opcionales

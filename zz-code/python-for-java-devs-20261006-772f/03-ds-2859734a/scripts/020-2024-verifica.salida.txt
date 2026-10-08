@@ -1,0 +1,13 @@
+pauta 49260 leads 32547
+{'google': (16420, 8512), 'instagram': (16420, 6785), 'tiktok': (16420, 6056)}
+filas del merge por canal: 350,616,260
+memoria estimada a 60 bytes/fila: 21.0 GB
+=== corrida final de la tabla ===
+variante             mediana         p95    pico RSS     entrada
+solo importar         0.0 ms      0.0 ms     76.7 MB      0.0 MB
+unir+apply          294.8 ms    295.0 ms    134.3 MB     17.4 MB
+unir+mascara         21.4 ms     22.9 ms    115.2 MB     17.4 MB
+agregar+unir         12.3 ms     12.7 ms    104.3 MB     10.4 MB
+
+La fila «solo importar» es la línea base: 76.7 MB los gasta pandas por existir, y hay que descontarlos de las otras tres.
+81,370 cuotas de entrada · 20 filas de salida · 5 repeticiones por variante

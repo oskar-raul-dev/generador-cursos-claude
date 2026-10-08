@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- El TargetFramework, el nullable y las advertencias como errores vienen de
+         ../Directory.Build.props. Este archivo solo dice lo propio del proyecto: es la
+         diferencia entre un .csproj de 12 líneas y uno de 80 copiadas. -->
+    <RootNamespace>Cordillera.Bench</RootNamespace>
+    <Description>El arnés de medición del curso. Ejecuta una operación N veces, descarta el calentamiento y reporta mediana y p95.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- La versión del SDK no está disponible en tiempo de ejecución: MSBuild la conoce y
+         el proceso no. Se inyecta como metadato del ensamblado para que la salida del
+         arnés pueda declarar el entorno sin que nadie lo teclee a mano. -->
+    <AssemblyMetadata Include="SdkVersion" Value="$(NETCoreSdkVersion)" />
+    <AssemblyMetadata Include="BuildConfiguration" Value="$(Configuration)" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,46 @@
+=== cifras que una sección cita de otra ===
+-- CAC de ds01/ds04 citado fuera:
+ds04-embudo.md:176:porque estaba ahí, y salió que TikTok costaba siete veces lo que Google.
+ds01-numpy-y-el-modelo-vectorizado.md:78:tiktok      · 11.098.164 COP por paciente adquirido   (182 pacientes)
+ds01-numpy-y-el-modelo-vectorizado.md:80:google      ·  1.583.564                              (1.275)
+ds01-numpy-y-el-modelo-vectorizado.md:83:Ahí ya hay material para una junta. TikTok cuesta **siete veces** lo que cuesta Google por
+ds03-polars-y-el-modelo-lazy.md:489:   abre `cuotas.csv` seis veces, no pasó.
+ds03-polars-y-el-modelo-lazy.md:681:comité. `ds01` ya dejó la pista: TikTok cuesta siete veces lo que cuesta Google **si el mérito
+
+-- la banda de ds04 (1,06 / 7,96 / 7,5×):
+ds01-numpy-y-el-modelo-vectorizado.md:136:print(spend + spend)              # [-294967296 -294967296] ¬ ni excepción, ni aviso, ni nada
+ds01-numpy-y-el-modelo-vectorizado.md:138:print(spend.sum(dtype=np.int32))  # -294967296, porque se lo pediste
+ds04-embudo.md:416:| tiktok | **1,06** [1,03–1,11] | **7,96** [7,01–9,07] | 1,93 [1,87–2,02] | 2,14 [2,07–2,25] |
+ds04-embudo.md:424:| tiktok | 8.706.318 | 7.961.814 | **−8,6%** |
+ds04-embudo.md:434:> **1,06 millones** por paciente si el mérito es del descubrimiento y **7,96 millones** si es
+ds04-embudo.md:435:> de la decisión: **7,5×**. El ranking no se mueve, se invierte: TikTok es el canal más
+ds04-embudo.md:616:15. Diagnóstico: alguien reporta un CAC de TikTok de 620.000 COP y la tabla dice 1,06
+ds05-visualizacion.md:12:`ds04` terminó con una banda: el costo por paciente adquirido está entre 1,06 y 7,96
+ds05-visualizacion.md:177:El mismo dato, con su banda, dice que TikTok está entre 1,06 y 7,96 y Google entre 1,55 y
+ds05-visualizacion.md:222:    "tiktok": (1.06, 1.93, 7.96),
+ds05-visualizacion.md:252:tiktok           1.06M     1.93M     7.96M      7.5×
+ds05-visualizacion.md:278:- **`xerr` son distancias**, no los extremos. Pasarle `[1.06, 7.96]` produce un gráfico que
+
+-- la línea base de ds07 (0,799 / 0,526):
+ds01-numpy-y-el-modelo-vectorizado.md:463:| 100.000 | 14,8 ms | 29,9 ms | **0,526 ms** | 38,2 ms |
+ds07-scikit-learn.md:184:| Cinco variables honestas | 0,799 |
+ds07-scikit-learn.md:188:0,799 —o peor—, porque el día que prediga no va a tener el futuro. Y nada falla: no hay
+ds07-scikit-learn.md:319:AUC 0.799
+ds07-scikit-learn.md:343:La mentira que te va a contar la salida si miras el lugar equivocado: el AUC de 0,799 es de
+ds07-scikit-learn.md:373:| **logística de 5** | **0,799** | **6.645 (20%)** | **0,526** | **0,530** |
+ds07-scikit-learn.md:380:| temporal (la correcta) | 0,799 | 0,862 |
+ds07-scikit-learn.md:381:| al azar | 0,799 | 0,859 |
+ds07-scikit-learn.md:403:> **1. El modelo gana, y gana claro.** 0,799 contra 0,672 de AUC, y donde de verdad importa:
+ds07-scikit-learn.md:404:> a la misma capacidad del 20%, la logística acierta **0,526 de precisión contra 0,351** — de
+ds07-scikit-learn.md:419:> **partir al azar da exactamente el mismo AUC que partir por fecha** (0,799 contra 0,799).
+ds07-scikit-learn.md:643:hipótesis de la historia de Áurea dice que no, y ahora hay contra qué medirlo: 0,799 de AUC,
+
+-- el 77 MB de ds02 citado en ds03:
+ds03-polars-y-el-modelo-lazy.md:12:`ds02` terminó con dos números incómodos: el proceso pesaba 77 MB antes de leer un dato, y
+ds02-pandas.md:357:la sección 6 arranca en **76,9 MB para un proceso que no hizo nada**. Si comparas los totales
+ds02-pandas.md:387:| solo importar pandas | — | — | 76,9 MB | — | — |
+ds02-pandas.md:410:> **Los 76,9 MB de la línea base son el número incómodo de la tabla.** El informe entero maneja
+ds02-pandas.md:568:23. Los 76,9 MB de la línea base son el precio de importar pandas. Mide cuánto de eso es pandas y
+ds02-pandas.md:625:respuesta antes de unir**. También terminas con dos números incómodos: el proceso pesa 76,9 MB
+BENCHMARKS.md:626:| solo importar pandas | — | — | 76,9 MB | — |
+BENCHMARKS.md:638:**Y el número incómodo:** importar pandas cuesta **76,9 MB** antes de leer un solo dato, para un

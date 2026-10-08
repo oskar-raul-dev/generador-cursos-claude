@@ -1,0 +1,24 @@
+=== 1. Otros cursos del proyecto ===
+README.md:86:**No hay apéndices.** Todo lo que en otro curso sería material de consulta es aquí una fase o
+0-ESTRUCTURA-CURSO.md:200:que en otro curso sería material de consulta —el
+09-distribucion.md:15:Y es la fase que **no existiría en un curso de Go**, cosa que conviene decir de entrada porque
+09-distribucion.md:301:contenedor como forma de desplegar un servicio es otro tema y otro curso, que este no promete.
+prompts/prompts-de-fase.md:308:- **Es la fase que no existiría en un curso de Go**, y conviene que se note: Go entrega un binario
+prompts/alcance-del-proyecto.md:37:**No se cita ningún otro curso.** Ni como material complementario, ni como "eso vive en otro
+prompts/alcance-del-proyecto.md:179:puente entre versiones— viva en apéndices `aNN-`. **Aquí no.** Todo lo que en otro curso sería un
+prompts/alcance-del-proyecto.md:185:  Angular existen para el backend que nunca tocó RxJS. Aquí el equivalente no existe: quien
+prompts/propuestas-temas-opcionales.md:668:> se puede construir —detectar puntos, triangular, deformar cada triángulo, interpolar— y entonces
+prompts/guia-de-estilo-y-convenciones.md:629:- **Autocontención.** El curso **no nombra ningún otro curso**, ni como material necesario ni como
+prompts/guia-de-estilo-y-convenciones.md:664:- [ ] **No se nombra ningún otro curso ni ningún archivo de fuera de esta carpeta.** El curso es
+prompts/prompts-de-tracks-ia-ds.md:429:   curso hermano de C#, y aquí pesa más porque tres de estas mediciones cuestan dinero real. Cada
+prompts/propuesta-fases-y-alcance.md:30:**No hay apéndices.** Todo lo que en otro curso sería material de consulta es aquí una fase o
+prompts/propuesta-fases-y-alcance.md:39:> 📝 **Y una nota de origen.** El curso de Go partió de un esqueleto producido por otro modelo
+prompts/propuesta-fases-y-alcance.md:99:> 🧭 **Esta secuencia no es la del curso de Go con otros nombres.** Se diseñó desde las
+prompts/propuesta-fases-y-alcance.md:111:  análogo en un curso de Go.
+prompts/propuesta-fases-y-alcance.md:530:**Propósito.** La fase que no existe en un curso de Go y que más se parece al trabajo real del
+prompts/propuesta-fases-y-alcance.md:806:otro curso habría tenido su `aNN-` y dónde quedó aquí:
+prompts/propuesta-fases-y-alcance.md:819:| Convención de git y tags | `00-convencion-de-git-y-tags.md`, en la raíz del curso — no es apéndice, es un documento de encuadre que el lector sí lee, igual que en `go-for-java-devs` |
+--- fin ---
+
+=== 2. CLAUDE.md / raíz del proyecto ===
+--- fin ---

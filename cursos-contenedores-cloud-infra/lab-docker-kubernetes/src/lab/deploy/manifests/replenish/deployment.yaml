@@ -1,0 +1,39 @@
+# replenish en el cluster (Fase 09): el mismo patrón que pricing en la Fase 08.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: replenish
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: replenish
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: replenish
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: replenish
+        app.kubernetes.io/part-of: lab
+        app.kubernetes.io/component: backend
+        app.kubernetes.io/version: "g3"
+    spec:
+      containers:
+        - name: replenish
+          image: lab/replenish:g3
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          # Las URL de los vecinos, del ConfigMap: existen y nadie las usa hasta la Fase 16.
+          envFrom:
+            - configMapRef:
+                name: neighbors
+          # G3 (Fase 12): su base en Postgres, con su usuario y su contraseña, desde su Secret.
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef: {name: replenish-db, key: DATABASE_URL}

@@ -1,0 +1,14 @@
+# La tabla de topes regulados de pricing (D23, Fase 11): una línea SKU,tope en pesos.
+# pricing la lee AL ARRANCAR. Desde la Fase 13, su hash va en el pod (deployment.yaml): cambiarla con
+# helm upgrade cambia el pod y lo reinicia. Cambiarla con kubectl edit, no (incidente 09).
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pricing-regulated-caps
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+data:
+  regulated-caps.csv: |
+    {{- range $sku, $cap := .Values.regulatedCap.caps }}
+    {{ $sku }},{{ $cap }}
+    {{- end }}

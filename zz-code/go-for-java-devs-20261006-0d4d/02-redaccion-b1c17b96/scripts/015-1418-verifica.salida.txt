@@ -1,0 +1,2 @@
+=== BLOQUES DE CODIGO SIN CERRAR ===
+(vacio = ok)

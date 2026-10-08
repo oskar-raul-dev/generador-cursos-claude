@@ -1,0 +1,6 @@
+[tool.pytest.ini_options]
+pythonpath = ["."]          # sin esto, pytest no encuentra regalias.py desde tests/
+
+[tool.mutmut]
+source_paths = ["regalias.py"]
+pytest_add_cli_args_test_selection = ["tests/"]

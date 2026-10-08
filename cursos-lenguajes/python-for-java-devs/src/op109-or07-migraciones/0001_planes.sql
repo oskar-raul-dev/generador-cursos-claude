@@ -1,0 +1,2 @@
+-- depends:
+CREATE TABLE plan (id INTEGER PRIMARY KEY, codigo TEXT NOT NULL UNIQUE, sede TEXT NOT NULL);

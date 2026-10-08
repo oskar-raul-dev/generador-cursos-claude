@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.15...3.31)
+project(ema_nb LANGUAGES CXX)
+find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
+find_package(nanobind CONFIG REQUIRED)
+nanobind_add_module(ema_nb ema_nb.cpp)
+install(TARGETS ema_nb LIBRARY DESTINATION .)

@@ -1,0 +1,38 @@
+# La frontera de los servicios del sistema (Fase 09): nombres, permisos y, desde la Fase 15, su cuota.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: apps
+  labels:
+    app.kubernetes.io/part-of: lab
+---
+# La cuota del namespace (Fase 15): lo que todos los pods de apps pueden pedir juntos. En minimo, los
+# servicios piden 576 MiB de requests y 896 de limits; en lab, con dos réplicas de cada backend, unos
+# 1.100 y 1.800 (Fase 16). El resto es para el pod de más de cada rollout, los Job y la suite.
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: apps
+  namespace: apps
+  labels:
+    app.kubernetes.io/part-of: lab
+spec:
+  hard:
+    requests.memory: 1536Mi
+    limits.memory: 3Gi
+    pods: "25"
+---
+# Lo que recibe un contenedor que no declara recursos (un Job, la suite, un pod de prueba): con una
+# cuota de memoria, un pod sin requests ni limits no se puede crear.
+apiVersion: v1
+kind: LimitRange
+metadata:
+  name: apps
+  namespace: apps
+  labels:
+    app.kubernetes.io/part-of: lab
+spec:
+  limits:
+    - type: Container
+      defaultRequest: {cpu: 50m, memory: 64Mi}
+      default: {memory: 256Mi}

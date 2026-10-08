@@ -1,0 +1,42 @@
+# Lo que es de catalog y no cambia por perfil ni por cadena (Fase 13).
+component: backend
+replicaCount: 1
+image:
+  repository: lab/catalog
+  tag: ""                       # lo pone task deploy desde STEP_TAGS
+# nginx delante de PHP-FPM (D34): la imagen oficial sin privilegios, por digest.
+nginx:
+  # nginxinc/nginx-unprivileged:1.30.5-alpine
+  image: nginxinc/nginx-unprivileged@sha256:ed04ec1ff34502c339ee5c3ae3f855442398edc1d05591e2b98981dcbbd20b1e
+  # Medido (Fase 15): 7 MiB en reposo, 10 MiB con carga.
+  resources:
+    requests: {cpu: 20m, memory: 16Mi}
+    limits: {memory: 32Mi}
+migrate:
+  command: ["php", "artisan", "migrate", "--force", "--no-interaction"]
+# El storefront lista productos desde el navegador: la puerta autoriza su origen (Fase 10).
+route:
+  cors:
+    allowMethods: [GET]
+
+# Las sondas (Fase 15) van en el contenedor nginx: es el que tiene puerto, y su /health/ready pasa por
+# PHP-FPM hasta Laravel y la base. FPM escucha en 127.0.0.1:9000, donde el kubelet no llega.
+probes:
+  readiness: {path: /health/ready, periodSeconds: 5, timeoutSeconds: 2, failureThreshold: 2}
+  liveness: {path: /health/live, periodSeconds: 10, timeoutSeconds: 2, failureThreshold: 3}
+# Recursos de PHP-FPM (Fase 15), medidos: 31 MiB en reposo y 56 MiB con carga. Sin límite de CPU.
+resources:
+  requests: {cpu: 100m, memory: 64Mi}
+  limits: {memory: 128Mi}
+
+# El ciclo de vida (Fase 16): el rollout sin bajar capacidad, el plazo para declararlo atascado, la pausa
+# antes de SIGTERM, y el autoescalado, apagado por defecto (el HPA es dueño de las réplicas cuando existe).
+rollout: {maxSurge: 1, maxUnavailable: 0, progressDeadlineSeconds: 120}
+shutdown: {preStopSeconds: 5}
+autoscaling: {enabled: false, minReplicas: 1, maxReplicas: 4, cpuPercent: 70}
+
+# El usuario con que corre (Fase 20): el número, no el nombre que dice la imagen. Es el mismo usuario.
+securityContext:
+  runAsUser: 82
+# El nginx del pod corre con su propio usuario (101, el de la imagen sin privilegios).
+nginxRunAsUser: 101

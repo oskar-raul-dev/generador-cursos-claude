@@ -1,0 +1,84 @@
+=== complemento-docker README ===
+# 🐳 Propuesta: complemento Docker Legacy Node
+
+Propuesta de material de apoyo para un problema muy concreto: **correr Node.js
+antiguo (10–14) dentro de contenedores, en máquinas de desarrollo modernas** —
+macOS Apple Silicon (arm64) y Windows 11 (x86_64). El eje es la fricción de
+arquitectura y de libc que aparece cuando el runtime que necesitas nunca tuvo
+binarios para el CPU que tienes.
+
+> ⚠️ Borrador. Ver el [README del directorio de propuestas](../README.md) para
+> entender qué implica ese estado.
+
+## 🎯 Alcance
+
+El material se organiza en dos bloques que comparten origen pero se leen por
+separado.
+
+### Bloque A — Node legacy en contenedores
+
+Cubre la cadena completa de decisiones:
+
+- **Fundamentos de libc:** qué es glibc, qué es musl, en qué se diferencian de
+  verdad y por qué la distinción decide si un `npm install` funciona o no.
+- **El catálogo de paquetes que explotan:** node-sass, phantomjs, bcrypt, sqlite3 y
+  compañía — por qué fallan sobre musl, qué prebuilds existen y cuáles son las
+  salidas viables para cada uno.
+- **Estrategias de ejecución comparadas:** traducción de binarios x86_64 vs.
+  emulación QEMU vs. compilar arm64 nativo, con las consecuencias de cada camino
+  sobre velocidad, mantenimiento y vida útil.
+- **Rendimiento medido:** por qué V8 sufre especialmente bajo emulación y qué
+  órdenes de magnitud separan a cada opción.
+- **Compilación casi bare-metal:** construir Node desde fuente en Lima (macOS) y
+  WSL2 (Windows), flags de `./configure`, caché de compilación y cómo convertir ese
+  trabajo manual en un Dockerfile reutilizable.
+- **Plantillas listas para copiar:** Dockerfiles desde el caso básico hasta
+  multi-stage, multi-arquitectura y entornos con proxy corporativo.
+
+### Bloque B — Ruta de aprendizaje de sistemas
+
+Una extensión opcional para quien quiera bajar un nivel más: la escalera de distros
+que obliga a entender lo que hay debajo, sistemas operativos didácticos como
+
+=== lab-docker: 00-instrucciones (encabezados) ===
+## 📝 DESCRIPCIÓN DEL PROYECTO
+# Docker: Fundamentos y Prácticas Esenciales
+### Objetivos de Aprendizaje
+### Contenido Cubierto
+### A Quién Va Dirigido
+### Lo Que Aprenderás
+### Requisitos Previos
+## 📋 INSTRUCCIONES PERSONALIZADAS DEL PROYECTO
+# Cómo Aprovechar Este Proyecto de Docker
+### 📊 Estructura de Aprendizaje
+## 🎯 Fases del Proyecto
+### **Fase 1: Fundamentos (Semana 1)**
+### **Fase 2: Dockerfiles y Imágenes (Semana 2)**
+### **Fase 3: Gestión de Contenedores (Semana 2)**
+### **Fase 4: Almacenamiento y Volúmenes (Semana 3)**
+### **Fase 5: Networking (Semana 3)**
+### **Fase 6: Docker Compose (Semana 4)**
+### **Fase 7: Producción y Mejores Prácticas (Semana 4-5)**
+## 💡 Consejos para el Éxito
+### ✏️ Toma Notas Activas
+### 🧪 Experimenta Constantemente
+### 🔍 Revisa Dockerfiles Existentes
+### 🐛 Debuggea Activamente
+### 📚 Consulta la Documentación
+## 🎓 Proyectos Prácticos Recomendados
+
+=== 06-anillo-0 (encabezados) ===
+# Anillo 0 — Refinamiento del diseño y hoja de ruta hacia el chat maestro
+## 1. Consolidado de decisiones (sin cambios respecto a los documentos previos)
+## 2. Refinamientos al diseño existente
+### 2.1 Contratos REST explícitos — Anillo 0
+### 2.2 Health checks y contrato de observabilidad por servicio
+### 2.3 Estrategia de configuración Helm (values) — nivel de detalle que faltaba
+### 2.4 Cluster kind: topología concreta
+### 2.5 Persistencia — decisión operativa para Anillo 0
+### 2.6 Definition of Done — Anillo 0
+## 3. Preguntas abiertas / decisiones pendientes
+## 4. Hoja de ruta hacia el chat maestro
+### 4.1 Prompts por servicio (uno por IDE/lenguaje, para Claude Code)
+### 4.2 Prompts por anillo (guías paso a paso, no generación de código de negocio)
+## 5. Recordatorio: trabajar incrementalmente

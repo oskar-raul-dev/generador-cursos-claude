@@ -1,0 +1,16 @@
+flowchart LR
+    student["student"]
+    section["section"]
+    enrolls{"enrolls"}
+    sid(["<u>student_id</u>"])
+    sname(["name"])
+    phones((("phone")))
+    age(["age"])
+    fscore(["final_score"])
+    student --- sid
+    student --- sname
+    student --- phones
+    student -.- age
+    student ---|"(0,N)"| enrolls
+    enrolls ---|"(1,40)"| section
+    enrolls --- fscore

@@ -1,0 +1,14 @@
+# Las direcciones de los vecinos (Fase 09), con el namespace del release: en `apps` apuntan a `apps`, y
+# en otra cadena, a la suya (Fase 14). Con el nombre completo: el corto solo resuelve en el mismo namespace.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: neighbors
+  labels:
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  {{- range $svc := list "catalog" "inventory" "pricing" "replenish" }}
+  {{ upper $svc }}_URL: http://{{ $svc }}.{{ $.Release.Namespace }}.svc.cluster.local:8080
+  {{- end }}

@@ -1,0 +1,104 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Valores del chart platform (Fase 14): lo que Helm comprueba antes de renderizar",
+  "type": "object",
+  "properties": {
+    "global": {
+      "type": "object",
+      "properties": {
+        "hosts": {
+          "type": "object",
+          "required": [
+            "api",
+            "storefront"
+          ],
+          "properties": {
+            "api": {
+              "type": "string",
+              "pattern": "\\.localhost$"
+            },
+            "storefront": {
+              "type": "string",
+              "pattern": "\\.localhost$"
+            }
+          }
+        },
+        "publicPort": {
+          "type": "integer"
+        }
+      }
+    },
+    "seed": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "stores": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "pricing": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "replicaCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "inventory": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "replicaCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "catalog": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "replicaCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "replenish": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "replicaCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "storefront": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "replicaCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

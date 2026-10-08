@@ -1,0 +1,33 @@
+=== links a 00-convencion / documentos raiz en guia y alcance ===
+0-ESTRUCTURA-CURSO.md:182:[`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+00-instalacion-ambiente-editores-y-ecosistema.md:492:[`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md), y la primera línea es
+00-instalacion-ambiente-editores-y-ecosistema.md:1224:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+03-python-sin-ceremonia.md:1035:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+02-secuencias-perezosas.md:920:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+04-errores-y-recursos.md:987:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+01-modelo-de-datos.md:954:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+07-cuando-deja-de-ser-un-script.md:912:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+06-formatos-en-la-caja.md:966:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+05-shell-con-esteroides.md:931:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+08-el-contrato-del-codigo.md:1007:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+11-persistencia.md:976:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+09-distribucion.md:735:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+10-fastapi.md:963:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+12-django-y-el-veredicto-web.md:824:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+15-el-proceso-nocturno.md:875:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+13-integraciones.md:981:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+14-concurrencia-y-gil.md:842:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+ia01-el-modelo-de-acceso-de-un-llm.md:894:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+16-operacion-y-rendimiento.md:867:> [`00-convencion-de-git-y-tags.md`](00-convencion-de-git-y-tags.md).
+=== 'documentos de la raíz' ===
+prompts/formato-de-mediciones.md:99:Vive en la raíz del curso, no en `prompts/`. Es la tabla índice de todas las mediciones, para que
+prompts/alcance-del-proyecto.md:14:> raíz del curso, junto con `0-ESTRUCTURA-CURSO.md`, `00-convencion-de-git-y-tags.md`,
+prompts/prompts-de-fase.md:5:> `INSTINTOS.md` están publicados en la raíz del curso. Este documento pasa de ser **encargo** a
+prompts/propuesta-fases-y-alcance.md:5:> publicadas** en la raíz del curso, con sus mediciones, sus miniproyectos y sus 450 ejercicios.
+prompts/propuesta-fases-y-alcance.md:819:| Convención de git y tags | `00-convencion-de-git-y-tags.md`, en la raíz del curso — no es apéndice, es un documento de encuadre que el lector sí lee, igual que en `go-for-java-devs` |
+prompts/propuestas-fases-base-ia-datos.md:153:> raíz del curso.**
+prompts/prompts-documentos-raiz.md:1:# 📍 Prompts de los documentos de la raíz del curso
+prompts/prompts-documentos-raiz.md:5:> `INSTINTOS.md` están publicados en la raíz del curso. Este documento pasa de ser **encargo** a
+prompts/prompts-documentos-raiz.md:13:Tres documentos viven en la **raíz del curso**, no en `prompts/`, y **se escribieron antes que
+prompts/README.md:62:**Primero los tres documentos de la raíz del curso**, en este orden, cada uno en su chat, con el
+00-instalacion-ambiente-editores-y-ecosistema.md:450:La configuración vive en `ruff.toml`, en la raíz del curso:

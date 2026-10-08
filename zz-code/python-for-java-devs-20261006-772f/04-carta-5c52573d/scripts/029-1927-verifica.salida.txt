@@ -1,0 +1,8 @@
+FROM "Plan" "p"
+WHERE "p"."sede" = 'Suba'
+  AND (
+    SELECT coalesce(SUM("f"."valor"), 0)
+    FROM "Fase" "f"
+    WHERE "p"."id" = "f"."plan"
+      AND "f"."estado" = 'pendiente'
+    ) > 4000000

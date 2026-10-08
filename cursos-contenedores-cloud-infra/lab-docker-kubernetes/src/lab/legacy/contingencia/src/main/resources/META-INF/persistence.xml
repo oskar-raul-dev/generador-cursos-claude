@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.2" xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_2.xsd">
+  <persistence-unit name="contingencia" transaction-type="JTA">
+    <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+    <!-- El pool lo crea custom/init.sh al arrancar el servidor. -->
+    <jta-data-source>jdbc/contingencia</jta-data-source>
+    <!-- Las entidades, una por una: dentro de GlassFish, Hibernate no las descubre solo. -->
+    <class>co.coodrosan.contingencia.model.Product</class>
+    <class>co.coodrosan.contingencia.model.Price</class>
+    <class>co.coodrosan.contingencia.model.StockLevel</class>
+    <class>co.coodrosan.contingencia.model.StockMovement</class>
+    <class>co.coodrosan.contingencia.model.Dispatch</class>
+    <class>co.coodrosan.contingencia.model.ReplenishmentOrder</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
+    <properties>
+      <!-- El esquema es del DBA, no de Hibernate. -->
+      <property name="hibernate.hbm2ddl.auto" value="none"/>
+      <property name="hibernate.transaction.jta.platform"
+                value="co.coodrosan.contingencia.infra.GlassFishJtaPlatform"/>
+    </properties>
+  </persistence-unit>
+</persistence>

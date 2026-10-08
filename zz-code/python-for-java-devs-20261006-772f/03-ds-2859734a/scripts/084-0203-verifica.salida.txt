@@ -1,0 +1,6 @@
+épocas 26 (mejor 18) · parámetros 241 · 4.6 s
+pérdida entrenamiento 0.3568 · validación 0.3520
+regla        AUC 0.6723 · precisión 0.351 · recall 0.516 · marca 9,712
+logística    AUC 0.7993 · precisión 0.526 · recall 0.530 · marca 6,645
+red          AUC 0.8118 · precisión 0.548 · recall 0.552 · marca 6,645
+uv run --python 3.14 --with 'torch==2.14.0' --with 'scikit-learn==1.9.1'  - '  6.39s user 1.01s system 49% cpu 15.021 total

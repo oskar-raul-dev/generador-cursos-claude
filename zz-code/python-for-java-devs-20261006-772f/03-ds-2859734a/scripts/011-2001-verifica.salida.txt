@@ -1,0 +1,8 @@
+w=-0.3 ic=2.6 -> global 0.286 · jueves tarde 0.346
+w=-0.3 ic=3.0 -> global 0.231 · jueves tarde 0.292
+w=-0.3 ic=3.4 -> global 0.183 · jueves tarde 0.235
+w=-0.3 ic=3.8 -> global 0.144 · jueves tarde 0.184
+w=-0.4 ic=2.6 -> global 0.307 · jueves tarde 0.363
+w=-0.4 ic=3.0 -> global 0.245 · jueves tarde 0.305
+w=-0.4 ic=3.4 -> global 0.196 · jueves tarde 0.254
+w=-0.4 ic=3.8 -> global 0.151 · jueves tarde 0.194

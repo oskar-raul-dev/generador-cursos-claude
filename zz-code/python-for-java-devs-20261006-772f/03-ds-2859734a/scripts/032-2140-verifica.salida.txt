@@ -1,0 +1,14 @@
+OK
+/tmp/fix/pauta.csv: 49,260 filas
+/tmp/fix/leads.csv: 32,550 filas
+/tmp/fix/toques.csv: 62,748 filas
+/tmp/fix/etapas.csv: 64,062 filas
+/tmp/fix/planes_de_tratamiento.csv: 6,065 filas
+/tmp/fix/cuotas.csv: 81,274 filas
+/tmp/fix/aliados.csv: 23 filas
+/tmp/fix/remisiones.csv: 2,599 filas
+etapas.csv                   fecha_hora         max=2026-03-31
+planes_de_tratamiento.csv    fecha_aceptacion   max=2026-03-31
+cuotas.csv                   fecha_pago         max=2026-03-31
+toques.csv                   fecha_hora         max=2026-03-31
+{'pauta.csv': 49260, 'leads.csv': 32550, 'toques.csv': 62748, 'etapas.csv': 64062, 'planes_de_tratamiento.csv': 6065, 'cuotas.csv': 81274, 'aliados.csv': 23, 'remisiones.csv': 2599}

@@ -1,0 +1,39 @@
+# Lo que es de inventory y no cambia por perfil ni por cadena (Fase 13).
+component: backend
+replicaCount: 1
+image:
+  repository: lab/inventory
+  tag: ""                       # lo pone task deploy desde STEP_TAGS
+migrate:
+  command: ["java", "-jar", "inventory-0.0.1-SNAPSHOT.jar", "migrate"]
+# La página le pide la venta desde el navegador (G5): un POST con JSON, que el navegador consulta antes
+# con un OPTIONS (preflight); la puerta autoriza el método y la cabecera.
+route:
+  cors:
+    allowMethods: [POST]
+    allowHeaders: [Content-Type]
+
+# Las sondas (Fase 15). Java tarda en arrancar: la startupProbe le da hasta 120 s (60 × 2 s) antes de
+# que la liveness empiece a contar, y la readiness espera a ACCEPTING_TRAFFIC y a la base (G4).
+probes:
+  startup: {path: /health/live, periodSeconds: 2, failureThreshold: 60}
+  readiness: {path: /health/ready, periodSeconds: 5, timeoutSeconds: 2, failureThreshold: 2}
+  liveness: {path: /health/live, periodSeconds: 10, timeoutSeconds: 2, failureThreshold: 3}
+# Recursos (Fase 15), medidos: 216 MiB en reposo y 250 MiB con carga, sin límite. Con el límite, la JVM
+# dimensiona su heap contra él (MaxRAMPercentage, 25 % por defecto). Sin límite de CPU.
+resources:
+  requests: {cpu: 250m, memory: 384Mi}
+  limits: {memory: 512Mi}
+# Opciones de la JVM, en JAVA_TOOL_OPTIONS. Vacío: la JVM decide por el límite del contenedor (Fase 15).
+jvm:
+  options: ""
+
+# El ciclo de vida (Fase 16): el rollout sin bajar capacidad, el plazo para declararlo atascado, la pausa
+# antes de SIGTERM, y el autoescalado, apagado por defecto (el HPA es dueño de las réplicas cuando existe).
+rollout: {maxSurge: 1, maxUnavailable: 0, progressDeadlineSeconds: 120}
+shutdown: {preStopSeconds: 5}
+autoscaling: {enabled: false, minReplicas: 1, maxReplicas: 4, cpuPercent: 70}
+
+# El usuario con que corre (Fase 20): el número, no el nombre que dice la imagen. Es el mismo usuario.
+securityContext:
+  runAsUser: 10001

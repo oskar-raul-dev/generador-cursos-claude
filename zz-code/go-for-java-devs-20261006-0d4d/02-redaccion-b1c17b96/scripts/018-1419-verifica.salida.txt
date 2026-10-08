@@ -1,0 +1,8 @@
+── atlassync/v0.2
+00-convencion-de-git-y-tags.md 11-mongodb-y-modelado-documental.md 
+── clearinghouse/v0.5
+00-convencion-de-git-y-tags.md 13-lotes-scheduling-y-asincronia.md 
+── eventrelay/v0.9
+00-convencion-de-git-y-tags.md 10-clientes-http-y-apis-externas.md 
+── opsreport/v0.5
+00-convencion-de-git-y-tags.md 05-http-rest-stdlib.md

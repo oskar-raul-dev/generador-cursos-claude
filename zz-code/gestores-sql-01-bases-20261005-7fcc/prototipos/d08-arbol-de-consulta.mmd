@@ -1,0 +1,5 @@
+flowchart BT
+    S["supplier"] --> sel["σ city = 'Lima'"]
+    SH["shipment"] --> j["⋈ supplier_id"]
+    sel --> j
+    j --> p["π name"]

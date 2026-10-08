@@ -1,0 +1,11 @@
+=== 5. Desafios: 3 por fase, sin duplicar titulos ===
+total desafios: 54
+
+=== 6. Epoca: desafios del Bloque A sin deps externas ===
+-- 01-sintaxis-y-valores.md
+35:`golang.org/x/text/unicode/norm`, que no puedes usar todavía.)*
+(revisar los que salgan)
+
+=== 7. Recuento final ===
+   36523 total
+numerados: 570 (incluye listas fuera de §8)

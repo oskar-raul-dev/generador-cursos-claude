@@ -1,0 +1,16 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Legacy Node 10: attach Docker",
+      "type": "node",
+      "request": "attach",
+      "address": "localhost",
+      "port": 9229,
+      "localRoot": "${workspaceFolder}",
+      "remoteRoot": "/workspace",
+      "restart": false,
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ]
+}

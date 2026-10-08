@@ -1,0 +1,29 @@
+=== 7bis. Ejercicios ===
+  ✅ declarado = real, y todo en 20-25
+
+=== 11. 'Proyecto que avanza' vs tabla de 0-ESTRUCTURA ===
+F00  **nace el arnés de medición**. Al terminar existe `Cordillera.Bench` c
+F01  **nace el modelo de dominio**. Al terminar existe `Cordillera.Domain` 
+F02  **el modelo de dominio**. Al terminar, `Cordillera.Domain` distingue p
+F03  **el modelo de dominio**. Al terminar, `Cordillera.Domain` tiene sus c
+F04  **el modelo de dominio**. Al terminar, `Cordillera.Domain` tiene su po
+F05  **el modelo de dominio**. Al terminar, la carga de los tres distribuid
+F06  **el modelo de dominio y el arnés**. Al terminar, el reporte histórico
+F07  **nace SIGE**. Al terminar existe `src/legacy/` con el esquema complet
+F08  **SIGE**. Entran catálogo y facturación, escritos **mientras se caract
+F09  **nace CatalogAPI**, de momento solo su capa de datos. El endpoint púb
+F10  **SIGE + CatalogAPI**. Al terminar, existencias se escribe por los dos
+F11  **SIGE**. Y cierra el Bloque B.
+F12  **SIGE cliente**. Al terminar, el formulario de existencias corre sobr
+F13  **SIGE cliente**. Al terminar existe el mismo formulario de existencia
+F14  **SIGE cliente**. Al terminar existe el prototipo en WinUI 3, está med
+F15  **CatalogAPI**. La fase 09 le dio su capa de datos; esta le da la cara
+F16  **CatalogAPI**. Al terminar, ni el servicio ni el cliente tienen un se
+F17  **nace NightPress**. Al terminar, la liquidación trimestral es reanuda
+F18  **nace Redacción**. Y se completa **la cuarta columna del veredicto de
+F19  **todos**. Es la primera fase que no construye funcionalidad: instrume
+F20  ninguno construye funcionalidad. Esta fase **empaqueta lo que hay y le
+F21  **NightPress**, que aprende a servir una predicción además de liquidar
+F22  **nacen AcervoRAG y EditorAgent**, y comparten fase porque comparten e
+F23  **CatalogAPI, dos veces**.
+F24  **los seis**, y ninguno cambia una línea.

@@ -1,0 +1,10 @@
+uv python install 3.14.7: 3.2 s exit=0
+Downloading cpython-3.14.7-macos-aarch64-none (download) (25.3MiB)
+ Downloaded cpython-3.14.7-macos-aarch64-none (download)
+Installed Python 3.14.7 in 3.20s
+ + cpython-3.14.7-macos-aarch64-none (python3.14)
+
+ 68M	uvpy
+cpython-3.14-macos-aarch64-none
+cpython-3.14.7-macos-aarch64-none
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

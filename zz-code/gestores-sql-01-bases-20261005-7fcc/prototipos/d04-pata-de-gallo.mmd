@@ -1,0 +1,26 @@
+erDiagram
+    customer ||--o{ sales_order : places
+    sales_order ||--|{ order_line : contains
+    part ||--o{ order_line : "appears in"
+    customer {
+        int customer_id PK
+        text name
+        text city
+    }
+    sales_order {
+        int order_id PK
+        int customer_id FK
+        text order_date
+    }
+    order_line {
+        int order_id PK, FK
+        int line_no PK
+        int part_id FK
+        int quantity
+        real unit_price
+    }
+    part {
+        int part_id PK
+        text name
+        text color
+    }

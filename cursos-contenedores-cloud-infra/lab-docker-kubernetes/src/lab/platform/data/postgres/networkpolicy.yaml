@@ -1,0 +1,21 @@
+# La red de Postgres (Fase 20): solo las cadenas del sistema llegan al 5432. Las dos, porque comparten este
+# Postgres (cada una con sus bases y sus usuarios): la red no puede separarlas más que eso, y lo que falta
+# —que una cadena no pueda intentar entrar a la base de la otra— es identidad, no red.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: postgres
+  namespace: data
+  labels:
+    app.kubernetes.io/part-of: lab
+spec:
+  podSelector:
+    matchLabels: {app.kubernetes.io/name: postgres}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - namespaceSelector:
+            matchExpressions:
+              - {key: kubernetes.io/metadata.name, operator: In, values: [apps, apps-b, data]}
+      ports:
+        - {protocol: TCP, port: 5432}

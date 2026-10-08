@@ -1,0 +1,8 @@
+Exit code 1
+1  Referencias a otros cursos ......... ❌
+prompts/propuesta-fases-y-alcance.md:1004:  el mismo módulo, con el mismo arnés, es una comparación que un curso de Java no puede hacer.
+2  Enlaces relativos ................. ✅
+3  Cadena 00→24 + cabeceras .......... ✅
+4  10 secciones · ejercicios · tags ... ✅ las 25
+5  BENCHMARKS ........................ ✅ 24 + consolidación
+6  src/ coincide con lo declarado .... src/fases/07-el-sistema-que-heredas src/fases/07-el-sistema-que-heredas/mini

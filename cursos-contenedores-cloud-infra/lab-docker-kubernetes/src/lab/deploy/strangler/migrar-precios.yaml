@@ -1,0 +1,35 @@
+# La migración de datos del strangler (Fase 10): antes de mandarle tráfico a pricing, pricing tiene que
+# saber lo mismo que Contingencia. Copia los precios de las ocho droguerías por las dos interfaces REST.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrar-precios
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: migrar-precios
+    app.kubernetes.io/part-of: lab
+spec:
+  backoffLimit: 0
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: migrar-precios
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrar
+          # nginxinc/nginx-unprivileged:1.30.5-alpine, solo porque trae curl
+          image: nginxinc/nginx-unprivileged@sha256:ed04ec1ff34502c339ee5c3ae3f855442398edc1d05591e2b98981dcbbd20b1e
+          command: ["sh", "-c"]
+          args:
+            - |
+              n=0
+              for store in DRO-001 DRO-002 DRO-003 DRO-004 DRO-005 DRO-006 DRO-007 DRO-008; do
+                for i in 1 2 3 4 5 6 7 8; do
+                  sku="SKU-000$i"
+                  price=$(curl -sf "http://contingencia.legacy:8081/prices/$sku?store=$store" | sed 's/.*"price":\([0-9]*\).*/\1/')
+                  curl -sf -X PUT -H 'Content-Type: application/json' \
+                    -d "{\"store\":\"$store\",\"price\":$price}" "http://pricing.apps:8080/prices/$sku" > /dev/null && n=$((n+1))
+                done
+              done
+              echo "precios migrados: $n"

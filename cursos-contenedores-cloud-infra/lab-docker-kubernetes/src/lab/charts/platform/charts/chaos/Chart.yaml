@@ -1,0 +1,5 @@
+apiVersion: v2
+name: chaos
+description: El generador de caos del laboratorio (Fase 22), entre inventory y un vecino
+type: application
+version: 0.22.0

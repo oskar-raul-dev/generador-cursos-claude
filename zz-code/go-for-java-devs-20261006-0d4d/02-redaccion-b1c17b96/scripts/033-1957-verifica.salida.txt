@@ -1,0 +1,19 @@
+═══ track_b ═══
+B0-agentes-de-código
+B1-mcp
+B2-modelos-locales-ollama
+B3-fine-tuning
+B4-cierre-integrador
+B5-puesta-al-día-opcional
+README.md
+      39 maestria-ia/track_b/README.md
+
+═══ react-16 track BE (Go) ═══
+     412 react-16-legacy-for-backend-devs/bea-10-datos-de-prueba-y-faker.md
+   17870 total
+
+═══ ¿existe algo de patrones/DDD/microservicios en el repo? ═══
+angular-8-legacy-for-backend-devs/be08-la-contencion-y-lo-irrecuperable.md
+vue2-legacy-for-backend-devs/01-vue2-legacy/vu4-timeline-vuetify.md
+vue2-legacy-for-backend-devs/01-vue2-legacy/q4-timeline-actividad.md
+(vacío = no existe)

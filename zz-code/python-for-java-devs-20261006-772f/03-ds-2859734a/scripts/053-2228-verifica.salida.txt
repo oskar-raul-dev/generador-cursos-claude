@@ -1,0 +1,8 @@
+OK
+OK test
+........................................                                 [100%]
+40 passed in 12.20s
+23 aliados · 2,599 remisiones · 925 volvieron (35.6%) · comisiones 1,165,174,000 → 1,259,648/retenido
+mejor A001 periodoncia occidente 987,375 · peor A010 endodoncia centro 1,659,407 (1.68×)
+especialidad: {'cirugia_oral': '1.23M', 'endodoncia': '1.42M', 'odontopediatria': '1.30M', 'periodoncia': '1.18M', 'protesis': '1.23M'}
+zona:         {'centro': '1.36M', 'norte': '1.17M', 'occidente': '1.22M', 'sabana': '1.18M', 'sur': '1.31M'}

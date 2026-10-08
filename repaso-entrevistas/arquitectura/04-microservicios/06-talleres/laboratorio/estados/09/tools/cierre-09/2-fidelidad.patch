@@ -1,0 +1,101 @@
+diff --git a/loyalty/.gitignore b/loyalty/.gitignore
+new file mode 100644
+index 0000000..21d0b89
+--- /dev/null
++++ b/loyalty/.gitignore
+@@ -0,0 +1 @@
++.venv/
+diff --git a/loyalty/loyalty.py b/loyalty/loyalty.py
+new file mode 100644
+index 0000000..d19848c
+--- /dev/null
++++ b/loyalty/loyalty.py
+@@ -0,0 +1,40 @@
++"""loyalty: los puntos de fidelidad del cierre de 06/09. Un stub: escucha un hecho de pago y anota.
++
++Un punto por cada 10.00 pagados. Sin base: imprime. Qué hecho escucha lo decide quien lo arranca:
++  coreografía    PaymentAuthorized en payments.results   (lo publica payments)
++  orquestación   OrderPaid en orders.events              (lo publica el orquestador al terminar)
++"""
++import argparse
++import asyncio
++import json
++from decimal import Decimal
++
++from aiokafka import AIOKafkaConsumer
++
++
++async def run(brokers, topic, fact_type):
++    consumer = AIOKafkaConsumer(topic, bootstrap_servers=brokers, group_id="loyalty", auto_offset_reset="earliest")
++    await consumer.start()
++    print(f"loyalty consuming {fact_type} from {topic}", flush=True)
++    try:
++        async for msg in consumer:
++            ev = json.loads(msg.value)
++            if ev.get("type") != fact_type:
++                continue
++            amount = Decimal((ev.get("total") or ev.get("payment"))["amount"])
++            print(f"{fact_type} order={ev['orderId'][:8]} → +{int(amount // 10)} points", flush=True)
++    finally:
++        await consumer.stop()
++
++
++def main():
++    p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
++    p.add_argument("--topic", required=True)
++    p.add_argument("--type", required=True, dest="fact_type")
++    p.add_argument("--kafka", default="localhost:29092")
++    args = p.parse_args()
++    asyncio.run(run(args.kafka, args.topic, args.fact_type))
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/loyalty/pyproject.toml b/loyalty/pyproject.toml
+new file mode 100644
+index 0000000..d1c75f8
+--- /dev/null
++++ b/loyalty/pyproject.toml
+@@ -0,0 +1,12 @@
++# loyalty: stub del cierre de 06/09. Sin base de datos: escucha y anota puntos. Versiones fijadas.
++[project]
++name = "ms-loyalty"
++version = "1.0.0"
++requires-python = ">=3.14"
++dependencies = [
++    "aiokafka==0.14.0",
++    "cramjam==2.13.0",           # snappy: lo que produce franz-go (06/08 §9)
++]
++
++[tool.uv]
++package = false
+diff --git a/scripts/lab.py b/scripts/lab.py
+index 5af8939..e26ddaf 100644
+--- a/scripts/lab.py
++++ b/scripts/lab.py
+@@ -325,6 +325,15 @@ def cmd_payments(args):
+          "--log-level", "warning"], cwd=project, env=env, check=False)
+ 
+ 
++def cmd_loyalty(args):
++    """Cierre de 06/09: el stub de fidelidad. Escucha el hecho de pago que publica cada saga."""
++    project = LAB / "loyalty"
++    topic, fact = {"choreography": ("payments.results", "PaymentAuthorized"),     # lo publica payments
++                   "orchestration": ("orders.events", "OrderPaid")}[args.saga]   # lo publica el orquestador
++    run(["uv", "sync", "--quiet", "--python", "3.14"], cwd=project)
++    run(["uv", "run", "--python", "3.14", "python", "loyalty.py", "--topic", topic, "--type", fact], cwd=project, check=False)
++
++
+ def cmd_psp(args):
+     """Arranca psp-simulator en primer plano."""
+     run([sys.executable, str(LAB / "psp-simulator" / "psp_simulator.py"), "--port", str(args.port)], check=False)
+@@ -680,6 +689,9 @@ def main():
+     m.add_argument("--no-payment-key", action="store_true",
+                    help="no propagar la Idempotency-Key a payments (provocación del taller 03)")
+     m.set_defaults(fn=cmd_monolith)
++    ly = sub.add_parser("loyalty", help=cmd_loyalty.__doc__)
++    ly.add_argument("--saga", choices=["orchestration", "choreography"], default="orchestration")
++    ly.set_defaults(fn=cmd_loyalty)
+     ps = sub.add_parser("psp", help=cmd_psp.__doc__)
+     ps.add_argument("--port", type=int, default=28085)
+     ps.set_defaults(fn=cmd_psp)

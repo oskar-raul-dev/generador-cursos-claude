@@ -1,0 +1,18 @@
+=== numeración de INSTINTOS ===
+412:### 19 420:### 20 428:### 21 436:### 22 443:### 23 450:### 24 458:### 25 472:### 26 495:### 27 507:### 28 520:### 29 532:### 30 549:### 31 561:### 32 573:### 33 591:### 34 607:### 35 620:### 36 
+
+=== la afirmación de las mediciones ia en BENCHMARKS ===
+## 🤖 Complementos `ia` — pendientes de ejecutar
+
+> ⏳ **Las seis mediciones del track de IA están especificadas y no ejecutadas.** Cada una tiene su
+> hipótesis, sus condiciones, su competidor y su comando escritos en la sección 📏 de su lección;
+> lo que falta es correrlas. Se listan aquí **en vez de omitirlas** por la misma razón por la que
+> el curso publica sus empates: un documento que solo muestra lo medido esconde cuánto falta.
+>
+> Tres de ellas cuestan dinero real —llaman a la API— y una necesita el único insumo que un script
+> no puede producir: treinta juicios humanos. Ninguna cifra del track se cita en ninguna parte
+> hasta que su medición exista.
+
+
+=== filas de la tabla ia ===
+9

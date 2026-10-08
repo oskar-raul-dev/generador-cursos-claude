@@ -1,0 +1,10 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: a13
+nodes:
+  - role: control-plane
+    image: kindest/node@sha256:099e049362a1526b2db71494e1947aae99bd16290d7c895f2b7ea312e3cbfaed
+    # La carpeta del host, montada en el nodo: lo que se escriba ahí sobrevive al cluster.
+    extraMounts:
+      - hostPath: /Users/oskar/Developer/Learning/courses-ia-generated/zz-code/lab-docker-kubernetes-20261006-0213/04-t11-t16/a13/respaldos
+        containerPath: /respaldos

@@ -1,0 +1,21 @@
+asyncapi: 3.0.0
+info:
+  title: Eventos de la agenda de Áurea
+  version: 1.2.0
+channels:
+  citaConfirmada:
+    address: citas.confirmada
+    messages:
+      CitaConfirmada:
+        payload:
+          type: object
+          required: [cita, sede, hora]
+          additionalProperties: false
+          properties:
+            cita: {type: integer, minimum: 1}
+            sede: {type: string, enum: [Centro, Chapinero, Suba, Kennedy, Usaquén, Engativá, Fontibón, Restrepo, Soacha, Zipaquirá]}
+            hora: {type: string, pattern: "^([01][0-9]|2[0-3]):[0-5][0-9]$"}
+operations:
+  publicarCitaConfirmada:
+    action: send
+    channel: {$ref: "#/channels/citaConfirmada"}

@@ -1,0 +1,7 @@
+services:
+  sede-centro:
+    build: ./sede
+    ports: ["2201:22"]
+  sede-suba:
+    build: ./sede
+    ports: ["2202:22"]

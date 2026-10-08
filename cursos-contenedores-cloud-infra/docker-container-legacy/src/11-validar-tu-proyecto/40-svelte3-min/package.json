@@ -1,0 +1,17 @@
+{
+  "name": "phase11-svelte3-min",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "test": "node scripts/compiler-smoke.js",
+    "start": "node scripts/serve.js"
+  },
+  "devDependencies": {
+    "@rollup/plugin-node-resolve": "9.0.0",
+    "rollup": "2.32.1",
+    "rollup-plugin-svelte": "7.1.0",
+    "svelte": "3.29.0"
+  }
+}

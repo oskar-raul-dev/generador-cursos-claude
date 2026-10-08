@@ -1,0 +1,27 @@
+{
+  "engine": "podman",
+  "tool": "kind",
+  "date": "2026-10-03T19:41:48",
+  "runs": [
+    {
+      "ready_s": 28.7,
+      "vm_before_mib": 682,
+      "vm_after_mib": 1085,
+      "cluster_mib": 403
+    },
+    {
+      "ready_s": 29.6,
+      "vm_before_mib": 548,
+      "vm_after_mib": 1095,
+      "cluster_mib": 547
+    },
+    {
+      "ready_s": 29.5,
+      "vm_before_mib": 567,
+      "vm_after_mib": 1074,
+      "cluster_mib": 507
+    }
+  ],
+  "server_version": "v1.36.4",
+  "three_nodes_s": 34.9
+}

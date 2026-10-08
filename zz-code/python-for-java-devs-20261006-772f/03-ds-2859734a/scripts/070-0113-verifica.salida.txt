@@ -1,0 +1,7 @@
+=== ¿de dónde sale el kernelspec? ===
+dirs: ['/Users/oskar/Library/Jupyter/kernels', '/Users/oskar/.cache/uv/builds-v0/.tmpFpXkHl/share/jupyter/kernels', '/usr/local/share/jupyter/kernels', '/usr/share/jupyter/kernels', '/Users/oskar/.ipython/kernels']
+encontrados: ['python3']
+sys.prefix: /Users/oskar/.cache/uv/builds-v0/.tmpFpXkHl
+=== solo papermill + ipykernel (sin jupyterlab) ===
+Installed 49 packages in 195ms
+encontrados: ['python3']

@@ -1,0 +1,172 @@
+openapi: 3.1.0
+info:
+  title: replenish
+  version: 1.0.0
+  description: |
+    Las órdenes de reposición, incluido el préstamo entre droguerías (una reposición cuyo origen es
+    otra droguería). Sale de la Braqui. Desde G5 recibe el aviso de la venta sin que nadie espere su
+    respuesta; desde G12 también escucha el evento lab.inventory.stock-low (ver x-lab-events en
+    inventory.yaml) y crea la orden con su sourceEventId. Cada operación dice en `x-lab-paso` en qué paso se
+    implementa; lo que todavía no existe responde 404 (o 405, si la ruta ya existe con otro método) hasta su paso.
+servers:
+  - url: http://replenish:8080
+tags:
+  - name: plataforma
+  - name: reposición
+paths:
+  /health/live:
+    get:
+      tags: [plataforma]
+      summary: El proceso puede atender. Nunca consulta dependencias.
+      x-lab-paso: G0
+      responses:
+        '200': {description: Vivo, content: {application/json: {schema: {$ref: '#/components/schemas/Health'}}}}
+  /health/ready:
+    get:
+      tags: [plataforma]
+      summary: El servicio puede atender tráfico de verdad (trivial hasta G4).
+      x-lab-paso: G0
+      responses:
+        '200': {description: Listo, content: {application/json: {schema: {$ref: '#/components/schemas/Health'}}}}
+        '503': {description: No listo (desde G4), content: {application/json: {schema: {$ref: '#/components/schemas/Health'}}}}
+  /metrics:
+    get:
+      tags: [plataforma]
+      summary: Métricas en formato de exposición de Prometheus. Pendiente hasta G6 (Fase 17).
+      description: |
+        Iguales en los cuatro backends, para que un solo tablero los lea: un histograma
+        http_server_requests_seconds (en segundos) con las etiquetas method, uri (la ruta con sus
+        parámetros sin reemplazar, como /prices/{sku}) y status. Cada servicio puede sumar las suyas.
+      x-lab-paso: G6
+      responses:
+        '200': {description: Métricas, content: {text/plain: {schema: {type: string}}}}
+  /replenishment-orders:
+    get:
+      tags: [reposición]
+      summary: Las órdenes de reposición. En G0 devuelve una lista fija.
+      x-lab-paso: G0
+      parameters:
+        - {name: idempotencyKey, in: query, required: false, schema: {type: string}, description: 'Desde G13: solo la orden creada con esa clave (una o ninguna).'}
+      responses:
+        '200': {description: Órdenes, content: {application/json: {schema: {type: array, items: {$ref: '#/components/schemas/ReplenishmentOrder'}}}}}
+    post:
+      tags: [reposición]
+      summary: Crea una orden de reposición. Pendiente hasta G1 (Fase 09); inventory la llama desde G5.
+      x-lab-paso: G1
+      parameters:
+        - {name: Idempotency-Key, in: header, required: false, schema: {type: string, maxLength: 100}, description: 'Desde G13 (Fase 26). La misma clave con el mismo cuerpo devuelve la orden ya creada (201), sin crear otra; con otro cuerpo, 422.'}
+      requestBody:
+        required: true
+        content: {application/json: {schema: {$ref: '#/components/schemas/ReplenishmentRequest'}}}
+      responses:
+        '201': {description: Orden creada, content: {application/json: {schema: {$ref: '#/components/schemas/ReplenishmentOrder'}}}}
+  /replenishment-orders/{id}:
+    get:
+      tags: [reposición]
+      summary: Una orden. Pendiente hasta G1 (Fase 09).
+      x-lab-paso: G1
+      parameters:
+        - {name: id, in: path, required: true, schema: {type: string}}
+      responses:
+        '200': {description: Orden, content: {application/json: {schema: {$ref: '#/components/schemas/ReplenishmentOrder'}}}}
+        '404': {description: No existe, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+  /replenishment-orders/{id}/cancel:
+    post:
+      tags: [reposición]
+      summary: Cancela una orden que sigue en PENDING. Pendiente hasta G1 (Fase 09).
+      description: |
+        Una orden no se edita: si se creó mal, se cancela con su código de razón y se crea otra con
+        `replacesOrderId`. Una orden que ya salió (DISPATCHED o DELIVERED) no se cancela. Desde G11 la
+        saga usa esta misma operación como compensación, con el código SAGA_COMPENSATION. Desde G13
+        (Fase 26) la cancelación es idempotente: cancelar una orden que ya está en CANCELLED devuelve la
+        orden (200), porque una compensación se reintenta y su primer intento pudo haber llegado.
+      x-lab-paso: G1
+      parameters:
+        - {name: id, in: path, required: true, schema: {type: string}}
+      requestBody:
+        required: true
+        content: {application/json: {schema: {$ref: '#/components/schemas/CancelRequest'}}}
+      responses:
+        '200': {description: Orden cancelada, content: {application/json: {schema: {$ref: '#/components/schemas/ReplenishmentOrder'}}}}
+        '404': {description: No existe, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        '409': {description: 'La orden ya salió (DISPATCHED o DELIVERED); hasta G12, también si ya estaba en CANCELLED', content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        '422': {description: El código de razón no existe o está inactivo, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+  /reason-codes:
+    get:
+      tags: [reposición]
+      summary: La tabla de códigos de razón para cancelar una orden. Pendiente hasta G1 (Fase 09).
+      description: |
+        Es una tabla de datos, no un enum del contrato. G1 la siembra con CREATED_BY_MISTAKE,
+        WRONG_QUANTITY, WRONG_STORE y NO_LONGER_NEEDED; G11 le agrega SAGA_COMPENSATION.
+      x-lab-paso: G1
+      responses:
+        '200': {description: Códigos de razón, content: {application/json: {schema: {type: array, items: {$ref: '#/components/schemas/ReasonCode'}}}}}
+components:
+  schemas:
+    Sku: {type: string, pattern: '^SKU-[0-9]{4}$', examples: [SKU-0003]}
+    StoreId: {type: string, pattern: '^DRO-[0-9]{3}$', examples: [DRO-007]}
+    Health:
+      type: object
+      required: [status]
+      properties:
+        status: {type: string, enum: [live, ready, not_ready]}
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: {type: string, examples: [not_found]}
+        message: {type: string}
+    ReplenishmentRequest:
+      type: object
+      required: [sku, destinationStore, quantity]
+      properties:
+        sku: {$ref: '#/components/schemas/Sku'}
+        destinationStore: {$ref: '#/components/schemas/StoreId'}
+        originStore:
+          oneOf: [{$ref: '#/components/schemas/StoreId'}, {type: 'null'}]
+          description: 'La droguería que presta; null si la reposición viene de un centro de distribución.'
+        quantity: {type: integer, minimum: 1}
+        replacesOrderId:
+          type: string
+          description: 'La orden cancelada que esta corrige. Debe existir y estar en CANCELLED (422 si no).'
+    ReasonCodeValue:
+      type: string
+      pattern: '^[A-Z][A-Z_]{1,29}$'
+      description: Un código de la tabla de `GET /reason-codes`.
+      examples: [WRONG_QUANTITY]
+    ReasonCode:
+      type: object
+      required: [code, description, active]
+      properties:
+        code: {$ref: '#/components/schemas/ReasonCodeValue'}
+        description: {type: string, examples: [La cantidad pedida no era la que se necesitaba]}
+        active: {type: boolean, description: 'Un código inactivo se conserva para las órdenes viejas y no se acepta en las nuevas cancelaciones.'}
+    CancelRequest:
+      type: object
+      required: [reasonCode]
+      properties:
+        reasonCode: {$ref: '#/components/schemas/ReasonCodeValue'}
+        note: {type: string, maxLength: 200}
+    ReplenishmentOrder:
+      type: object
+      required: [id, sku, destinationStore, quantity, status]
+      properties:
+        id: {type: string}
+        sku: {$ref: '#/components/schemas/Sku'}
+        destinationStore: {$ref: '#/components/schemas/StoreId'}
+        originStore:
+          oneOf: [{$ref: '#/components/schemas/StoreId'}, {type: 'null'}]
+        quantity: {type: integer}
+        status: {type: string, enum: [PENDING, DISPATCHED, DELIVERED, CANCELLED]}
+        cancelReasonCode:
+          oneOf: [{$ref: '#/components/schemas/ReasonCodeValue'}, {type: 'null'}]
+          description: Desde G1; null salvo en CANCELLED.
+        replacesOrderId:
+          oneOf: [{type: string}, {type: 'null'}]
+          description: Desde G1.
+        sourceEventId:
+          oneOf: [{type: string}, {type: 'null'}]
+          description: 'Desde G12: el eventId del aviso lab.inventory.stock-low que la creó; null si la creó una petición. Desde G13 es único: un evento repetido no crea otra orden.'
+        idempotencyKey:
+          oneOf: [{type: string}, {type: 'null'}]
+          description: 'Desde G13: la clave con que se pidió, si se pidió con una.'

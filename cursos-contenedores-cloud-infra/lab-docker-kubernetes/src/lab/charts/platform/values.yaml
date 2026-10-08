@@ -1,0 +1,82 @@
+# Los valores por defecto del sistema (Fase 13). La regla: aquí va lo que vale para cualquier perfil y
+# cualquier cadena; en values-<perfil>.yaml, solo lo que el perfil cambia; en un archivo de cadena
+# (Fase 14), solo lo que la cadena cambia. Los secretos no van en ningún archivo de valores.
+
+# Lo que leen todos los subcharts.
+global:
+  # La puerta compartida (Fase 10): la escribe plataforma, fuera de este chart.
+  gateway:
+    name: lab
+    namespace: gateway
+  # Los hosts públicos. Cambian con la cadena (Fase 14).
+  hosts:
+    api: api.localhost
+    storefront: storefront.localhost
+  # El puerto del host que llega a la puerta (D32): parte de las direcciones que ve el navegador.
+  publicPort: 8080
+  # Las imágenes viven en el nodo (task images:load): nunca se bajan de un registry.
+  imagePullPolicy: IfNotPresent
+  # G8 (Fase 19): inventory le habla a pricing con TLS mutuo, con certificados de cert-manager (emisor
+  # lab-ca) y la CA que reparte trust-manager. Encendido desde la Fase 19: necesita task platform:certs
+  # antes del primer task deploy (sin cert-manager, el cluster no conoce el tipo Certificate).
+  mtls:
+    enabled: true
+    issuer: lab-ca
+  # La seguridad del pod (Fase 20): sin root, sin capacidades, raíz de solo lectura, seccomp y sin el token
+  # de la API. Encendida desde la Fase 20.
+  podSecurity:
+    enabled: true
+  # G10 (Fase 23): inventory le pide el precio a pricing por gRPC (el 9090, con el mismo mTLS). balancing dice
+  # cómo se reparten las llamadas entre las réplicas de pricing: "service" (un Service normal: la conexión de
+  # HTTP/2 queda en una sola réplica) o "client" (un Service headless y round_robin en el cliente).
+  # maxConnectionAge: pricing cierra cada conexión al cumplir esa edad, y el cliente se reconecta (y vuelve a
+  # resolver el DNS: sin esto, una réplica nueva no recibe nada, B-23). Vacío, las conexiones duran lo que el pod.
+  grpc:
+    enabled: true
+    balancing: client
+    maxConnectionAge: 10s
+  # Las trazas (Fase 23): las enciende task obs:on -- traces, que escribe también este valor para los servicios.
+  traces:
+    enabled: false
+  # El generador de caos (Fase 22): entre inventory y el vecino que diga target. Apagado salvo en sus fases.
+  chaos:
+    enabled: false
+    target: catalog
+  # Las NetworkPolicy de la cadena (Fase 20): todo cerrado salvo lo que el sistema usa.
+  networkPolicy:
+    enabled: true
+  # El bus de eventos (G12, Fase 25), visto desde los subcharts. Lo escribe task bus:on junto con bus.* de
+  # abajo. Con nats encendido manda NATS; si no, Valkey; con los dos apagados, el aviso sigue por HTTP (G5).
+  bus:
+    valkey: { enabled: false }
+    nats:   { enabled: false }
+
+# Los interruptores del contrato (§5). Desde la Fase 17 instalan de verdad: task obs:on -- <pieza> los
+# enciende en .observability.json, que task deploy suma a los valores. El bus (Fase 25), con task bus:on.
+observability:
+  metrics:    { enabled: false }   # Prometheus (metrics-server va aparte: lo necesita el HPA)
+  dashboards: { enabled: false }   # Grafana
+  logs:       { enabled: false }   # Loki + Fluent Bit
+  traces:     { enabled: false }   # Tempo
+bus:
+  valkey: { enabled: false }
+  nats:   { enabled: false }
+
+# Los datos iniciales (Fase 12): un Job después de instalar, nunca en un upgrade.
+seed:
+  enabled: true
+  image: lab/seed:g3
+  stores: 20
+
+# Cada servicio, encendido. Lo propio de cada uno está en charts/<svc>/values.yaml.
+pricing:
+  enabled: true
+  # La circular de precios vigente (D23, Fase 11): SKU → tope en pesos. Cambiarla aquí y correr
+  # task deploy reinicia pricing con la tabla nueva (el hash del ConfigMap va en el pod).
+  regulatedCap:
+    caps:
+      SKU-0003: 20000
+inventory:  { enabled: true }
+catalog:    { enabled: true }
+replenish:  { enabled: true }
+storefront: { enabled: true }

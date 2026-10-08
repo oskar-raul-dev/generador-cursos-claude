@@ -1,0 +1,239 @@
+=== 1. links rotos (internos) ===
+./03-python-sin-ceremonia.md:425 -> sys.argv[2:]
+./08-el-contrato-del-codigo.md:186 -> x: T
+./08-el-contrato-del-codigo.md:243 -> items: Iterable[T]
+./08-el-contrato-del-codigo.md:250 -> ...
+
+=== 2. referencias a otros cursos / CLAUDE.md / rutas del proyecto ===
+  ninguna
+
+=== 3. lint con la configuración del propio curso ===
+E702 Multiple statements on one line (semicolon)
+  --> src/13-integraciones/socio_falible.py:73:33
+   |
+71 |         elif self.path == "/_reiniciar":
+72 |             with lock:
+73 |                 received.clear(); processed_keys.clear(); attempts.clear()
+   |                                 ^
+74 |             self._respond(200, {"ok": True})
+75 |         else:
+   |
+
+E702 Multiple statements on one line (semicolon)
+  --> src/13-integraciones/socio_falible.py:73:57
+   |
+71 |         elif self.path == "/_reiniciar":
+72 |             with lock:
+73 |                 received.clear(); processed_keys.clear(); attempts.clear()
+   |                                                         ^
+74 |             self._respond(200, {"ok": True})
+75 |         else:
+   |
+
+F821 Undefined name `agenda`
+  --> src/ia03-tool-calling-y-el-bucle-de-agente/agent_runner.py:30:31
+   |
+28 |         minutes: Duración necesaria; un control de ortodoncia son 20 minutos.
+29 |     """
+30 |     return _find_availability(agenda, branch, day, minutes)
+   |                               ^^^^^^
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> src/ia04-embeddings-y-busqueda-semantica/db.py:8:1
+   |
+ 6 |   """
+ 7 |
+ 8 | / from __future__ import annotations
+ 9 | |
+10 | | import os
+11 | | from contextlib import contextmanager
+12 | | from collections.abc import Iterator
+13 | |
+14 | | import psycopg
+15 | | from pgvector.psycopg import register_vector
+   | |____________________________________________^
+16 |
+17 |   DSN_ENV = "AUREA_DSN"
+   |
+help: Organize imports
+   |
+10 | import os
+11 + from collections.abc import Iterator
+12 | from contextlib import contextmanager
+   - from collections.abc import Iterator
+13 |
+   |
+
+E501 Line too long (105 > 100)
+   --> src/ia04-embeddings-y-busqueda-semantica/generar_corpus.py:307:101
+    |
+305 |     kinds = {kind for kind, _ in QUESTION_TEMPLATES}
+306 |     print(f"{args.documentos} documentos y {len(manifest)} fragmentos en {args.salida}/")
+307 |     print(f"{len(annotated)} preguntas anotadas ({', '.join(sorted(kinds))}) en {args.preguntas_salida}")
+    |                                                                                                     ^^^^^
+308 |     print(f"Derogados: {sum(1 for r in manifest if r['vigente_hasta'])} fragmentos de {len(manifest)}")
+    |
+
+E501 Line too long (103 > 100)
+   --> src/ia04-embeddings-y-busqueda-semantica/generar_corpus.py:308:101
+    |
+306 |     print(f"{args.documentos} documentos y {len(manifest)} fragmentos en {args.salida}/")
+307 |     print(f"{len(annotated)} preguntas anotadas ({', '.join(sorted(kinds))}) en {args.preguntas_salida}")
+308 |     print(f"Derogados: {sum(1 for r in manifest if r['vigente_hasta'])} fragmentos de {len(manifest)}")
+    |                                                                                                     ^^^
+
+I001 [*] Import block is un-sorted or un-formatted
+  --> src/ia05-normarag/bench_answers.py:10:1
+   |
+ 8 |   """
+ 9 |
+10 | / from __future__ import annotations
+11 | |
+12 | | import argparse
+13 | | import json
+14 | | import statistics
+15 | | import time
+16 | | from dataclasses import asdict, dataclass
+17 | | from decimal import Decimal
+18 | | from pathlib import Path
+19 | |
+20 | | import anthropic
+21 | | from pydantic import ValidationError
+22 | |
+23 | | from answer import DraftAnswer, SYSTEM, answer_question, verify_citations
+24 | | from db import connect
+25 | | from pricing import CATALOG
+26 | | from search import hybrid_search
+   | |________________________________^
+27 |
+28 |   MODEL = "claude-opus-5"
+   |
+help: Organize imports
+   |
+22 |
+   - from answer import DraftAnswer, SYSTEM, answer_question, verify_citations
+23 + from answer import SYSTEM, DraftAnswer, answer_question, verify_citations
+24 | from db import connect
+   |
+
+F401 [*] `answer.verify_citations` imported but unused
+  --> src/ia05-normarag/bench_answers.py:23:58
+   |
+21 | from pydantic import ValidationError
+22 |
+23 | from answer import DraftAnswer, SYSTEM, answer_question, verify_citations
+   |                                                          ^^^^^^^^^^^^^^^^
+24 | from db import connect
+25 | from pricing import CATALOG
+   |
+help: Remove unused import: `answer.verify_citations`
+   |
+22 |
+   - from answer import DraftAnswer, SYSTEM, answer_question, verify_citations
+23 + from answer import DraftAnswer, SYSTEM, answer_question
+24 | from db import connect
+   |
+
+E501 Line too long (101 > 100)
+  --> src/ia05-normarag/bench_answers.py:50:101
+   |
+48 |     prompt peor sería caricaturizarlo, y entonces la comparación no probaría nada.
+49 |     """
+50 |     return "\n\n".join(path.read_text(encoding="utf-8") for path in sorted(corpus_dir.glob("*.txt")))
+   |                                                                                                     ^
+
+E501 Line too long (104 > 100)
+   --> src/ia05-normarag/bench_answers.py:100:101
+    |
+ 98 |         "--sin-contexto-completo",
+ 99 |         action="store_true",
+100 |         help="Omite el competidor 1. Es el más caro de los cuatro: paga el corpus entero por pregunta.",
+    |                                                                                                     ^^^^
+101 |     )
+102 |     args = parser.parse_args()
+    |
+
+F401 [*] `datetime.date` imported but unused
+  --> src/ia05-normarag/test_normarag.py:10:22
+   |
+ 8 | from __future__ import annotations
+ 9 |
+10 | from datetime import date
+   |                      ^^^^
+11 |
+12 | import pytest
+   |
+help: Remove unused import: `datetime.date`
+   |
+9  |
+   - from datetime import date
+10 |
+   |
+
+E501 Line too long (101 > 100)
+  --> src/ia05-normarag/test_normarag.py:73:101
+   |
+72 | def test_scanned_pdf_is_reported_not_swallowed() -> None:
+73 |     """pypdf devuelve vacío ante un escaneado y no lanza nada. Ese silencio se convierte en señal."""
+   |                                                                                                     ^
+74 |     chunks, reason = chunk_text("", document_title="Escaneado", document_version="2025")
+75 |     assert chunks == []
+   |
+
+B905 `zip()` without an explicit `strict=` parameter
+  --> src/ia06-evaluacion/bench_judges.py:47:40
+   |
+45 |     # Los vectores vienen normalizados de embeddings.py, así que el producto punto ES
+46 |     # el coseno. Si algún día dejaran de venir normalizados, esto mentiría en silencio.
+47 |     similarity = sum(x * y for x, y in zip(a, b))
+   |                                        ^^^^^^^^^
+48 |     return "correcta" if similarity >= threshold else "incorrecta"
+   |
+help: Add explicit value for parameter `strict=`
+
+E501 Line too long (111 > 100)
+  --> src/ia06-evaluacion/generar_evalset.py:39:101
+   |
+37 |     copago = f"{row['copago']:,}".replace(",", ".")
+38 |     autorizacion = (
+39 |         " Requiere autorización previa." if row["autorizacion_previa"] else " No requiere autorización previa."
+   |                                                                                                     ^^^^^^^^^^^
+40 |     )
+41 |     return (
+   |
+
+B905 `zip()` without an explicit `strict=` parameter
+  --> src/ia06-evaluacion/statistics_helpers.py:25:30
+   |
+23 |     if not a:
+24 |         return 0.0
+25 |     return sum(1 for x, y in zip(a, b) if x == y) / len(a)
+   |                              ^^^^^^^^^
+help: Add explicit value for parameter `strict=`
+
+UP037 [*] Remove quotes from type annotation
+   --> src/ia08-produccion-y-el-veredicto/test_produccion.py:173:36
+    |
+173 | def evento(**overrides: object) -> "Event":
+    |                                    ^^^^^^^
+174 |     from datetime import datetime
+    |
+help: Remove quotes
+    |
+172 |
+    - def evento(**overrides: object) -> "Event":
+173 + def evento(**overrides: object) -> Event:
+174 |     from datetime import datetime
+    |
+
+F821 Undefined name `Event`
+   --> src/ia08-produccion-y-el-veredicto/test_produccion.py:173:37
+    |
+173 | def evento(**overrides: object) -> "Event":
+    |                                     ^^^^^
+174 |     from datetime import datetime
+    |
+
+Found 17 errors.
+[*] 5 fixable with the `--fix` option (2 hidden fixes can be enabled with the `--unsafe-fixes` option).
+  (quedan los 17 avisos declarados del camino base y del track ia)

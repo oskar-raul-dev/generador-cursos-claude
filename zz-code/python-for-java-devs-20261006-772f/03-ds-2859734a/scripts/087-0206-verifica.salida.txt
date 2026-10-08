@@ -1,0 +1,22 @@
+no sobreagendar nada: -6,602 consultas perdidas sobre 33,224 citas
+
+--- una colisión cuesta 1× una silla vacía · umbral p > 0.50 ---
+   regla de 3                 sobreagenda  9,712 · neto frente a no hacer nada:     +503 consultas
+   logística de 5             sobreagenda  3,268 · neto frente a no hacer nada:    +3497 consultas
+   logística + interacción    sobreagenda  3,049 · neto frente a no hacer nada:    +4256 consultas
+   red neuronal               sobreagenda  3,168 · neto frente a no hacer nada:    +4314 consultas
+--- una colisión cuesta 2× una silla vacía · umbral p > 0.67 ---
+   regla de 3                 sobreagenda  6,187 · neto frente a no hacer nada:    -2594 consultas
+   logística de 5             sobreagenda  1,761 · neto frente a no hacer nada:    +2162 consultas
+   logística + interacción    sobreagenda  2,196 · neto frente a no hacer nada:    +3404 consultas
+   red neuronal               sobreagenda  2,329 · neto frente a no hacer nada:    +3482 consultas
+--- una colisión cuesta 3× una silla vacía · umbral p > 0.75 ---
+   regla de 3                 sobreagenda  6,187 · neto frente a no hacer nada:    -6336 consultas
+   logística de 5             sobreagenda  1,247 · neto frente a no hacer nada:    +1664 consultas
+   logística + interacción    sobreagenda  1,878 · neto frente a no hacer nada:    +3006 consultas
+   red neuronal               sobreagenda  1,994 · neto frente a no hacer nada:    +3023 consultas
+--- una colisión cuesta 4× una silla vacía · umbral p > 0.80 ---
+   regla de 3                 sobreagenda    562 · neto frente a no hacer nada:     -808 consultas
+   logística de 5             sobreagenda  1,014 · neto frente a no hacer nada:    +1368 consultas
+   logística + interacción    sobreagenda  1,697 · neto frente a no hacer nada:    +2740 consultas
+   red neuronal               sobreagenda  1,771 · neto frente a no hacer nada:    +2768 consultas

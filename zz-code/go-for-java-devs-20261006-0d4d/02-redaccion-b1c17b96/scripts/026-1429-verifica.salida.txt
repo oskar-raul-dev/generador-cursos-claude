@@ -1,0 +1,11 @@
+=== 1. Secciones: 10 en orden ===
+OK 18/18
+
+=== 2. Obligatorias 🪞 🩻 📖 ⚖️ 🧨 ===
+OK 18/18
+
+=== 3. Vallas de codigo pares ===
+OK
+
+=== 4. Enlaces a archivos ===
+OK si vacio

@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: variantes, namespace: apps, labels: {app.kubernetes.io/part-of: lab}}
+data: {TOPE: "20000"}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: variantes, namespace: apps, labels: {app.kubernetes.io/part-of: lab}}
+spec:
+  containers:
+    - name: testigo
+      image: nginxinc/nginx-unprivileged@sha256:ed04ec1ff34502c339ee5c3ae3f855442398edc1d05591e2b98981dcbbd20b1e
+      command: ["sleep", "3600"]
+      envFrom: [{configMapRef: {name: variantes}}]
+      volumeMounts:
+        - {name: carpeta, mountPath: /carpeta}
+        - {name: carpeta, mountPath: /subpath/TOPE, subPath: TOPE}
+  volumes:
+    - {name: carpeta, configMap: {name: variantes}}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: clave-que-falta, namespace: legacy, labels: {app.kubernetes.io/part-of: lab}}
+spec:
+  containers:
+    - name: testigo
+      image: nginxinc/nginx-unprivileged@sha256:ed04ec1ff34502c339ee5c3ae3f855442398edc1d05591e2b98981dcbbd20b1e
+      command: ["sleep", "3600"]
+      env:
+        - name: X
+          valueFrom: {secretKeyRef: {name: portal-contingencia, key: NO_EXISTE}}

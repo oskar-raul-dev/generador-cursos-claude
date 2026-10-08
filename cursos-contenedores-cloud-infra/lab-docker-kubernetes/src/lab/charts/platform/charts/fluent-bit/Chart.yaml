@@ -1,0 +1,5 @@
+apiVersion: v2
+name: fluent-bit
+description: Fluent Bit del laboratorio (Fase 18), un DaemonSet que lee los logs de cada nodo y los manda a Loki
+type: application
+version: 0.18.0

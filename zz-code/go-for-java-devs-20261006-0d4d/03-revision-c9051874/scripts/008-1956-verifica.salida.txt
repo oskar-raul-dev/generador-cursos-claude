@@ -1,0 +1,18 @@
+F00 esperado=['B-01'] en📐=['B-01', 'B-21'] OK extra:['B-21']
+F01 esperado=['B-02', 'B-03', 'B-04'] en📐=['B-02', 'B-03', 'B-04'] OK 
+F02 esperado=['B-05'] en📐=['B-05'] OK 
+F03 esperado=['B-06'] en📐=['B-06', 'B-19'] OK extra:['B-19']
+F04 esperado=[] en📐=['B-10', 'B-25'] OK extra:['B-10', 'B-25']
+F05 esperado=[] en📐=['B-12', 'B-23'] OK extra:['B-12', 'B-23']
+F06 esperado=['B-07', 'B-08', 'B-09', 'B-10'] en📐=['B-07', 'B-08', 'B-09', 'B-10'] OK 
+F07 esperado=[] en📐=['B-20'] OK extra:['B-20']
+F08 esperado=['B-11', 'B-12'] en📐=['B-11', 'B-12'] OK 
+F09 esperado=['B-13', 'B-14', 'B-15', 'B-16'] en📐=['B-13', 'B-14', 'B-15', 'B-16'] OK 
+F10 esperado=[] en📐=['B-23', 'B-25'] OK extra:['B-23', 'B-25']
+F11 esperado=[] en📐=['B-06', 'B-19', 'B-26'] OK extra:['B-06', 'B-19', 'B-26']
+F12 esperado=['B-17', 'B-18'] en📐=['B-17', 'B-18'] OK 
+F13 esperado=['B-19', 'B-20'] en📐=['B-19', 'B-20', 'B-24', 'B-27'] OK extra:['B-24', 'B-27']
+F14 esperado=['B-21'] en📐=['B-21'] OK 
+F15 esperado=['B-22', 'B-23'] en📐=['B-02', 'B-05', 'B-15', 'B-17', 'B-19', 'B-22', 'B-23'] OK extra:['B-02', 'B-05', 'B-15', 'B-17', 'B-19']
+F16 esperado=['B-24'] en📐=['B-21', 'B-24'] OK extra:['B-21']
+F17 esperado=[] en📐=[] OK

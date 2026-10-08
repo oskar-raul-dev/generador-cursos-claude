@@ -1,0 +1,4 @@
+revisando circulares con un token de 6 caracteres
+aurea-circulares.service
+aurea-circulares.timer
+revisar_circulares.py

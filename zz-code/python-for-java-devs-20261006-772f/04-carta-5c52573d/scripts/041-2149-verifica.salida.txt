@@ -1,0 +1,7 @@
+op105-or03-active-record.md:116: # ------------------------------------------------- SQLAlchemy (Data Mapper)
+op127-pr05-tiempo-real.md:63: EVENTS = [{"id": i, "turno": f"{8 + i // 3:02d}:{(i % 3) * 20:02d}", "estado": "ocupado"} for i in range(1, 7)
+op140-ff02-ctypes-y-cffi.md:47: /* Exponential smoothing: out[i] = alpha * x[i] + (1 - alpha) * out[i - 1]. */
+op143-ff05-rust-y-cpp.md:79: /// Exponential smoothing over a NumPy array.
+op143-ff05-rust-y-cpp.md:106: // Exponential smoothing over a NumPy array.
+op143-ff05-rust-y-cpp.md:155: // Exponential smoothing over a NumPy array.
+op153-ar07-latex-y-typst.md:49: #set page(paper: "us-letter")

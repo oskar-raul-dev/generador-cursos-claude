@@ -1,0 +1,31 @@
+<Project>
+
+  <!-- Todo lo nuevo del curso hereda de aquí. Lo que se fija una vez, no se discute en
+       veinticuatro .csproj: nullable activado, advertencias como errores y analizadores
+       en su nivel más alto. Apagarlo "para simplificar un ejemplo" está prohibido
+       (guía §6.3). -->
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningLevel>9999</WarningLevel>
+    <AnalysisLevel>latest-all</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <InvariantGlobalization>false</InvariantGlobalization>
+    <NeutralLanguage>es</NeutralLanguage>
+  </PropertyGroup>
+
+  <!-- Restauración reproducible: el lockfile se versiona y la compilación falla si no
+       coincide. Es lo que Maven te da con el pom y aquí hay que pedirlo. -->
+  <PropertyGroup>
+    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
+    <RestoreLockedMode Condition="'$(ContinuousIntegrationBuild)' == 'true'">true</RestoreLockedMode>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Company>Cordillera Media</Company>
+    <Product>SIGE</Product>
+  </PropertyGroup>
+
+</Project>

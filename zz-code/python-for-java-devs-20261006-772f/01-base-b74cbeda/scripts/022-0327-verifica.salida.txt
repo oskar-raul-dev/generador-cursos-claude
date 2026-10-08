@@ -1,0 +1,4 @@
+el batch importa el CLI como biblioteca:
+  procedimientos 598 · pacientes 299 · total $146,175,000
+  aur 0.7.0 desde /private/tmp/claude-501/f07/src/aur/__init__.py
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

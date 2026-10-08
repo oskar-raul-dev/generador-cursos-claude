@@ -1,0 +1,15 @@
+Installed 7 packages in 50ms
+corte 2025-10-01 · entrenamiento 72,396 · prueba 33,224 (31%)
+inasistencia en prueba: 19.9%
+
+siempre asiste       AUC 0.500 · marca 33,224 (100%) · precisión 0.199 · recall 1.000
+regla 3 variables    AUC 0.672 · marca  9,712 (29%) · precisión 0.351 · recall 0.516
+logística 5 var      AUC 0.799 · marca  6,645 (20%) · precisión 0.526 · recall 0.530
+logística + FUGA     AUC 0.862 · marca  6,645 (20%) · precisión 0.588 · recall 0.592
+
+coeficientes (datos escalados):
+  inasistencias_previas     +0.554
+  jueves_tarde              +0.101
+  lluvia_mm                 +0.946
+  distancia_km              +0.441
+  dias_desde_agendamiento   +0.128

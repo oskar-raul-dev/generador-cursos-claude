@@ -1,0 +1,47 @@
+=== B en fases vs BENCHMARKS ===
+entradas: 29 ['B-24', 'B-25', 'B-26', 'B-27', 'B-28', 'B-29']
+citados y no existentes: ninguno ✅
+=== deudas 💸 ===
+00-convencion-de-git-y-tags.md:2
+00-instalacion-ambiente-y-tooling.md:1
+0-ESTRUCTURA-CURSO.md:4
+02-structs-interfaces-composicion.md:8
+01-sintaxis-y-valores.md:2
+03-errores-paquetes-io.md:2
+04-testing-dobles-cobertura.md:5
+06-concurrencia.md:7
+05-http-rest-stdlib.md:6
+07-context-y-ciclo-de-vida.md:1
+10-clientes-http-y-apis-externas.md:7
+09-sql-postgres-sqlite.md:2
+17-capstone.md:4
+=== wc final ===
+   37866 total
+=== git (solo lectura) ===
+ M 0-ESTRUCTURA-CURSO.md
+ D 00-ambiente-y-tooling.md
+ M 00-convencion-de-git-y-tags.md
+ M 04-testing-dobles-cobertura.md
+ M 05-http-rest-stdlib.md
+ M 06-concurrencia.md
+ M 07-context-y-ciclo-de-vida.md
+ M 08-migracion-a-go-moderno.md
+ M 09-sql-postgres-sqlite.md
+ M 10-clientes-http-y-apis-externas.md
+ M 11-mongodb-y-modelado-documental.md
+ M 12-cache-con-valkey.md
+ M 13-lotes-scheduling-y-asincronia.md
+ M 14-observabilidad-y-hardening.md
+ M 15-rendimiento-y-profiling.md
+ M 16-go-frente-a-spring-boot.md
+ M 17-capstone.md
+ M BENCHMARKS.md
+ M README.md
+ M prompts/alcance-del-proyecto.md
+ M prompts/formato-de-benchmarks.md
+ D prompts/historia-de-la-empresa-meridian.md
+ M prompts/plantillas-de-capitulo.md
+ M prompts/prompts-extendidos-fases.md
+ M prompts/propuesta-fases-y-alcance.md
+?? 00-historia-de-la-empresa-meridian.md
+?? 00-instalacion-ambiente-y-tooling.md

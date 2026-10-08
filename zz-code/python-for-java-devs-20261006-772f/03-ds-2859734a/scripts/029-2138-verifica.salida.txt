@@ -1,0 +1,4 @@
+ Downloaded polars-runtime-32
+Installed 4 packages in 15ms
+polars 1.44.2 · duckdb 1.5.5 · pyarrow 25.0.1
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

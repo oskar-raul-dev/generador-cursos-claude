@@ -1,0 +1,10 @@
+Installed 8 packages in 55ms
+bucle           302 filas · primera ('Centro', '2024-01', 38689859, 139, 9, 139880000, 3179583)
+pandas          302 filas · primera ('Centro', '2024-01', 38689859, 139, 9, 139880000, 3179583)
+polars (lazy)   302 filas · primera ('Centro', '2024-01', 38689859, 139, 9, 139880000, 3179583)
+duckdb          302 filas · primera ('Centro', '2024-01', 38689859, 139, 9, 139880000, 3179583)
+pandas         == bucle: True
+polars (lazy)  == bucle: False
+   ref: ('Centro', '2026-04', 0, 0, 12, 186930000, 54777466) 
+   otr: ('Centro', '2026-04', 0, None, 12, 186930000, 54777466)
+duckdb         == bucle: True

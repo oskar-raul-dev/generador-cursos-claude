@@ -1,0 +1,22 @@
+ds01-numpy-y-el-modelo-vectorizado         37 passed in 12.46s
+ds02-pandas                                10 passed in 1.84s
+ds07-scikit-learn                          19 passed in 0.48s
+src/ds01-numpy-y-el-modelo-vectorizado:
+acquisition.py
+bench_vectorized.py
+ejercicio_16_lento.py
+generar_embudo.py
+README.md
+test_acquisition.py
+test_generar_embudo.py
+
+src/ds02-pandas:
+bench_merge.py
+collections_report.py
+README.md
+test_collections_report.py
+
+src/ds07-scikit-learn:
+generar_ausentismo.py
+README.md
+test_generar_ausentismo.py

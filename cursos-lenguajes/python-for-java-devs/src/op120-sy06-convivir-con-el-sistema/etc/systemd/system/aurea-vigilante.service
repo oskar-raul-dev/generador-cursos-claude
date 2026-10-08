@@ -1,0 +1,16 @@
+[Unit]
+Description=Vigilante de la carpeta de la aseguradora
+After=network-online.target
+
+[Service]
+Type=notify
+User=aurea
+ExecStart=/opt/aurea/.venv/bin/python -m aurea.vigilante
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=on-failure
+RestartSec=5
+WatchdogSec=30
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=multi-user.target

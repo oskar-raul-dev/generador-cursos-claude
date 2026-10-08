@@ -1,0 +1,4 @@
+fontibon   filas= 696 csv= 179,915,000 split=           0 rotas=696
+restrepo   filas= 677 csv= 172,500,000 split=           0 rotas=677
+soacha     filas= 591 csv= 158,635,000 split=           0 rotas=591
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

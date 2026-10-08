@@ -1,0 +1,32 @@
+# Control de versiones
+.git
+.gitignore
+
+# Dependencias locales del host — nunca deben entrar en el build
+node_modules
+**/node_modules
+
+# Builds y cobertura
+dist
+**/dist
+build
+**/build
+coverage
+**/coverage
+
+# Logs y temporales
+*.log
+tmp
+**/tmp
+.cache
+**/.cache
+
+# Configuración de editores y del sistema operativo
+.idea
+.vscode
+.DS_Store
+Thumbs.db
+
+# Laboratorios y experimentos del curso
+labs
+experimentos

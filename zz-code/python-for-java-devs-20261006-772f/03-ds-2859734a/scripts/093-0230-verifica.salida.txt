@@ -1,0 +1,6 @@
+Installed 21 packages in 30ms
+{'estado': 'ok', 'backend': 'onnx'}
+{'probabilidad_inasistencia': 0.9955890774726868, 'backend': 'onnx'}
+--- y con pickle ---
+Installed 23 packages in 69ms
+{'probabilidad_inasistencia': 0.9955890393867788, 'backend': 'pickle'}

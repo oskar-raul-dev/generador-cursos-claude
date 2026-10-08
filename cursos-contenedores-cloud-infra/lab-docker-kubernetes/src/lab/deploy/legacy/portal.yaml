@@ -1,0 +1,59 @@
+# El portal en el cluster (Fase 10). Trae su .env horneado en la imagen desde 2019 (a16). Desde la
+# Fase 11, las credenciales SOAP llegan de un Secret: las variables del contenedor le ganan al .env,
+# que sigue dentro de la imagen y en el historial de git.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portal
+  namespace: legacy
+  labels:
+    app.kubernetes.io/name: portal
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/component: frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: portal
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: portal
+        app.kubernetes.io/part-of: lab
+        app.kubernetes.io/component: frontend
+    spec:
+      containers:
+        - name: portal
+          image: lab/legacy-portal:a16
+          # Recursos (Fase 15): 37 MiB medidos.
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {memory: 128Mi}
+          imagePullPolicy: IfNotPresent
+          env:
+            - {name: TZ, value: America/Bogota}
+            # La dirección es configuración, no secreto.
+            - {name: CONTINGENCIA_SOAP_URL, value: "http://contingencia:8080/PriceService/PriceService?wsdl"}
+            # Sin el Secret, el contenedor ni se crea: CreateContainerConfigError (incidente 10).
+            - name: CONTINGENCIA_SOAP_USER
+              valueFrom:
+                secretKeyRef: {name: portal-contingencia, key: CONTINGENCIA_SOAP_USER}
+            - name: CONTINGENCIA_SOAP_PASSWORD
+              valueFrom:
+                secretKeyRef: {name: portal-contingencia, key: CONTINGENCIA_SOAP_PASSWORD}
+          ports:
+            - {name: http, containerPort: 8080}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: portal
+  namespace: legacy
+  labels:
+    app.kubernetes.io/name: portal
+    app.kubernetes.io/part-of: lab
+spec:
+  selector:
+    app.kubernetes.io/name: portal
+  ports:
+    - {name: http, port: 8080, targetPort: http}

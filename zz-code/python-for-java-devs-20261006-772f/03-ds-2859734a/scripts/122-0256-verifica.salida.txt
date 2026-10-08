@@ -1,0 +1,11 @@
+(eval):3: no matches found: src/ds0*/data
+=== inventario final del curso ===
+  documentos publicados: 41
+  líneas de prosa publicada: 33603
+  documentos de prompts/: 13
+  directorios de src/: 25
+  archivos .py: 112
+  configuración de la raíz: .gitignore pytest.ini ruff.toml 
+
+=== nada generado en el árbol ===
+  (vacío = limpio)

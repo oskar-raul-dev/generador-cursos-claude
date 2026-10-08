@@ -1,0 +1,80 @@
+# Ollama Python Library
+
+The Ollama Python library provides the easiest way to integrate Python 3.8+ projects with [Ollama](https://github.com/ollama/ollama).
+
+## Prerequisites
+
+- [Ollama](https://ollama.com/download) should be installed and running
+- Pull a model to use with the library: `ollama pull <model>` e.g. `ollama pull gemma3`
+  - See [Ollama.com](https://ollama.com/search) for more information on the models available.
+
+## Install
+
+```sh
+pip install ollama
+```
+
+## Usage
+
+```python
+from ollama import chat
+from ollama import ChatResponse
+
+response: ChatResponse = chat(model='gemma3', messages=[
+  {
+    'role': 'user',
+    'content': 'Why is the sky blue?',
+  },
+])
+print(response['message']['content'])
+# or access fields directly from the response object
+print(response.message.content)
+```
+
+See [_types.py](ollama/_types.py) for more information on the response types.
+
+## Streaming responses
+
+Response streaming can be enabled by setting `stream=True`.
+
+```python
+from ollama import chat
+
+stream = chat(
+    model='gemma3',
+    messages=[{'role': 'user', 'content': 'Why is the sky blue?'}],
+    stream=True,
+)
+
+for chunk in stream:
+  print(chunk['message']['content'], end='', flush=True)
+```
+
+## Cloud Models
+
+Run larger models by offloading to Ollama’s cloud while keeping your local workflow.
+
+- Supported models: `deepseek-v3.1:671b-cloud`, `gpt-oss:20b-cloud`, `gpt-oss:120b-cloud`, `kimi-k2:1t-cloud`, `qwen3-coder:480b-cloud`, `kimi-k2-thinking` See [Ollama Models - Cloud](https://ollama.com/search?c=cloud) for more information
+
+### Run via local Ollama
+
+1) Sign in (one-time):
+
+```
+ollama signin
+```
+
+2) Pull a cloud model:
+
+```
+ollama pull gpt-oss:120b-cloud
+```
+
+3) Make a request:
+
+```python
+from ollama import Client
+
+client = Client()
+
+messages = [

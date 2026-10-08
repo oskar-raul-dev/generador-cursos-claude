@@ -1,0 +1,9 @@
+=== Mini proyectos nombrados en propuesta-fases-y-alcance.md §3 ===
+build-info cancellable-worker config-loader crossbuild deadlock-lab error-chain fake-clock golden-report graceful-server hello-go httptest-lab json-codec leak-detector leak-lab log-grep middleware-chain movement-parser notifier race-counter shapes store-registry text-toolkit timeout-client tiny-router unbounded-queue validator-tests 
+conteo:       26
+
+=== dónde se afirma 'veintiocho' ===
+README.md:25:Más veintiocho mini proyectos que aíslan un concepto antes de llevarlo al
+0-ESTRUCTURA-CURSO.md:4:> 18 fases · 4 servicios · 28 mini proyectos · 131 horas
+0-ESTRUCTURA-CURSO.md:106:## 🧰 5. Los 28 mini proyectos
+prompts/propuesta-fases-y-alcance.md:635:Son **veintiocho**, repartidos entre las fases, y su papel está acotado por la

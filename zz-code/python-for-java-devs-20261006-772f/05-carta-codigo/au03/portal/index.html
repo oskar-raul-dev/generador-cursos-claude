@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Portal de prestadores</title></head>
+<body>
+  <form id="login">
+    <label>Usuario <input name="user"></label>
+    <label>Contraseña <input name="password" type="password"></label>
+    <button type="submit">Ingresar</button>
+  </form>
+  <main id="panel" hidden>
+    <h1>Radicación de facturas</h1>
+    <label>Factura (PDF) <input type="file" name="factura"></label>
+    <button id="radicar">Radicar</button>
+    <p id="resultado" role="status"></p>
+    <a href="glosas.csv" download>Exportar glosas</a>
+  </main>
+  <script>
+    document.getElementById("login").addEventListener("submit", (e) => {
+      e.preventDefault();
+      // El portal real tarda en responder; aquí también, para que la espera automática se note.
+      setTimeout(() => { e.target.hidden = true; document.getElementById("panel").hidden = false; }, 800);
+    });
+    document.getElementById("radicar").addEventListener("click", () => {
+      const f = document.querySelector("input[name=factura]").files[0];
+      const out = document.getElementById("resultado");
+      out.textContent = f ? `Radicado RAD-2026-004512 para ${f.name}` : "Debe adjuntar la factura";
+    });
+  </script>
+</body></html>

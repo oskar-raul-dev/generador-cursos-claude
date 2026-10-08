@@ -1,0 +1,4 @@
+tras import  ->  pandas: False
+tras connect ->  pandas: False
+tras execute ->  pandas: False
+tras consulta->  pandas: True · pyarrow: True

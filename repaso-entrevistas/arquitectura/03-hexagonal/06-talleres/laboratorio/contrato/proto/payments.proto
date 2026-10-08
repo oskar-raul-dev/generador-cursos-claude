@@ -1,0 +1,40 @@
+// Contrato del proveedor de pagos del taller 10. Lo comparten el servidor (laboratorio/payments-grpc)
+// y el cliente (laboratorio/java, outbound/payment/grpc); ninguno lo copia, los dos lo generan de aquí.
+//
+// Convenciones:
+//   - dinero como texto decimal + moneda, nunca double (el mismo Money que openapi.yaml)
+//   - un resultado INCIERTO no es una respuesta: es un error gRPC (UNAVAILABLE, DEADLINE_EXCEEDED)
+//     y el cliente lo traduce a "pendiente", nunca a "rechazado"
+//   - la clave de idempotencia viaja en metadata (`idempotency-key`), no en el cuerpo
+syntax = "proto3";
+
+package hex.payments.v1;
+
+option java_multiple_files = true;
+option java_package = "hex.payments.v1";
+
+service PaymentService {
+  // Autoriza un cobro. Determinista (§11 de la guía): total > 1000.00 → REJECTED;
+  // total == 666.00 → UNAVAILABLE (el proveedor "no respondió"); resto → AUTHORIZED.
+  rpc Authorize(AuthorizeRequest) returns (AuthorizeResponse);
+}
+
+message Money {
+  string amount = 1;    // "49.90": decimal con dos cifras, como texto
+  string currency = 2;  // "USD"
+}
+
+message AuthorizeRequest {
+  string operation_id = 1;  // la Idempotency-Key del intento: mismo id, mismo resultado
+  Money amount = 2;
+}
+
+message AuthorizeResponse {
+  enum Status {
+    STATUS_UNSPECIFIED = 0;
+    AUTHORIZED = 1;
+    REJECTED = 2;
+  }
+  Status status = 1;
+  string reference = 2;     // referencia del proveedor cuando autoriza
+}

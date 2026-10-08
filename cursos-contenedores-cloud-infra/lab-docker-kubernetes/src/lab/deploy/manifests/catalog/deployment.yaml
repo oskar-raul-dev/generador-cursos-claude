@@ -1,0 +1,52 @@
+# catalog en el cluster (Fase 09): un pod, dos contenedores (D34). Lo que en compose era
+# network_mode: service:catalog, aquí es la definición misma de pod.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: catalog
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: catalog
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: catalog
+        app.kubernetes.io/part-of: lab
+        app.kubernetes.io/component: backend
+        app.kubernetes.io/version: "g3"
+    spec:
+      containers:
+        # PHP-FPM con la aplicación: FastCGI en 127.0.0.1:9000, que en un pod es la misma red del nginx.
+        - name: php-fpm
+          image: lab/catalog:g3
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: neighbors
+          # G3 (Fase 12): su base en Postgres, con su usuario y su contraseña, desde su Secret.
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef: {name: catalog-db, key: DATABASE_URL}
+        # nginx delante, en el 8080: el que recibe el tráfico del Service.
+        - name: nginx
+          # nginxinc/nginx-unprivileged:1.30.5-alpine
+          image: nginxinc/nginx-unprivileged@sha256:ed04ec1ff34502c339ee5c3ae3f855442398edc1d05591e2b98981dcbbd20b1e
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080
+          volumeMounts:
+            - name: nginx-conf
+              mountPath: /etc/nginx/conf.d   # el default.conf del ConfigMap reemplaza al de la imagen
+      volumes:
+        - name: nginx-conf
+          configMap:
+            name: catalog-nginx

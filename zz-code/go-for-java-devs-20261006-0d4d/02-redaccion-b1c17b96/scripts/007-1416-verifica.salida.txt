@@ -1,0 +1,22 @@
+=== 💸 DEUDAS: cada una debe declarar su fase de cobro ===
+00-ambiente-y-tooling.md:706:> 💸 **Deuda técnica intencional.** Este `Makefile` tiene rutas fijas, no valida
+01-sintaxis-y-valores.md:1167:> 💸 **Deuda técnica intencional.** Todo lo que verificamos en esta fase se
+02-structs-interfaces-composicion.md:62:  concurrente** y lo dice en su documentación. 💸
+02-structs-interfaces-composicion.md:1318:// los metadatos de tu propia nube.  💸
+02-structs-interfaces-composicion.md:1438:// el cálculo es lineal y está marcado como provisional.  💸
+03-errores-paquetes-io.md:62:  libre, y **está declarado como provisional**. 💸
+03-errores-paquetes-io.md:1353:> 💸 **Deuda técnica intencional.** El logging de los dos servicios sigue siendo
+04-testing-dobles-cobertura.md:13:Llevamos tres fases verificando el código mirando la pantalla. Esa deuda 💸 se
+04-testing-dobles-cobertura.md:1801:- **`fakeClock` sin seguridad concurrente** — deuda 💸 declarada en §6.2, prometida
+05-http-rest-stdlib.md:438:> 💸 **Deuda técnica intencional.** Este enrutador tiene tres limitaciones
+05-http-rest-stdlib.md:485:// explicado. Que conste que r.Context() NO es un ThreadLocal.  💸
+05-http-rest-stdlib.md:541:// campos estructurados, y allí se comparan las dos salidas.  💸
+05-http-rest-stdlib.md:982:> 💸 **Deuda técnica intencional.** Este `main` arranca pero **no sabe pararse**:
+06-concurrencia.md:69:  declarada. 💸
+06-concurrencia.md:1012:	// que context se entienda enseguida.  💸
+06-concurrencia.md:1391:		// 💸 El reintento se programa con un time.Timer POR ENTREGA. Con diez mil
+10-clientes-http-y-apis-externas.md:57:  es deuda declarada. 💸
+10-clientes-http-y-apis-externas.md:1988:- **La verificación de la firma HMAC del lado receptor y `hmac.Equal`** — deuda 💸
+10-clientes-http-y-apis-externas.md:1998:- **La caché con TTL y jitter de §6.5** — es un mapa en memoria, deuda 💸 hacia la
+17-capstone.md:1341:> La guía de estilo §8.1 dice que un 💸 sin destino es un error de escritura, y esto
+(sin salida = todas declaran destino en la misma línea)

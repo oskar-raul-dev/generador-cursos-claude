@@ -1,0 +1,32 @@
+# La ruta de catalog, escrita por su equipo (Fase 10): api.localhost/catalog/… llega a catalog sin el prefijo.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: catalog
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: catalog
+    app.kubernetes.io/part-of: lab
+spec:
+  # De qué puerta cuelga: el Gateway compartido, en otro namespace.
+  parentRefs:
+    - name: lab
+      namespace: gateway
+  hostnames: ["api.localhost"]
+  rules:
+    - matches:
+        - path: {type: PathPrefix, value: /catalog}
+      filters:
+        # El servicio no sabe de prefijos: /catalog/health/live le llega como /health/live.
+        - type: URLRewrite
+          urlRewrite:
+            path: {type: ReplacePrefixMatch, replacePrefixMatch: /}
+        # La página del storefront vive en otro origen: el navegador solo le entrega la respuesta si la
+        # puerta lo autoriza. Es un filtro del estándar (HTTPRouteCORS, soporte extendido).
+        - type: CORS
+          cors:
+            allowOrigins: ["http://storefront.localhost:8080"]
+            allowMethods: [GET]
+      backendRefs:
+        - name: catalog
+          port: 8080

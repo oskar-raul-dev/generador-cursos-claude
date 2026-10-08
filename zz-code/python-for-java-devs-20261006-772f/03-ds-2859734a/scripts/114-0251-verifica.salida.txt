@@ -1,0 +1,9 @@
+Exit code 1
+=== lo que queda ===
+src/ia04-embeddings-y-busqueda-semantica/generar_corpus.py:307:101: E501 Line too long (105 > 100)
+src/ia04-embeddings-y-busqueda-semantica/generar_corpus.py:308:101: E501 Line too long (103 > 100)
+src/ia05-normarag/bench_answers.py:50:101: E501 Line too long (101 > 100)
+src/ia05-normarag/bench_answers.py:100:101: E501 Line too long (104 > 100)
+src/ia05-normarag/test_normarag.py:71:101: E501 Line too long (101 > 100)
+src/ia06-evaluacion/generar_evalset.py:39:101: E501 Line too long (111 > 100)
+Found 6 errors.

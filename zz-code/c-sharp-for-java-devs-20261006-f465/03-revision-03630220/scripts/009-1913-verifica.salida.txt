@@ -1,0 +1,41 @@
+=== CIERRE: verificación completa ===
+1. Referencias externas:
+   ✅ cero
+2. Enlaces:
+   ❌        0 rotos
+3. Cadena 00→24:
+   ✅ sin huecos
+4. Ejercicios (decl=real, 20-25):
+   ✅ las 25
+5. Tags fase-NN/mini-NN:
+   ✅ las 25
+6. BENCHMARKS F00–F23 + consolidación:
+   ✅ 24 entradas + F24
+7. Plantilla de 10 secciones:
+   ✅ las 25, en orden
+8. git diff de deudas, rutas únicas por deuda:
+      2 git diff fase-00 fase-06 -- src/modern/Cordillera.Bench/
+      4 git diff fase-01 fase-17 -- src/modern/Cordillera.Domain/Money.cs
+      4 git diff fase-02 fase-09 -- src/fases/02-nullable-y-pattern-matching/
+      2 git diff fase-03 fase-04 -- src/modern/Cordillera.Domain/Import/SalesFileReader.cs
+      3 git diff fase-03 fase-09 -- src/modern/Cordillera.Domain/CatalogQueries.cs
+      2 git diff fase-04 fase-05 -- src/modern/Cordillera.Domain/Import/
+      2 git diff fase-05 fase-17 -- src/modern/Cordillera.Domain/Import/
+      1 git diff fase-07 fase-09 -- src/legacy/Sige.DataAccess/
+      1 git diff fase-07 fase-10 -- src/legacy/Sige.Forms/
+      1 git diff fase-07 fase-11 -- src/legacy/
+      5 git diff fase-07 fase-16 -- src/legacy/Sige.DataAccess/App.config
+      1 git diff fase-07 fase-16 -- src/modern/Sige.Forms/App.config
+      3 git diff fase-08 fase-10 -- src/modern/Sige.Characterization.Tests/
+      3 git diff fase-10 fase-17 -- src/modern/Cordillera.Catalog.Api/Inventory/
+      2 git diff fase-12 fase-13 -- src/modern/Sige.Forms/
+      2 git diff fase-12 fase-13 -- src/modern/Sige.Forms/ src/modern/Sige.Desktop/
+      2 git diff fase-13 fase-14 -- src/modern/Sige.Desktop/Views/
+      1 git diff fase-13 fase-15 -- src/modern/Sige.Desktop/ src/modern/Cordillera.Domain/
+      2 git diff fase-14 fase-18 -- BENCHMARKS.md
+      1 git diff fase-15 fase-20 -- src/modern/Cordillera.Catalog.Api/
+      1 git diff fase-15 fase-20 -- src/modern/Cordillera.Catalog.Api/Endpoints/
+      1 git diff fase-17 fase-20 -- src/modern/Cordillera.NightPress/
+      2 git diff fase-18 fase-19 -- src/modern/Cordillera.Redaccion.Web/
+      1 git diff fase-19 fase-20 -- src/modern/Cordillera.Catalog.Api/Program.cs
+      1 git diff fase-20 fase-21 -- src/modern/Cordillera.Ventas/

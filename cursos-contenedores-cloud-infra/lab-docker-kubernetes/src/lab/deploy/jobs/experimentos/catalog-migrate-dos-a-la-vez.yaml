@@ -1,0 +1,30 @@
+# Experimento de la Fase 12: dos migraciones de catalog a la vez sobre una base vacía, como pasaría con
+# dos réplicas que migran al arrancar. parallelism: 2 lanza dos pods al mismo tiempo; sin reintentos.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: catalog-migrate-x2
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: catalog
+    app.kubernetes.io/part-of: lab
+spec:
+  parallelism: 2
+  completions: 2
+  backoffLimit: 0
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: catalog
+        app.kubernetes.io/part-of: lab
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrate
+          image: lab/catalog:g3
+          imagePullPolicy: IfNotPresent
+          command: ["php", "artisan", "migrate", "--force", "--no-interaction"]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef: {name: catalog-db, key: DATABASE_URL}

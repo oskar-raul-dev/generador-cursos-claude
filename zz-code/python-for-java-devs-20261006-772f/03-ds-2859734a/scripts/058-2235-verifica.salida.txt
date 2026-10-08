@@ -1,0 +1,12 @@
+=== con la selección que documenta la Fase 00 (E,F,I,UP,B) ===
+  ds01-numpy-y-el-modelo-vectorizado        FALLA
+  ds02-pandas                               OK
+  ds03-polars-y-el-modelo-lazy              OK
+  ds04-embudo                               FALLA
+  ds07-scikit-learn                         FALLA
+=== y las suites ===
+  ds01-numpy-y-el-modelo-vectorizado        40 passed in 12.11s
+  ds02-pandas                               10 passed in 1.91s
+  ds03-polars-y-el-modelo-lazy              11 passed in 4.84s
+  ds04-embudo                               23 passed in 2.17s
+  ds07-scikit-learn                         19 passed in 0.48s

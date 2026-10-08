@@ -1,0 +1,18 @@
+# Dockerfile de G0: una sola etapa, a propósito. La Fase 04 lo reescribe con PHP-FPM y nginx.
+# php:8.5.11-cli-alpine
+FROM php@sha256:93684051146ec037620855feb77f278090bde45ddc030801cd3f2a7685bc4deb
+# composer:2.10.3
+COPY --from=composer@sha256:af98f42dfff7c68ba8d53c2164fd9fde1087b7d449514baa38c418b1f6bc4bac /usr/bin/composer /usr/bin/composer
+WORKDIR /app
+COPY . .
+RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
+# Sin archivo de configuración: G0 no lee configuración de archivos. Nada de base de datos ni sesiones.
+ENV APP_ENV=production \
+    APP_DEBUG=false \
+    LOG_CHANNEL=stderr \
+    CACHE_STORE=array \
+    SESSION_DRIVER=array \
+    QUEUE_CONNECTION=sync
+EXPOSE 8080
+# El puerto sale de PORT, 8080 por defecto. Un solo proceso: el servidor de artisan.
+CMD ["sh", "-c", "php artisan serve --host=0.0.0.0 --port=${PORT:-8080}"]

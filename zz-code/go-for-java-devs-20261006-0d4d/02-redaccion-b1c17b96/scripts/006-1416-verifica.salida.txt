@@ -1,0 +1,10 @@
+=== ¿Dónde aparecen B-25..B-31? (deben estar SOLO en bloques 📌 de autoría) ===
+✅ 04-testing-dobles-cobertura.md:1831 en autoría
+✅ 10-clientes-http-y-apis-externas.md:2039 en autoría
+✅ 11-mongodb-y-modelado-documental.md:1832 en autoría
+✅ 13-lotes-scheduling-y-asincronia.md:1954 en autoría
+✅ 15-rendimiento-y-profiling.md:1685 en autoría
+✅ 16-go-frente-a-spring-boot.md:1192 en autoría
+(eval):[:8: integer expression expected: 1356\n1362
+✅ 17-capstone.md:1356
+1362 en autoría

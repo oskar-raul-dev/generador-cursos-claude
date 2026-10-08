@@ -1,0 +1,16 @@
+classDiagram
+    direction LR
+    class StaffMember {
+        staff_id
+        name
+    }
+    class Teacher {
+        specialty
+    }
+    class Administrative {
+        office
+    }
+    StaffMember <|-- Teacher
+    StaffMember <|-- Administrative
+    Teacher "1..*" -- "0..*" Subject : teaches
+    note for StaffMember "{disjoint, complete}"

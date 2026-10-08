@@ -1,0 +1,8 @@
+una consulta por plan (701 consultas):     18.6 ms · 90 planes
+una sola consulta con JOIN:                0.23 ms · 90 planes
+relación: 80×
+    Sort  (cost=79.87..80.10 rows=95 width=8) (actual time=0.128..0.130 rows=90.00 loops=1)
+      Sort Key: ph.last_moved_on
+      Sort Method: quicksort  Memory: 27kB
+      Buffers: shared hit=40
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

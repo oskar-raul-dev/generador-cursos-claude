@@ -1,0 +1,6 @@
+'arga una sesión, se reutiliza, se\ndesechа al final. Si serva'
+'),\n            // El intervalo NO lo invента el servicio: si'
+',\n            // El intervalo NO lo invента el servicio: si '
+'\n            // El intervalo NO lo invента el servicio: si e'
+'            // El intervalo NO lo invента el servicio: si el'
+227:desechа al final. Si servaste un modelo desde una aplicación de Spring, esto no te va a sorprender.

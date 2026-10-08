@@ -1,0 +1,21 @@
+filas hasta op156: 156
+op002 op002-lg02-xml-en-serio.md: queda 'sin correr', marcas ✅🟡
+op013 op013-au06-desplegar-automatizaciones.md: marcas ✅🟡
+op019 op019-co05-transferencia-de-archivos.md: marcas ✅🟡
+op029 op029-wf08-veredicto.md: queda 'sin correr', marcas ✅🟡
+op036 op036-qa07-carga-y-rendimiento.md: queda 'sin correr'
+op050 op050-se04-identidad-delegada.md: no existe
+op052 op052-se06-tls-de-verdad.md: no existe
+op120 op120-sy06-convivir-con-el-sistema.md: marcas ✅🟡
+archivos op*.md fuera del plan: ['op050-se04-oauth2-y-oidc.md', 'op052-se06-tls-y-certificados.md']
+aviso EMOJI     0-ESTRUCTURA-CURSO.md:263 → ### ⏱️ Cuánto toma
+aviso EMOJI     00-historia-de-aurea.md:85 → ### 1.1 🏛️ Arquitectura de Sonrisa, el producto que construyeron entre los dos
+aviso EMOJI     00-historia-de-aurea.md:376 → ### 💼 `aur` — la caja de herramientas de Patricia · *el cierre de mes*
+aviso EMOJI     00-historia-de-aurea.md:415 → ### 🌐 AgendaAPI — la agenda de la red · *el hueco de las 3:40*
+aviso EMOJI     00-historia-de-aurea.md:455 → ### 🏛️ Consultorio — el back-office · *lo que el franquiciado no debe ver*
+aviso EMOJI     00-historia-de-aurea.md:502 → ### 🌙 Cartera — el proceso nocturno · *las glosas que vencen*
+aviso EMOJI     BENCHMARKS.md:478 → ### 17 🏁 ⭐ · El duelo: FastAPI contra Spring Boot 3
+aviso CALLOUT   BENCHMARKS.md:545 → ⏳
+aviso CALLOUT   BENCHMARKS.md:566 → 🟡
+aviso EMOJI     ds05-visualizacion.md:391 → ### 6.2 ⏳ Tiempo hasta la primera decisión correcta
+— 0 errores, 10 avisos

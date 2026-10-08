@@ -1,0 +1,16 @@
+# Service headless (clusterIP: None): el nombre resuelve directo a la IP del pod, y cada réplica del
+# StatefulSet tiene su nombre estable, postgres-0.postgres.data.svc.cluster.local.
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: data
+  labels:
+    app.kubernetes.io/name: postgres
+    app.kubernetes.io/part-of: lab
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: postgres
+  ports:
+    - {name: postgres, port: 5432, targetPort: postgres}

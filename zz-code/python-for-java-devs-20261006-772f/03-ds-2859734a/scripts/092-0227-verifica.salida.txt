@@ -1,0 +1,7 @@
+ Downloaded onnx
+Installed 15 packages in 286ms
+onnx 1.22.0 · onnxruntime 1.30.0 · skl2onnx 1.20.0 · sklearn 1.9.1
+--- fastapi ---
+Installed 13 packages in 19ms
+fastapi 0.141.1 · uvicorn 0.52.4
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

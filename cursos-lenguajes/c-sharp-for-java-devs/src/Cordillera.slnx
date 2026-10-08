@@ -1,0 +1,10 @@
+<Solution>
+  <!-- Formato SLNX: XML, sin GUID, revisable en un diff. Es el formato por omisión del
+       SDK 10 (`dotnet new sln` ya lo genera así) y el que Visual Studio 2026 abre nativo.
+       La solución heredada se queda en Sige.sln, con su formato de 2017, porque es el
+       archivo que los pasantes commitearon y porque el contraste enseña. -->
+  <Folder Name="/arnes/">
+    <Project Path="modern/Cordillera.Bench/Cordillera.Bench.csproj" />
+    <Project Path="modern/Cordillera.Bench.Tests/Cordillera.Bench.Tests.csproj" />
+  </Folder>
+</Solution>

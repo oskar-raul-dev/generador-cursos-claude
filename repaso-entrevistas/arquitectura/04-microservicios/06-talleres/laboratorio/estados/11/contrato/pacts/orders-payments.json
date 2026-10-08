@@ -1,0 +1,145 @@
+{
+  "consumer": {
+    "name": "orders"
+  },
+  "interactions": [
+    {
+      "comments": {
+        "text": [
+
+        ]
+      },
+      "description": "a repeated payment while the first attempt is still running",
+      "key": "d50839d1",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "a payment with key pact-in-progress-0001 is in progress"
+        }
+      ],
+      "request": {
+        "body": {
+          "content": {
+            "amount": "19.80",
+            "currency": "USD",
+            "orderId": "5f1c2a4e-0000-4000-8000-000000000001"
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ],
+          "Idempotency-Key": [
+            "pact-in-progress-0001"
+          ]
+        },
+        "method": "POST",
+        "path": "/payments"
+      },
+      "response": {
+        "status": 409
+      },
+      "transport": "http",
+      "type": "Synchronous/HTTP"
+    },
+    {
+      "comments": {
+        "text": [
+
+        ]
+      },
+      "description": "a payment below the PSP limit",
+      "key": "40382a",
+      "pending": false,
+      "providerStates": [
+        {
+          "name": "the PSP authorizes payments"
+        }
+      ],
+      "request": {
+        "body": {
+          "content": {
+            "amount": "19.80",
+            "currency": "USD",
+            "orderId": "5f1c2a4e-0000-4000-8000-000000000001"
+          },
+          "contentType": "application/json",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json"
+          ],
+          "Idempotency-Key": [
+            "pact-authorize-0001"
+          ]
+        },
+        "method": "POST",
+        "path": "/payments"
+      },
+      "response": {
+        "body": {
+          "content": {
+            "reference": "psp-1a2b3c4d",
+            "status": "AUTHORIZED"
+          },
+          "contentType": "application/json; charset=UTF-8",
+          "encoded": false
+        },
+        "headers": {
+          "Content-Type": [
+            "application/json; charset=UTF-8"
+          ]
+        },
+        "matchingRules": {
+          "body": {
+            "$.reference": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "type"
+                }
+              ]
+            },
+            "$.status": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "AUTHORIZED|REJECTED|PENDING"
+                }
+              ]
+            }
+          },
+          "header": {
+            "Content-Type": {
+              "combine": "AND",
+              "matchers": [
+                {
+                  "match": "regex",
+                  "regex": "application/json(;\\s?charset=[\\w\\-]+)?"
+                }
+              ]
+            }
+          }
+        },
+        "status": 201
+      },
+      "transport": "http",
+      "type": "Synchronous/HTTP"
+    }
+  ],
+  "metadata": {
+    "pact-jvm": {
+      "version": "4.7.5"
+    },
+    "pactSpecification": {
+      "version": "4.0"
+    }
+  },
+  "provider": {
+    "name": "payments"
+  }
+}

@@ -1,0 +1,50 @@
+=== ia03 agent_runner.py (1-20) ===
+"""La misma tarea con `tool_runner`, para comparar.
+
+Se escribe DESPUÉS del bucle manual, y el ejercicio 13 pide decidir cuál se queda.
+"""
+
+from __future__ import annotations
+
+import anthropic
+from anthropic import beta_tool
+
+from agenda_client import AgendaClient
+from tools import find_availability as _find_availability
+
+agenda: AgendaClient  # se inyecta al arrancar el proceso
+
+
+@beta_tool
+def find_availability(branch: str, day: str, minutes: int) -> str:
+    """Devuelve los espacios libres de una sede en un día, en orden cronológico.
+
+
+=== grep agenda en ia03 ===
+src/ia03-tool-calling-y-el-bucle-de-agente/agenda_client.py:21:# de la agenda y los que entran a `hold_slot` tienen que ser comparables, y un naive y
+src/ia03-tool-calling-y-el-bucle-de-agente/agenda_client.py:136:def seeded_agenda() -> InMemoryAgenda:
+src/ia03-tool-calling-y-el-bucle-de-agente/agenda_client.py:154:    "seeded_agenda",
+src/ia03-tool-calling-y-el-bucle-de-agente/agent_runner.py:11:from agenda_client import AgendaClient
+src/ia03-tool-calling-y-el-bucle-de-agente/agent_runner.py:14:agenda: AgendaClient  # se inyecta al arrancar el proceso
+src/ia03-tool-calling-y-el-bucle-de-agente/agent_runner.py:21:    Solo consulta la agenda: no reserva nada. Devuelve lista vacía si no hay espacios, y
+src/ia03-tool-calling-y-el-bucle-de-agente/agent_runner.py:22:    también si la sede no tiene agenda digital (Zipaquirá).
+src/ia03-tool-calling-y-el-bucle-de-agente/agent_runner.py:30:    return _find_availability(agenda, branch, day, minutes)
+src/ia03-tool-calling-y-el-bucle-de-agente/bench_agent.py:23:from agenda_client import seeded_agenda
+src/ia03-tool-calling-y-el-bucle-de-agente/bench_agent.py:72:            agenda = seeded_agenda()  # agenda limpia por solicitud: no se contaminan entre sí
+
+=== ia08 head ===
+"""Pruebas del auditor de prefijo y del presupuesto. Sin red y sin modelo.
+
+Las dos piezas de esta sección que deciden dinero, y por eso son las dos que se prueban:
+el auditor dice por qué la caché dejó de acertar, y el presupuesto impide que la factura
+se dispare. Ninguna de las dos necesita la API para demostrar que funciona.
+"""
+
+from __future__ import annotations
+
+from datetime import date
+from decimal import Decimal
+
+import pytest
+
+from audit_prefix import first_divergence, render_prefix

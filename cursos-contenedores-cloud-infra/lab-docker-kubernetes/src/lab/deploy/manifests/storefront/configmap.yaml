@@ -1,0 +1,13 @@
+# La configuración del storefront (G2, Fase 11): se lee al arrancar el contenedor, no al compilar.
+# Cambiarla exige reiniciar el pod; la imagen no cambia.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: storefront-config
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: storefront
+    app.kubernetes.io/part-of: lab
+data:
+  API_BASE_URL: http://api.localhost:8080
+  BRAND_NAME: Droguerías La Vecina

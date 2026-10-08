@@ -1,0 +1,266 @@
+diff --git a/contrato/seed/orders/schema.sql b/contrato/seed/orders/schema.sql
+index 1113024..096ca97 100644
+--- a/contrato/seed/orders/schema.sql
++++ b/contrato/seed/orders/schema.sql
+@@ -80,7 +80,7 @@ CREATE TABLE processed_messages (
+ -- donde preguntar "¿en qué punto está este pedido y desde cuándo?".
+ CREATE TABLE order_sagas (
+     order_id        uuid PRIMARY KEY REFERENCES orders (id),
+-    step            text NOT NULL CHECK (step IN ('RESERVE_INVENTORY', 'AUTHORIZE_PAYMENT', 'COMMIT_INVENTORY',
++    step            text NOT NULL CHECK (step IN ('RESERVE_INVENTORY', 'CHECK_FRAUD', 'AUTHORIZE_PAYMENT', 'COMMIT_INVENTORY',
+                                                  'RELEASE_INVENTORY', 'DONE', 'ESCALATED')),
+     attempts        integer NOT NULL DEFAULT 0,          -- intentos del paso en curso
+     next_attempt_at timestamptz NOT NULL DEFAULT clock_timestamp(),
+diff --git a/fraud/.gitignore b/fraud/.gitignore
+new file mode 100644
+index 0000000..21d0b89
+--- /dev/null
++++ b/fraud/.gitignore
+@@ -0,0 +1 @@
++.venv/
+diff --git a/fraud/fraud.py b/fraud/fraud.py
+new file mode 100644
+index 0000000..5c39cf3
+--- /dev/null
++++ b/fraud/fraud.py
+@@ -0,0 +1,89 @@
++"""fraud: el control antifraude del cierre de 06/09. Un stub: la regla es de juguete.
++
++Regla: una línea con más de 5 unidades es sospechosa.
++
++  --mode http   (orquestación)  POST /checks {"orderId", "lines"} → {"passed": true|false, "reason"}
++  --mode kafka  (coreografía)   InventoryReserved (inventory.reservations) → FraudCheckPassed | FraudCheckFailed
++                                en fraud.results. Sin base: publica directo, sin outbox ni inbox (un stub).
++"""
++import argparse
++import asyncio
++import json
++import uuid
++from datetime import datetime, timezone
++from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
++
++MAX_UNITS = 5
++
++
++def check(lines):
++    worst = max((l["quantity"] for l in lines), default=0)
++    return (True, None) if worst <= MAX_UNITS else (False, f"a line with {worst} units (max {MAX_UNITS})")
++
++
++class Handler(BaseHTTPRequestHandler):
++    def _body(self):
++        # el cliente HTTP del JDK (orders) manda el cuerpo chunked, sin Content-Length (06/01 §8)
++        if "chunked" in (self.headers.get("Transfer-Encoding") or "").lower():
++            raw = b""
++            while (size := int(self.rfile.readline().split(b";")[0].strip(), 16)) > 0:
++                raw += self.rfile.read(size)
++                self.rfile.readline()
++            self.rfile.readline()
++            return raw
++        return self.rfile.read(int(self.headers.get("Content-Length") or 0))
++
++    def do_POST(self):
++        body = json.loads(self._body())
++        passed, reason = check(body["lines"])
++        out = json.dumps({"passed": passed, "reason": reason}).encode()
++        self.send_response(200)
++        self.send_header("Content-Type", "application/json")
++        self.send_header("Content-Length", str(len(out)))
++        self.end_headers()
++        self.wfile.write(out)
++        print(f"check order={body['orderId'][:8]} → {'passed' if passed else 'FAILED: ' + reason}", flush=True)
++
++    def log_message(self, *args):
++        pass
++
++
++async def run_kafka(brokers):
++    from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
++    consumer = AIOKafkaConsumer("inventory.reservations", bootstrap_servers=brokers, group_id="fraud",
++                                enable_auto_commit=False, auto_offset_reset="earliest")
++    producer = AIOKafkaProducer(bootstrap_servers=brokers)
++    await consumer.start()
++    await producer.start()
++    print("fraud consuming inventory.reservations", flush=True)
++    try:
++        async for msg in consumer:
++            ev = json.loads(msg.value)
++            if ev.get("type") == "InventoryReserved":
++                passed, reason = check(ev["lines"])
++                fact = {"eventId": str(uuid.uuid4()), "type": "FraudCheckPassed" if passed else "FraudCheckFailed",
++                        "version": 1, "occurredAt": datetime.now(timezone.utc).isoformat(), "orderId": ev["orderId"],
++                        "causationId": ev["eventId"], "lines": ev["lines"], "total": ev["total"], "reason": reason}
++                await producer.send_and_wait("fraud.results", json.dumps(fact).encode(), key=msg.key)
++                print(f"InventoryReserved order={ev['orderId'][:8]} → {fact['type']}", flush=True)
++            await consumer.commit()
++    finally:
++        await consumer.stop()
++        await producer.stop()
++
++
++def main():
++    p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
++    p.add_argument("--mode", choices=["http", "kafka"], required=True)
++    p.add_argument("--port", type=int, default=28086)
++    p.add_argument("--kafka", default="localhost:29092")
++    args = p.parse_args()
++    if args.mode == "kafka":
++        asyncio.run(run_kafka(args.kafka))
++    else:
++        print(f"fraud listening on :{args.port}", flush=True)
++        ThreadingHTTPServer(("0.0.0.0", args.port), Handler).serve_forever()
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/fraud/pyproject.toml b/fraud/pyproject.toml
+new file mode 100644
+index 0000000..3ba6de2
+--- /dev/null
++++ b/fraud/pyproject.toml
+@@ -0,0 +1,12 @@
++# fraud: stub del cierre de 06/09. Sin base de datos: decide y contesta (o publica). Versiones fijadas.
++[project]
++name = "ms-fraud"
++version = "1.0.0"
++requires-python = ">=3.14"
++dependencies = [
++    "aiokafka==0.14.0",          # solo en modo kafka (coreografía)
++    "cramjam==2.13.0",           # snappy: lo que produce franz-go (06/08 §9)
++]
++
++[tool.uv]
++package = false
+diff --git a/orders/src/main/java/dev/ms/orders/config/OrdersProperties.java b/orders/src/main/java/dev/ms/orders/config/OrdersProperties.java
+index 5bea7b9..c81fd3e 100644
+--- a/orders/src/main/java/dev/ms/orders/config/OrdersProperties.java
++++ b/orders/src/main/java/dev/ms/orders/config/OrdersProperties.java
+@@ -4,7 +4,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
+ 
+ @ConfigurationProperties(prefix = "ms")
+ public record OrdersProperties(Catalog catalog, InventoryProps inventory, Payments payments, Events events,
+-                               Saga saga, V1 v1) {
++                               Saga saga, V1 v1, Fraud fraud) {
++    public record Fraud(String baseUrl) {}
+     /**
+      * Taller 08: el topic de OrderPlaced (v2) y la provocación del ciclo. Taller 09: el modo
+      * (choreography | orchestration), el plazo de cada paso del orquestador (0 = sin plazo) y cada
+diff --git a/orders/src/main/java/dev/ms/orders/saga/FraudClient.java b/orders/src/main/java/dev/ms/orders/saga/FraudClient.java
+new file mode 100644
+index 0000000..630a6ba
+--- /dev/null
++++ b/orders/src/main/java/dev/ms/orders/saga/FraudClient.java
+@@ -0,0 +1,27 @@
++package dev.ms.orders.saga;
++
++import dev.ms.orders.config.OrdersProperties;
++import dev.ms.orders.entity.Order;
++import org.springframework.stereotype.Component;
++import org.springframework.web.client.RestClient;
++
++import java.util.Map;
++
++// Cierre de 06/09: el comando CheckFraud. El orquestador pregunta; la regla vive en fraud.
++@Component
++public class FraudClient {
++
++    public record Result(boolean passed, String reason) {}
++
++    private final RestClient http;
++
++    public FraudClient(RestClient.Builder builder, OrdersProperties props) {
++        this.http = builder.baseUrl(props.fraud().baseUrl()).build();
++    }
++
++    public Result check(Order order) {
++        var lines = order.getLines().stream().map(l -> Map.of("sku", l.getSku(), "quantity", l.getQuantity())).toList();
++        return http.post().uri("/checks").body(Map.of("orderId", order.getId().toString(), "lines", lines))
++            .retrieve().body(Result.class);
++    }
++}
+diff --git a/orders/src/main/java/dev/ms/orders/saga/Orchestrator.java b/orders/src/main/java/dev/ms/orders/saga/Orchestrator.java
+index e45efbd..52355a1 100644
+--- a/orders/src/main/java/dev/ms/orders/saga/Orchestrator.java
++++ b/orders/src/main/java/dev/ms/orders/saga/Orchestrator.java
+@@ -45,11 +45,13 @@ public class Orchestrator {
+     private final OrderEvents events;
+     private final TransactionTemplate tx;
+     private final int deadline;
++    private final FraudClient fraud;
+ 
+     public Orchestrator(SagaStore sagas, OrderRepository orders, PaymentRepository payments, Inventory inventory,
+-                        Payments psp, OrderEvents events, TransactionTemplate tx, OrdersProperties props) {
++                        Payments psp, OrderEvents events, TransactionTemplate tx, OrdersProperties props, FraudClient fraud) {
+         this.sagas = sagas; this.orders = orders; this.payments = payments; this.inventory = inventory;
+         this.psp = psp; this.events = events; this.tx = tx; this.deadline = props.saga().stepDeadlineSeconds();
++        this.fraud = fraud;
+     }
+ 
+     @Scheduled(fixedDelayString = "${ms.saga.poll-ms}")
+@@ -72,7 +74,7 @@ public class Orchestrator {
+             case "RESERVE_INVENTORY" -> {                    // comando ReserveInventory
+                 try {
+                     inventory.reserve(id, order.getLines().stream().map(l -> new Inventory.Line(l.getSku(), l.getQuantity())).toList());
+-                    move(id, "CONFIRMED", "AUTHORIZE_PAYMENT", "reserved");
++                    move(id, "CONFIRMED", "CHECK_FRAUD", "reserved");
+                 } catch (Errors.InsufficientInventory e) {
+                     move(id, "CANCELLED", "DONE", "out of stock");
+                 } catch (Errors.InventoryUnavailable e) {
+@@ -81,6 +83,16 @@ public class Orchestrator {
+                     else later(d, e.getMessage());
+                 }
+             }
++            case "CHECK_FRAUD" -> {                          // cierre de 06/09: un paso en medio, en UN sitio
++                try {
++                    var r = fraud.check(order);
++                    if (r.passed()) move(id, null, "AUTHORIZE_PAYMENT", "fraud check passed");
++                    else move(id, "CANCELLED", "RELEASE_INVENTORY", "fraud check failed: " + r.reason());
++                } catch (org.springframework.web.client.RestClientException e) {
++                    if (d.expired()) move(id, "CANCELLED", "RELEASE_INVENTORY", "fraud unavailable until deadline");
++                    else later(d, e.getMessage());
++                }
++            }
+             case "AUTHORIZE_PAYMENT" -> {                    // comando AuthorizePayment, con la clave de la saga
+                 try {
+                     var r = psp.authorize(id, order.getTotalAmount(), "saga-" + id);
+diff --git a/orders/src/main/resources/application.yaml b/orders/src/main/resources/application.yaml
+index 1407845..e63cf91 100644
+--- a/orders/src/main/resources/application.yaml
++++ b/orders/src/main/resources/application.yaml
+@@ -69,6 +69,8 @@ ms:
+   v1:                                  # taller 08: Deprecation y Sunset en /api/v1/orders
+     deprecated-at: 2026-09-29T00:00:00Z
+     sunset-at: 2027-03-31T00:00:00Z
++  fraud:
++    base-url: http://localhost:28086   # cierre de 06/09: el stub antifraude
+   catalog:
+     base-url: http://localhost:28081   # el monolito conserva catalog y customers
+     read-timeout-ms: 800
+diff --git a/scripts/lab.py b/scripts/lab.py
+index 5af8939..ef94c1f 100644
+--- a/scripts/lab.py
++++ b/scripts/lab.py
+@@ -325,6 +325,13 @@ def cmd_payments(args):
+          "--log-level", "warning"], cwd=project, env=env, check=False)
+ 
+ 
++def cmd_fraud(args):
++    """Cierre de 06/09: el stub antifraude, por HTTP (orquestación) o por Kafka (coreografía)."""
++    project = LAB / "fraud"
++    run(["uv", "sync", "--quiet", "--python", "3.14"], cwd=project)
++    run(["uv", "run", "--python", "3.14", "python", "fraud.py", "--mode", args.mode], cwd=project, check=False)
++
++
+ def cmd_psp(args):
+     """Arranca psp-simulator en primer plano."""
+     run([sys.executable, str(LAB / "psp-simulator" / "psp_simulator.py"), "--port", str(args.port)], check=False)
+@@ -680,6 +687,9 @@ def main():
+     m.add_argument("--no-payment-key", action="store_true",
+                    help="no propagar la Idempotency-Key a payments (provocación del taller 03)")
+     m.set_defaults(fn=cmd_monolith)
++    fr = sub.add_parser("fraud", help=cmd_fraud.__doc__)
++    fr.add_argument("--mode", choices=["http", "kafka"], default="http")
++    fr.set_defaults(fn=cmd_fraud)
+     ps = sub.add_parser("psp", help=cmd_psp.__doc__)
+     ps.add_argument("--port", type=int, default=28085)
+     ps.set_defaults(fn=cmd_psp)

@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Consentimiento del plan {{ consent.plan_id }}</h1>
+<form method="post" action="/consents/{{ consent.id }}">
+  <label>Fase <input name="phase_kind" value="{{ consent.phase_kind }}" required></label>
+  <label>Firma <input name="signed_on" type="date" value="{{ consent.signed_on or '' }}"></label>
+  <label>Soporte <input name="document_ref" value="{{ consent.document_ref }}"></label>
+  <button type="submit">Guardar</button>
+</form>
+{% endblock %}

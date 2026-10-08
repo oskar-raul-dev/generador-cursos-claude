@@ -1,0 +1,10 @@
+ M .gitignore
+ M README.md
+?? claude-remote.md
+?? go-for-java-devs/
+?? nuevas-ideas.md
+?? propuestas-cursos/propuesta-java-arquitectura/
+--- comprobación: ¿los ignora? ---
+.gitignore:131:PLAN-REFRESCAMIENTO.md	PLAN-REFRESCAMIENTO.md
+.gitignore:132:REPASO-*.md	REPASO-00-INDICE.md
+.gitignore:132:REPASO-*.md	REPASO-04-BANCO-Y-HISTORIAS.md

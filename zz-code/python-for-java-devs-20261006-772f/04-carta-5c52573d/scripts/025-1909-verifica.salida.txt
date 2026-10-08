@@ -1,0 +1,22 @@
+['_lowbound_original', '_upbound_original', 'asCplexLpAffineExpression', 'asCplexLpVariable', 'bounds', 'cat', 'dj', 'expression', 'fixValue', 'fromDataclass', 'fromDict', 'getLb', 'getUb', 'id', 'illegal_chars', 'infeasibilityGap', 'isBinary', 'isConstant', 'isFixed', 'isFree', 'isInteger', 'isPositive', 'lowBound', 'name', 'positive', 'round', 'roundedValue', 'setInitialValue', 'toDataclass', 'toDict', 'trans', 'unfixValue', 'upBound', 'valid', 'value', 'valueOrDefault', 'varValue']
+['add_variable', 'add_variable_dict', 'add_variable_dicts', 'add_variable_matrix', 'assignVarsDj', 'assignVarsVals', 'checkDuplicateVars', 'checkLengthVars', 'exported_variables', 'get_dummyVar', 'numVariables', 'variables', 'variablesDict']
+['LpVariable', 'getSolverFromDict', 'lpSum_vars', 'lpSum_vars_coefs', 'makeDict', 'splitDict']
+Version: 4.0.0
+  File "<stdin>", line 3
+    for f in root.glob(\"*.md\"): print(f)
+                        ^
+SyntaxError: unexpected character after line continuation character
+__init__.py
+__pycache__
+_rustcore.cpython-314-aarch64-linux-gnu.so
+_rustcore.pyi
+apis
+constants.py
+core
+mps_lp.py
+pulp.py
+py.typed
+rust
+sparse.py
+tests
+utilities.py

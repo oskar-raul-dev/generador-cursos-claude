@@ -1,0 +1,64 @@
+# Sabor Python + FastAPI del bloque 06 · Talleres. Versiones verificadas el 2026-09-27 en PyPI.
+[project]
+name = "hexorders"
+version = "1.1.0"
+description = "Pedidos y pagos: caso de estudio de arquitectura hexagonal (FastAPI)"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi==0.141.1",
+    "uvicorn==0.54.0",
+    "pydantic==2.13.5",
+    "sqlalchemy==2.1.1",
+    "psycopg[binary]==3.3.6",
+    "pymongo==4.18.2",
+    "redis==8.1.0",
+    "pyjwt==2.15.0",
+    "bcrypt==5.0.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest==9.1.1",
+    "httpx==0.28.1",
+    "import-linter==2.15",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/hexorders"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+# La regla de dependencias como prueba (el ArchUnit de este sabor): `uv run lint-imports`.
+[tool.importlinter]
+root_package = "hexorders"
+include_external_packages = true
+
+[[tool.importlinter.contracts]]
+name = "domain depends on nothing outside"
+type = "forbidden"
+source_modules = ["hexorders.domain"]
+forbidden_modules = [
+    "hexorders.application", "hexorders.infrastructure",
+    "fastapi", "pydantic", "sqlalchemy", "psycopg", "pymongo", "redis", "jwt", "bcrypt",
+]
+
+[[tool.importlinter.contracts]]
+name = "application does not know infrastructure"
+type = "forbidden"
+source_modules = ["hexorders.application"]
+forbidden_modules = [
+    "hexorders.infrastructure",
+    "fastapi", "pydantic", "sqlalchemy", "psycopg", "pymongo", "redis", "jwt", "bcrypt",
+]
+
+[[tool.importlinter.contracts]]
+name = "inbound does not touch outbound"
+type = "forbidden"
+source_modules = ["hexorders.infrastructure.inbound"]
+forbidden_modules = ["hexorders.infrastructure.outbound"]

@@ -1,0 +1,71 @@
+{
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "hex/orders-php",
+    "type": "project",
+    "description": "Taller 07: pedidos y pagos con arquitectura hexagonal sobre Laravel 13",
+    "keywords": [
+        "laravel",
+        "framework"
+    ],
+    "license": "MIT",
+    "require": {
+        "php": "^8.4",
+        "ext-mongodb": "^2.5",
+        "ext-pdo_pgsql": "*",
+        "laravel/framework": "13.33.0",
+        "mongodb/mongodb": "2.4.2",
+        "predis/predis": "3.6.1",
+        "firebase/php-jwt": "7.2.0"
+    },
+    "require-dev": {
+        "deptrac/deptrac": "4.7.2",
+        "laravel/pint": "1.32.1",
+        "mockery/mockery": "1.6.15",
+        "nunomaduro/collision": "8.9.5",
+        "phpunit/phpunit": "12.5.36"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/",
+            "Hex\\Domain\\": "src/Domain/",
+            "Hex\\Application\\": "src/Application/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "pre-package-uninstall": [
+            "Illuminate\\Foundation\\ComposerScripts::prePackageUninstall"
+        ],
+        "test": [
+            "vendor/bin/phpunit --testdox",
+            "vendor/bin/deptrac analyse --no-progress"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

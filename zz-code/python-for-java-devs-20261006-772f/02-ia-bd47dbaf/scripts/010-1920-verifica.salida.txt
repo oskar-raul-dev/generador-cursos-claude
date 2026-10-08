@@ -1,0 +1,9 @@
+CONTEXTO:
+ do.
+>
+> **Recomiendo (a)**, y con una regla dura: **ninguna imagen de paciente sale de la máquina del
+> lector**, ningún ejercicio sube nada a un servicio externo, y el morphing de `cv04` se hace con
+> rostros del propio lector o sintéticos. El curso ya tiene ese músculo — es la misma frontera de
+> `cursos-ia`.
+
+> 🧭 **

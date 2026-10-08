@@ -1,0 +1,1 @@
+no encontré el bloque para app_nicegui.py=@app_nicegui.py

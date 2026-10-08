@@ -1,0 +1,20 @@
+=== ¿queda alguna cita a otro curso? ===
+--- fin ---
+
+=== referencias genéricas que sobreviven (deben ser de género, no de proyecto) ===
+README.md:86:**No hay apéndices.** Todo lo que en otro curso sería material de consulta es aquí una fase o
+0-ESTRUCTURA-CURSO.md:200:que en otro curso sería material de consulta —el
+09-distribucion.md:15:Y es la fase que **no existiría en un curso de Go**, cosa que conviene decir de entrada porque
+09-distribucion.md:301:contenedor como forma de desplegar un servicio es otro tema y otro curso, que este no promete.
+prompts/prompts-de-fase.md:308:- **Es la fase que no existiría en un curso de Go**, y conviene que se note: Go entrega un binario
+prompts/alcance-del-proyecto.md:37:**No se cita ningún otro curso.** Ni como material complementario, ni como "eso vive en otro
+prompts/alcance-del-proyecto.md:179:puente entre versiones— viva en apéndices `aNN-`. **Aquí no.** Todo lo que en otro curso sería un
+prompts/propuesta-fases-y-alcance.md:30:**No hay apéndices.** Todo lo que en otro curso sería material de consulta es aquí una fase o
+prompts/propuesta-fases-y-alcance.md:803:otro curso habría tenido su `aNN-` y dónde quedó aquí:
+prompts/guia-de-estilo-y-convenciones.md:629:- **Autocontención.** El curso **no nombra ningún otro curso**, ni como material necesario ni como
+prompts/guia-de-estilo-y-convenciones.md:664:- [ ] **No se nombra ningún otro curso ni ningún archivo de fuera de esta carpeta.** El curso es
+
+=== rutas fuera de la carpeta del curso ===
+ds06-notebooks-y-reproducibilidad.md:394:del cuaderno, y vas a marcar como defecto la cadena `/Users/` que aparece dentro de un
+00-instalacion-ambiente-editores-y-ecosistema.md:372:command = /opt/homebrew/bin/python3.14 -m venv /Users/tu/aurea-curso/.venv
+src/ds06-notebooks-y-reproducibilidad/test_cuadernos.py:78:    assert source.count("/Users/") == 1

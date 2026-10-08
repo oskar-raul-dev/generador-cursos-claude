@@ -1,0 +1,111 @@
+{{- if .Values.global.networkPolicy.enabled }}
+# La red de la cadena (Fase 20). Por defecto, en un cluster, todo el mundo puede hablar con todo el mundo;
+# aquí, en el namespace del release, nada entra ni sale salvo lo que el sistema usa. Cada política suma
+# permisos: el tráfico pasa si alguna lo deja pasar. kindnet las aplica (verificado en la preparación del
+# curso); no todas las redes de cluster lo hacen.
+#
+# 1. Todo cerrado: ni entra ni sale nada.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+  labels:
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  podSelector: {}
+  policyTypes: [Ingress, Egress]
+---
+# 2. El DNS. Sin esta, nadie resuelve ningún nombre, ni siquiera el de su vecino permitido (incidente 26).
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-dns
+  labels:
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  podSelector: {}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: kube-system}
+          podSelector:
+            matchLabels: {k8s-app: kube-dns}
+      ports:
+        - {protocol: UDP, port: 53}
+        - {protocol: TCP, port: 53}
+---
+# 3. Lo que entra: entre los pods de la misma cadena; desde la puerta y desde Prometheus, solo al 8080.
+# La otra cadena no está en la lista: no entra.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-ingress
+  labels:
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  podSelector: {}
+  policyTypes: [Ingress]
+  ingress:
+    - from:
+        - podSelector: {}
+    - from:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: {{ .Values.global.gateway.namespace }}}
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: observability}
+      ports:
+        - {protocol: TCP, port: 8080}
+---
+# 4. Lo que sale: a los pods de la misma cadena, a Postgres en data, (Fase 23) las trazas a Tempo y (Fase 25) el
+# bus, si está encendido.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: allow-egress
+  labels:
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  podSelector: {}
+  policyTypes: [Egress]
+  egress:
+    - to:
+        - podSelector: {}
+    - to:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: data}
+          podSelector:
+            matchLabels: {app.kubernetes.io/name: postgres}
+      ports:
+        - {protocol: TCP, port: 5432}
+    - to:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: observability}
+          podSelector:
+            matchLabels: {app.kubernetes.io/name: tempo}
+      ports:
+        - {protocol: TCP, port: 4318}
+    {{- if .Values.global.bus.valkey.enabled }}
+    # G12 (Fase 25): el bus de eventos en data.
+    - to:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: data}
+          podSelector:
+            matchLabels: {app.kubernetes.io/name: valkey}
+      ports:
+        - {protocol: TCP, port: 6379}
+    {{- end }}
+    {{- if .Values.global.bus.nats.enabled }}
+    - to:
+        - namespaceSelector:
+            matchLabels: {kubernetes.io/metadata.name: data}
+          podSelector:
+            matchLabels: {app.kubernetes.io/name: nats}
+      ports:
+        - {protocol: TCP, port: 4222}
+    {{- end }}
+{{- end }}

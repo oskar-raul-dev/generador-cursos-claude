@@ -1,0 +1,5 @@
+shm              64M     0   64M   0% /dev/shm
+/usr/local/lib/python3.14/multiprocessing/resource_tracker.py:475: UserWarning: resource_tracker: There appear to be 1 leaked shared_memory objects to clean up at shutdown: {'/psm_c43f0011'}
+  warnings.warn(
+salida: 135
+Bus error

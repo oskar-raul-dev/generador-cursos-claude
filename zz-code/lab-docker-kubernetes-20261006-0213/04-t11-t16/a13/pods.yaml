@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata: {name: datos, namespace: default}
+spec: {accessModes: [ReadWriteOnce], storageClassName: standard, resources: {requests: {storage: 100Mi}}}
+---
+apiVersion: v1
+kind: Pod
+metadata: {name: escribe, namespace: default}
+spec:
+  restartPolicy: Never
+  containers:
+    - name: escribe
+      image: postgres@sha256:5a5a84b19854a9ffaa54082c166ff4ec27473a361e496e5ea167f298f2da9722
+      command: [sh, -c, 'echo "pedido de Chapinero" > /datos/pedido.txt && echo "pedido de Chapinero" > /respaldos/pedido.txt && ls -la /datos /respaldos']
+      volumeMounts: [{name: datos, mountPath: /datos}, {name: respaldos, mountPath: /respaldos}]
+  volumes:
+    - {name: datos, persistentVolumeClaim: {claimName: datos}}
+    - {name: respaldos, hostPath: {path: /respaldos, type: Directory}}

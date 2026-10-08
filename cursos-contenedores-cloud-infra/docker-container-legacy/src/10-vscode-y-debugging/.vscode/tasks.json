@@ -1,0 +1,37 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Legacy: versions",
+      "type": "process",
+      "command": "docker",
+      "args": [
+        "exec", "legacy-node-dev",
+        "bash", "-lc",
+        "node --version && npm --version && uname -m"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Legacy: npm ci",
+      "type": "process",
+      "command": "docker",
+      "args": ["exec", "legacy-node-dev", "npm", "ci"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Legacy: test",
+      "type": "process",
+      "command": "docker",
+      "args": ["exec", "legacy-node-dev", "npm", "test"],
+      "problemMatcher": []
+    },
+    {
+      "label": "Legacy: build",
+      "type": "process",
+      "command": "docker",
+      "args": ["exec", "legacy-node-dev", "npm", "run", "build"],
+      "problemMatcher": []
+    }
+  ]
+}

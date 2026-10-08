@@ -1,0 +1,19 @@
+# El nombre estable de pricing dentro del cluster (Fase 08), en `apps` desde la Fase 09.
+apiVersion: v1
+kind: Service
+metadata:
+  name: pricing
+  labels:
+    app.kubernetes.io/name: pricing
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/component: backend
+spec:
+  # ClusterIP: una dirección virtual solo dentro del cluster. La entrada desde afuera es la Fase 10.
+  type: ClusterIP
+  # A qué pods les manda el tráfico: los que tengan esta label, y solo esta.
+  selector:
+    app.kubernetes.io/name: pricing
+  ports:
+    - name: http
+      port: 8080          # el puerto del Service
+      targetPort: http    # el puerto con nombre del contenedor

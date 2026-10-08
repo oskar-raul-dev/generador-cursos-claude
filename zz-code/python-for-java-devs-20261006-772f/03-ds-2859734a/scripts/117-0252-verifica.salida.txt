@@ -1,0 +1,17 @@
+=== ia05: de dónde sale 'extract' ===
+8:from __future__ import annotations
+10:import pytest
+12:from answer import Citation, verify_citations
+13:from ingest import MIN_USEFUL_CHARS, chunk_text, split_by_clause
+14:from search import Hit
+--- ¿lo dice su README? ---
+17:PYTHONPATH=../ia01-el-modelo-de-acceso-de-un-llm:../ia02-salida-estructurada:../ia04-embeddings-y-busqueda-semantica \
+18:  pytest test_normarag.py -q
+
+=== ia01: las dos pruebas que fallan ===
+17:def test_context_too_large_fails_fast() -> None:
+26:def test_timeout_does_not_cancel_the_generation() -> None:
+--- ¿qué dice su README? ---
+8:| `llm.py` | El cliente y `ask()`: la única puerta por la que el track habla con la API |
+12:| `test_failures.py` | Los fallos, provocados a mano. `pytest -m network` |
+17:export ANTHROPIC_API_KEY=...     # o `ant auth login`

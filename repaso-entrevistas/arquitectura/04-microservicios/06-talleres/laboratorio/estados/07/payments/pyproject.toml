@@ -1,0 +1,25 @@
+# payments: el segundo servicio extraído (taller 03). Python + FastAPI, asíncrono de punta a punta.
+# Versiones fijadas y verificadas en PyPI el 2026-09-29; nunca rangos.
+[project]
+name = "ms-payments"
+version = "1.0.0"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi==0.141.1",
+    "uvicorn==0.54.0",
+    "httpx==0.28.1",
+    "psycopg[binary]==3.3.6",
+    "psycopg-pool==3.3.3",
+    "purgatory==3.0.1",          # circuit breaker nativo de asyncio (taller 05); última versión: 2024-11
+    "aiokafka==0.14.0",          # consumidor asíncrono de orders.events (taller 06)
+    # taller 07: SDK de OpenTelemetry, exportador OTLP/gRPC e instrumentación de FastAPI, httpx y psycopg.
+    # El SDK va en 1.x y las instrumentaciones en 0.x "beta": se publican juntas y se fijan juntas.
+    "opentelemetry-sdk==1.45.0",
+    "opentelemetry-exporter-otlp-proto-grpc==1.45.0",
+    "opentelemetry-instrumentation-fastapi==0.66b0",
+    "opentelemetry-instrumentation-httpx==0.66b0",
+    "opentelemetry-instrumentation-psycopg==0.66b0",
+]
+
+[tool.uv]
+package = false

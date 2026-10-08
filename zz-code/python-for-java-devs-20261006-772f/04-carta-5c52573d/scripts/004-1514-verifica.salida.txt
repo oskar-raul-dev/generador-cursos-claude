@@ -1,0 +1,23 @@
+00-instalacion-ambiente-y-tooling.md   dec=20 num=20 rojos=2 rubricas/details=5 desafios=3 secciones=13
+01-sintaxis-y-valores.md               dec=24 num=24 rojos=4 rubricas/details=7 desafios=3 secciones=13
+02-structs-interfaces-composicion.md   dec=26 num=26 rojos=4 rubricas/details=7 desafios=3 secciones=13
+03-errores-paquetes-io.md              dec=24 num=24 rojos=3 rubricas/details=6 desafios=3 secciones=13
+04-testing-dobles-cobertura.md         dec=26 num=26 rojos=4 rubricas/details=7 desafios=3 secciones=13
+05-http-rest-stdlib.md                 dec=26 num=26 rojos=4 rubricas/details=7 desafios=3 secciones=13
+06-concurrencia.md                     dec=30 num=30 rojos=5 rubricas/details=8 desafios=3 secciones=13
+07-context-y-ciclo-de-vida.md          dec=24 num=24 rojos=3 rubricas/details=6 desafios=3 secciones=13
+08-migracion-a-go-moderno.md           dec=26 num=26 rojos=4 rubricas/details=7 desafios=3 secciones=22
+09-sql-postgres-sqlite.md              dec=30 num=30 rojos=4 rubricas/details=7 desafios=3 secciones=13
+10-clientes-http-y-apis-externas.md    dec=28 num=28 rojos=4 rubricas/details=7 desafios=3 secciones=13
+11-mongodb-y-modelado-documental.md    dec=24 num=24 rojos=3 rubricas/details=6 desafios=3 secciones=13
+12-cache-con-valkey.md                 dec=22 num=22 rojos=3 rubricas/details=6 desafios=3 secciones=13
+13-lotes-scheduling-y-asincronia.md    dec=28 num=28 rojos=4 rubricas/details=7 desafios=3 secciones=13
+14-observabilidad-y-hardening.md       dec=26 num=26 rojos=3 rubricas/details=6 desafios=3 secciones=14
+15-rendimiento-y-profiling.md          dec=26 num=26 rojos=3 rubricas/details=6 desafios=3 secciones=14
+16-go-frente-a-spring-boot.md          dec=30 num=30 rojos=4 rubricas/details=7 desafios=3 secciones=13
+17-capstone.md                         dec=20 num=20 rojos=3 rubricas/details=6 desafios=3 secciones=21
+prompts/alcance-del-proyecto.md:215:Spring Boot 3.x, Spring MVC, Spring Data JPA / Hibernate, Spring Batch, Spring
+README.md:81:Spring Boot 3, con la JVM ajustada y con `native-image` — porque comparar contra
+16-go-frente-a-spring-boot.md:21:construiste y una Spring Boot 3 equivalente que el curso entrega hecha— y se miden
+16-go-frente-a-spring-boot.md:169:  configuración explícita.** Spring Boot 3 lo soporta oficialmente con sus *hints*,
+16-go-frente-a-spring-boot.md:1047:- **Spring Boot 3 and GraalVM** — el material oficial y las charlas de SpringOne.

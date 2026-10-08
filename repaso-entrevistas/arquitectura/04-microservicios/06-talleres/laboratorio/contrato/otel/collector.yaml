@@ -1,0 +1,43 @@
+# Collector de OpenTelemetry del bloque 06 (taller 07). Los servicios no conocen el backend: envían a
+# este collector por OTLP, y él decide adónde va cada señal. Cambiar Jaeger por otro backend es tocar
+# este archivo, no tres servicios en tres lenguajes.
+receivers:
+  otlp:
+    protocols:
+      grpc: { endpoint: 0.0.0.0:4317 }   # inventory (Go), payments (Python), Envoy
+      http: { endpoint: 0.0.0.0:4318 }   # el agente de Java (http/protobuf por defecto)
+
+processors:
+  # Muestreo de cola (tail sampling): el collector espera a tener la traza entera y decide con ella.
+  # Sin esto, el sondeo del outbox de orders deja 5 trazas por segundo que no dicen nada, y el chequeo
+  # de salud de Envoy una cada 2 s (06/07 §9). Una traza se guarda si CUALQUIERA de las dos políticas
+  # la acepta; lo demás (rondas vacías del planificador, chequeos de salud) se descarta.
+  tail_sampling:
+    decision_wait: 5s                    # cuánto se espera a los spans rezagados de una traza
+    policies:
+      - name: came-through-the-gateway   # tráfico de clientes: tiene un span de Envoy
+        type: ottl_condition
+        ottl_condition:
+          error_mode: ignore
+          span:
+            - 'resource.attributes["service.name"] == "envoy"'
+      - name: went-through-kafka         # un envío o una lectura de Kafka: una ronda que sí publicó, o
+        type: ottl_condition             # un consumidor que abrió traza propia (la provocación)
+        ottl_condition:
+          error_mode: ignore
+          span:
+            - 'kind == SPAN_KIND_PRODUCER or kind == SPAN_KIND_CONSUMER'
+  batch: {}                              # agrupa antes de exportar: menos llamadas al backend
+
+exporters:
+  # "otlp_grpc": desde la 0.16x el nombre "otlp" del exportador es un alias obsoleto (avisa al arrancar)
+  otlp_grpc/jaeger:
+    endpoint: ms-jaeger:4317             # Jaeger v2 acepta OTLP de forma nativa
+    tls: { insecure: true }              # red interna del laboratorio
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [tail_sampling, batch]
+      exporters: [otlp_grpc/jaeger]

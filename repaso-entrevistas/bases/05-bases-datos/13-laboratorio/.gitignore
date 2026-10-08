@@ -1,0 +1,8 @@
+# Lo que se regenera en el laboratorio no se versiona. Este es el único .gitignore del
+# laboratorio.
+
+# ── entorno/ ─────────────────────────────────────────────────────────────────
+# Artefactos de la semilla y de los ejemplos (CSV, tienda.db, lotes de DynamoDB)
+entorno/datos/
+# El código del lector: lo escribe al seguir los capítulos, no se versiona
+entorno/codigo/

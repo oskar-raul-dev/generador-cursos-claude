@@ -1,0 +1,27 @@
+{
+  "engine": "docker",
+  "tool": "k3d",
+  "date": "2026-10-03T18:51:50",
+  "runs": [
+    {
+      "ready_s": 17.0,
+      "vm_before_mib": 745,
+      "vm_after_mib": 1400,
+      "cluster_mib": 655
+    },
+    {
+      "ready_s": 17.0,
+      "vm_before_mib": 664,
+      "vm_after_mib": 1361,
+      "cluster_mib": 697
+    },
+    {
+      "ready_s": 16.9,
+      "vm_before_mib": 687,
+      "vm_after_mib": 1368,
+      "cluster_mib": 681
+    }
+  ],
+  "server_version": "v1.35.5+k3s1",
+  "three_nodes_s": 29.3
+}

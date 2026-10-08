@@ -1,0 +1,4 @@
+=== Mini proyectos declarados en prompts-extendidos-fases.md ===
+      46
+--- en mis fases y NO en los prompts:
+--- en los prompts y NO en mis fases:

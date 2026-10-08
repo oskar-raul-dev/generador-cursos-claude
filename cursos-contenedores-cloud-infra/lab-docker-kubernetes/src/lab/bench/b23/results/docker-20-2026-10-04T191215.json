@@ -1,0 +1,54 @@
+{
+  "date": "2026-10-04T19:12:15",
+  "rate": 20,
+  "pricing_replicas": 3,
+  "modes": {
+    "http1": [
+      {
+        "calls": {
+          "pricing-5649d6f9b6-4nbm4": 0,
+          "pricing-5649d6f9b6-x7wl2": 601,
+          "pricing-5649d6f9b6-ztsbg": 0
+        },
+        "share": [
+          1.0,
+          0.0,
+          0.0
+        ],
+        "med_ms": 23.756500000000003,
+        "p95_ms": 39.67889999999999,
+        "failed": 0
+      },
+      {
+        "calls": {
+          "pricing-5649d6f9b6-4nbm4": 301,
+          "pricing-5649d6f9b6-x7wl2": 300,
+          "pricing-5649d6f9b6-ztsbg": 0
+        },
+        "share": [
+          0.501,
+          0.499,
+          0.0
+        ],
+        "med_ms": 24.0075,
+        "p95_ms": 39.572299999999984,
+        "failed": 0
+      },
+      {
+        "calls": {
+          "pricing-5649d6f9b6-4nbm4": 300,
+          "pricing-5649d6f9b6-x7wl2": 300,
+          "pricing-5649d6f9b6-ztsbg": 0
+        },
+        "share": [
+          0.5,
+          0.5,
+          0.0
+        ],
+        "med_ms": 23.148,
+        "p95_ms": 37.148,
+        "failed": 0
+      }
+    ]
+  }
+}

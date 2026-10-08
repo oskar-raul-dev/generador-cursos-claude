@@ -1,0 +1,4 @@
+NIT...7: TIMEOUT a los 2.0s (el proceso se colgó)
+NIT...3: código=2 stdout='ERR-CERT certificado del emisor vencido (NIT 767313473)' stderr=''
+NIT...5: código=3 stdout='' stderr='WARN-011 firmado con certificado próximo a vencer (NIT 714791075)'
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

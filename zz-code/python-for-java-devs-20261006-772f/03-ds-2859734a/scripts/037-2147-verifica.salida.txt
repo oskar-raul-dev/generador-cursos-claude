@@ -1,0 +1,6 @@
+OK
+bucle              270 filas · referencia
+pandas             270 filas · == bucle: True
+polars (lazy)      270 filas · == bucle: True
+duckdb (csv)       270 filas · == bucle: True
+duckdb (parquet)   270 filas · == bucle: True

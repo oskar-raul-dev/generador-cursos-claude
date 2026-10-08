@@ -1,0 +1,8 @@
+# El namespace de la observabilidad (Fase 17). Lo crea plataforma, como apps: el chart pone ahí sus
+# piezas, pero no es dueño del namespace. Sin cuota: lo que cuesta cada pieza se mide, no se recorta.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: observability
+  labels:
+    app.kubernetes.io/part-of: lab

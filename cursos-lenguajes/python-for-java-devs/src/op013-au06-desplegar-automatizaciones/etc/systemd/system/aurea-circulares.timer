@@ -1,0 +1,11 @@
+[Unit]
+Description=Todos los días a las 06:30
+
+[Timer]
+OnCalendar=*-*-* 06:30:00
+# Si la máquina estaba apagada a las 06:30, la tarea corre al arrancar.
+Persistent=true
+RandomizedDelaySec=5min
+
+[Install]
+WantedBy=timers.target

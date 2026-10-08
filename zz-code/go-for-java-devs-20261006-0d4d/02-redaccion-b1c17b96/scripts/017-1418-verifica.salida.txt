@@ -1,0 +1,63 @@
+=== TAGS DE PROYECTO: orden monotono por servicio ===
+atlassync	v0.1
+atlassync	v0.2
+atlassync	v0.2
+atlassync	v0.3
+atlassync	v0.4
+clearinghouse	v0.1
+clearinghouse	v0.2
+clearinghouse	v0.5
+clearinghouse	v0.5
+duelo	v1.0
+eventrelay	v0.1
+eventrelay	v0.10
+eventrelay	v0.11
+eventrelay	v0.2
+eventrelay	v0.3
+eventrelay	v0.4
+eventrelay	v0.5
+eventrelay	v0.6
+eventrelay	v0.7
+eventrelay	v0.8
+eventrelay	v0.9
+eventrelay	v0.9
+meridian	v1.0
+opsreport	v0.10
+opsreport	v0.2
+opsreport	v0.3
+opsreport	v0.4
+opsreport	v0.5
+opsreport	v0.5
+opsreport	v0.6
+opsreport	v0.7
+opsreport	v0.8
+opsreport	v0.9
+plataforma	v1.0
+plataforma	v1.0
+
+=== TAGS DE HITO usados ===
+bloque-a-completo
+curso-completo
+duelo/v1.0
+fase-
+fase-00
+fase-01
+fase-02
+fase-03
+fase-04
+fase-05
+fase-06
+fase-07
+fase-08
+fase-09
+fase-10
+fase-11
+fase-12
+fase-13
+fase-14
+fase-15
+fase-16
+fase-17
+meridian/v1.0
+plataforma/v1.0-rc1
+plataforma/v1.0-rc2

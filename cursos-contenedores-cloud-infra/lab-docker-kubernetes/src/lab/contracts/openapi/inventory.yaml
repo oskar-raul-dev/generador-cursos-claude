@@ -1,0 +1,326 @@
+openapi: 3.1.0
+info:
+  title: inventory
+  version: 1.0.0
+  description: |
+    Las existencias por droguería y sus movimientos; desde G5, la venta; desde G11, el préstamo
+    entre droguerías como saga orquestada. Sale del StockService de Contingencia y de su
+    procedimiento register_loan. Cada operación dice en `x-lab-paso` en qué paso se implementa; lo que todavía no existe responde 404 (o 405, si la ruta ya existe con otro método) hasta su paso.
+servers:
+  - url: http://inventory:8080
+# G12 (Fase 25): los eventos que publica inventory. OpenAPI describe peticiones, no mensajes; la lista va en
+# esta extensión, con el canal (el mismo nombre en Valkey y como sujeto de NATS) y el esquema de su cuerpo.
+x-lab-events:
+  - channel: lab.inventory.stock-low
+    x-lab-paso: G12
+    summary: Una venta dejó la existencia de un producto por debajo del umbral en una droguería.
+    description: |
+      Reemplaza al POST /replenishment-orders que la venta hacía sin esperar (G5) cuando hay un bus encendido
+      (EVENT_BUS). Se publica después de confirmar la venta. Con Valkey, a quien esté suscrito en ese
+      instante; con NATS JetStream, al stream LAB_EVENTS, que lo guarda hasta que replenish lo confirma: al
+      menos una vez, y a veces dos (Fase 26). Desde G13, con NATS, el evento se escribe en la tabla outbox
+      en la misma transacción que la venta, y lo publica un proceso aparte (el sidecar outbox-relay) con
+      la cabecera Nats-Msg-Id igual al eventId; replenish no crea dos órdenes para el mismo eventId.
+    payload: {$ref: '#/components/schemas/StockLowEvent'}
+tags:
+  - name: plataforma
+  - name: existencias
+  - name: ventas
+  - name: préstamos
+paths:
+  /health/live:
+    get:
+      tags: [plataforma]
+      summary: El proceso puede atender. Nunca consulta dependencias.
+      x-lab-paso: G0
+      responses:
+        '200': {description: Vivo, content: {application/json: {schema: {$ref: '#/components/schemas/Health'}}}}
+  /health/ready:
+    get:
+      tags: [plataforma]
+      summary: El servicio puede atender tráfico de verdad (trivial hasta G4).
+      x-lab-paso: G0
+      responses:
+        '200': {description: Listo, content: {application/json: {schema: {$ref: '#/components/schemas/Health'}}}}
+        '503': {description: No listo (desde G4), content: {application/json: {schema: {$ref: '#/components/schemas/Health'}}}}
+  /metrics:
+    get:
+      tags: [plataforma]
+      summary: Métricas en formato de exposición de Prometheus. Pendiente hasta G6 (Fase 17).
+      description: |
+        Iguales en los cuatro backends, para que un solo tablero los lea: un histograma
+        http_server_requests_seconds (en segundos) con las etiquetas method, uri (la ruta con sus
+        parámetros sin reemplazar, como /prices/{sku}) y status. Cada servicio puede sumar las suyas.
+      x-lab-paso: G6
+      responses:
+        '200': {description: Métricas, content: {text/plain: {schema: {type: string}}}}
+  /stock/{storeId}/{sku}:
+    parameters:
+      - {name: storeId, in: path, required: true, schema: {$ref: '#/components/schemas/StoreId'}}
+      - {name: sku, in: path, required: true, schema: {$ref: '#/components/schemas/Sku'}}
+    get:
+      tags: [existencias]
+      summary: Cuántas unidades hay de un producto en una droguería. En G0 devuelve una existencia fija.
+      x-lab-paso: G0
+      responses:
+        '200': {description: Existencia, content: {application/json: {schema: {$ref: '#/components/schemas/StockLevel'}}}}
+        '404': {description: Sin existencias registradas (desde G1), content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+    patch:
+      tags: [existencias]
+      summary: Cambia el umbral de reposición. La cantidad no se parcha, se mueve. Pendiente hasta G1 (Fase 09).
+      x-lab-paso: G1
+      requestBody:
+        required: true
+        content: {application/merge-patch+json: {schema: {$ref: '#/components/schemas/ThresholdPatch'}}}
+      responses:
+        '200': {description: Umbral guardado, content: {application/json: {schema: {$ref: '#/components/schemas/StockLevel'}}}}
+        '404': {description: Sin existencias registradas, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        '422': {description: 'El cuerpo trae algo más que el umbral, como `quantity`', content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+  /stock/{storeId}/{sku}/movements:
+    parameters:
+      - {name: storeId, in: path, required: true, schema: {$ref: '#/components/schemas/StoreId'}}
+      - {name: sku, in: path, required: true, schema: {$ref: '#/components/schemas/Sku'}}
+    post:
+      tags: [existencias]
+      summary: Registra una entrada, un ajuste o un conteo. Pendiente hasta G1 (Fase 09).
+      description: |
+        La existencia solo cambia por movimientos (D33). RESTOCK suma; ADJUSTMENT suma o resta y exige
+        reasonCode; COUNT registra lo contado en la droguería: la existencia pasa a ese valor y el
+        movimiento guarda la diferencia con signo, de modo que la suma de los movimientos sigue siendo
+        la existencia. El primer RESTOCK o COUNT de un producto en una droguería crea su existencia,
+        con umbral 0; el umbral se cambia con PATCH.
+      x-lab-paso: G1
+      requestBody:
+        required: true
+        content: {application/json: {schema: {$ref: '#/components/schemas/MovementRequest'}}}
+      responses:
+        '201': {description: Movimiento registrado, content: {application/json: {schema: {$ref: '#/components/schemas/StockMovement'}}}}
+        '409': {description: El ajuste dejaría la existencia en negativo, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        '422': {description: 'Falta `reasonCode` en un ajuste, el código no existe o no aplica al tipo, o un `COUNT` trae una cantidad negativa', content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+  /reason-codes:
+    get:
+      tags: [existencias]
+      summary: La tabla de códigos de razón de los movimientos. Pendiente hasta G1 (Fase 09).
+      description: |
+        Es una tabla de datos, no un enum del contrato: se agregan códigos sin cambiar el OpenAPI.
+        G1 la siembra con COUNT_DIFF, DAMAGED, TRANSFER_LOST, ENTRY_ERROR y THEFT; G11 le agrega
+        LOAN_RELEASED, la compensación de la reserva de un préstamo.
+      x-lab-paso: G1
+      responses:
+        '200': {description: Códigos de razón, content: {application/json: {schema: {type: array, items: {$ref: '#/components/schemas/ReasonCode'}}}}}
+  /sales:
+    post:
+      tags: [ventas]
+      summary: La venta completa. Pendiente hasta G5 (Fase 16); clave de idempotencia desde G13 (Fase 26).
+      description: |
+        En orden: el producto existe y está ACTIVE en catalog; el precio vigente en la droguería sale de
+        pricing (con el tope regulado aplicado); la existencia se descuenta con un movimiento SALE, sin
+        carreras (dos ventas a la vez no pueden vender la misma unidad). Si la existencia queda por debajo
+        del umbral, se le pide a replenish una orden por la cantidad del umbral, SIN esperar su respuesta:
+        la venta no falla si replenish no contesta, y el resultado del aviso va al log. Desde G12, con un
+        bus encendido, el aviso es el evento lab.inventory.stock-low (x-lab-events).
+      x-lab-paso: G5
+      parameters:
+        - {name: Idempotency-Key, in: header, required: false, schema: {$ref: '#/components/schemas/IdempotencyKey'}, description: 'Desde G13. La misma clave con el mismo cuerpo devuelve la venta ya registrada, sin vender otra vez; con otro cuerpo, 422.'}
+      requestBody:
+        required: true
+        content: {application/json: {schema: {$ref: '#/components/schemas/SaleRequest'}}}
+      responses:
+        '201': {description: Venta registrada, content: {application/json: {schema: {$ref: '#/components/schemas/Sale'}}}}
+        '409': {description: Sin existencias suficientes, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        '422': {description: 'El cuerpo no es válido, el producto no existe o está descontinuado, o no tiene precio en esa droguería', content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        '503': {description: 'catalog o pricing no contestan (la venta no se registra)', content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+  /loans:
+    post:
+      tags: [préstamos]
+      summary: Pide un préstamo entre droguerías para un cliente; arranca la saga. Pendiente hasta G11 (Fase 24).
+      description: |
+        El préstamo de la historia, para un cliente que compra en destinationStore un producto que esa
+        droguería no tiene y que originStore sí. La respuesta llega apenas la saga queda registrada (202);
+        los pasos corren después, y su estado se consulta con GET /loans/{loanId}. inventory coordina
+        tres pasos, en este orden, y cada uno tiene su compensación, que es una operación de negocio:
+          1. RESERVE: un movimiento LOAN_OUT en el origen. Sin existencia suficiente, el préstamo
+             termina en BACKORDERED (el "pendiente" de la historia: se avisa al cliente) y nada se
+             compensa. Se deshace con un ADJUSTMENT positivo con el código LOAN_RELEASED.
+          2. DISPATCH: la orden de reposición en replenish, con originStore (la moto). Se deshace
+             cancelando la orden con el código SAGA_COMPENSATION, mientras siga en PENDING.
+          3. CHARGE: el cobro al cliente, al precio vigente del producto en el destino (pricing), como
+             una venta del destino sin movimiento de existencia. Va al final porque es lo que más cuesta
+             deshacer (un reembolso): con el cobro hecho, la saga ya no se devuelve.
+        Con los tres hechos, un LOAN_IN en el destino y COMPLETED (el laboratorio no modela el viaje
+        de la moto). Si un paso falla, se deshacen los anteriores en orden inverso (COMPENSATING) y el
+        préstamo termina en COMPENSATED. Un préstamo que se queda sin terminar (el pod murió, una
+        compensación falló) lo retoma un barrido cada 30 s: sin el cobro, lo compensa; con el cobro
+        hecho, lo termina.
+      x-lab-paso: G11
+      parameters:
+        - {name: Idempotency-Key, in: header, required: false, schema: {$ref: '#/components/schemas/IdempotencyKey'}, description: 'Desde G13 (Fase 26). La misma clave con el mismo cuerpo devuelve el préstamo ya pedido (202), sin arrancar otra saga; con otro cuerpo, 422. Y desde G13 el DISPATCH manda a replenish la clave del préstamo: ante un timeout, reintenta con la misma clave en vez de compensar, y al compensar sin número de orden la busca por la clave.'}
+      requestBody:
+        required: true
+        content: {application/json: {schema: {$ref: '#/components/schemas/LoanRequest'}}}
+      responses:
+        '202': {description: Saga iniciada, content: {application/json: {schema: {$ref: '#/components/schemas/Loan'}}}}
+        '422': {description: 'El cuerpo no es válido, o el origen y el destino son la misma droguería', content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+  /loans/{loanId}:
+    get:
+      tags: [préstamos]
+      summary: El estado de un préstamo, con cada paso de su saga. Pendiente hasta G11 (Fase 24).
+      x-lab-paso: G11
+      parameters:
+        - {name: loanId, in: path, required: true, schema: {type: string}}
+      responses:
+        '200': {description: Préstamo, content: {application/json: {schema: {$ref: '#/components/schemas/Loan'}}}}
+        '404': {description: No existe, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+components:
+  schemas:
+    Sku: {type: string, pattern: '^SKU-[0-9]{4}$', examples: [SKU-0003]}
+    StoreId: {type: string, pattern: '^DRO-[0-9]{3}$', examples: [DRO-007]}
+    Health:
+      type: object
+      required: [status]
+      properties:
+        status: {type: string, enum: [live, ready, not_ready]}
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: {type: string, examples: [not_found]}
+        message: {type: string}
+    StockLevel:
+      type: object
+      required: [store, sku, quantity, reorderThreshold]
+      properties:
+        store: {$ref: '#/components/schemas/StoreId'}
+        sku: {$ref: '#/components/schemas/Sku'}
+        quantity: {type: integer, minimum: 0}
+        reorderThreshold: {type: integer, minimum: 0}
+    ThresholdPatch:
+      type: object
+      required: [reorderThreshold]
+      additionalProperties: false
+      properties:
+        reorderThreshold: {type: integer, minimum: 0}
+    ReasonCodeValue:
+      type: string
+      pattern: '^[A-Z][A-Z_]{1,29}$'
+      description: Un código de la tabla de `GET /reason-codes`.
+      examples: [TRANSFER_LOST]
+    Reference:
+      type: string
+      maxLength: 100
+      description: 'De dónde sale el movimiento: un archivo de traslados, una orden, un conteo.'
+      examples: [traslados_20261003_0308.txt, RO-0001]
+    ReasonCode:
+      type: object
+      required: [code, description, appliesTo, active]
+      properties:
+        code: {$ref: '#/components/schemas/ReasonCodeValue'}
+        description: {type: string, examples: [Traslado despachado que nunca llegó al destino]}
+        appliesTo:
+          type: array
+          items: {type: string, enum: [RESTOCK, ADJUSTMENT]}
+        active: {type: boolean, description: 'Un código inactivo se conserva para los movimientos viejos y no se acepta en los nuevos.'}
+    MovementRequest:
+      type: object
+      required: [type, quantity]
+      properties:
+        type: {type: string, enum: [RESTOCK, ADJUSTMENT, COUNT]}
+        quantity: {type: integer, description: 'Positiva en RESTOCK; con signo en ADJUSTMENT; en COUNT, lo contado (0 o más).'}
+        reasonCode: {$ref: '#/components/schemas/ReasonCodeValue'}
+        reference: {$ref: '#/components/schemas/Reference'}
+      if:
+        properties: {type: {const: ADJUSTMENT}}
+      then:
+        required: [reasonCode]
+    StockMovement:
+      type: object
+      required: [id, store, sku, type, quantity, createdAt]
+      properties:
+        id: {type: string}
+        store: {$ref: '#/components/schemas/StoreId'}
+        sku: {$ref: '#/components/schemas/Sku'}
+        type: {type: string, enum: [SALE, RESTOCK, ADJUSTMENT, COUNT, LOAN_OUT, LOAN_IN]}
+        quantity: {type: integer, description: 'Con signo: lo que el movimiento cambió la existencia (en COUNT, la diferencia).'}
+        reasonCode:
+          oneOf: [{$ref: '#/components/schemas/ReasonCodeValue'}, {type: 'null'}]
+        reference:
+          oneOf: [{$ref: '#/components/schemas/Reference'}, {type: 'null'}]
+        createdAt: {type: string, format: date-time}
+    SaleRequest:
+      type: object
+      required: [store, sku, quantity]
+      properties:
+        store: {$ref: '#/components/schemas/StoreId'}
+        sku: {$ref: '#/components/schemas/Sku'}
+        quantity: {type: integer, minimum: 1}
+    Sale:
+      type: object
+      required: [id, store, sku, quantity, unitPrice, total]
+      properties:
+        id: {type: string}
+        store: {$ref: '#/components/schemas/StoreId'}
+        sku: {$ref: '#/components/schemas/Sku'}
+        quantity: {type: integer}
+        unitPrice: {type: integer, description: Pesos colombianos.}
+        total: {type: integer}
+        replenishmentRequested: {type: boolean, description: 'true si la venta dejó el stock bajo el umbral y se avisó a replenish.'}
+    IdempotencyKey:
+      type: string
+      minLength: 1
+      maxLength: 100
+      description: 'La elige quien llama, una por operación de negocio (no por intento): reintentar es mandar la misma.'
+      examples: [chapinero-salbutamol-0001]
+    StockLowEvent:
+      type: object
+      required: [eventId, type, saleId, store, sku, quantity, occurredAt]
+      properties:
+        eventId: {type: string, format: uuid, description: 'Único por evento; lo genera inventory al publicar.'}
+        type: {type: string, const: stock.low}
+        saleId: {type: string, description: La venta que dejó la existencia bajo el umbral.}
+        store: {$ref: '#/components/schemas/StoreId'}
+        sku: {$ref: '#/components/schemas/Sku'}
+        quantity: {type: integer, minimum: 1, description: 'Cuánto reponer: el umbral de la existencia.'}
+        occurredAt: {type: string, format: date-time}
+    LoanRequest:
+      type: object
+      required: [sku, originStore, destinationStore, quantity]
+      properties:
+        sku: {$ref: '#/components/schemas/Sku'}
+        originStore: {$ref: '#/components/schemas/StoreId'}
+        destinationStore: {$ref: '#/components/schemas/StoreId'}
+        quantity: {type: integer, minimum: 1}
+    Loan:
+      type: object
+      required: [id, sku, originStore, destinationStore, quantity, status, steps]
+      properties:
+        id: {type: string, examples: [LOAN-000001]}
+        sku: {$ref: '#/components/schemas/Sku'}
+        originStore: {$ref: '#/components/schemas/StoreId'}
+        destinationStore: {$ref: '#/components/schemas/StoreId'}
+        quantity: {type: integer}
+        status:
+          type: string
+          enum: [STARTED, RESERVED, DISPATCHED, CHARGED, COMPLETED, COMPENSATING, COMPENSATED, BACKORDERED]
+          description: 'BACKORDERED es el "pendiente" de la historia: la vecina no tenía el producto y se avisó al cliente.'
+        saleId:
+          oneOf: [{type: string}, {type: 'null'}]
+          description: El cobro (CHARGE), como una venta del destino.
+        replenishmentOrderId:
+          oneOf: [{type: string}, {type: 'null'}]
+          description: La orden de replenish (DISPATCH).
+        failure:
+          oneOf: [{type: string}, {type: 'null'}]
+          description: Por qué se compensó o quedó pendiente.
+        steps:
+          type: array
+          description: El registro de la saga, en orden. Cada paso hecho o deshecho deja una fila.
+          items: {$ref: '#/components/schemas/LoanStep'}
+    LoanStep:
+      type: object
+      required: [step, action, outcome, at]
+      properties:
+        step: {type: string, enum: [RESERVE, DISPATCH, CHARGE, RECEIVE]}
+        action: {type: string, enum: [DO, UNDO]}
+        outcome: {type: string, enum: [OK, FAILED]}
+        detail: {type: string}
+        at: {type: string, format: date-time}

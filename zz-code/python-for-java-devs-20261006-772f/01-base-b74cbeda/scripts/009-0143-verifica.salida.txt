@@ -1,0 +1,4 @@
+build onedir: 5.8s exit=0
+tamaño carpeta: 31.2 MB · archivos: 49
+arranque onedir: mediana 55 ms
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

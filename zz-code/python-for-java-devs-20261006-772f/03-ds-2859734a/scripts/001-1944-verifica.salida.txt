@@ -1,0 +1,130 @@
+=== prompts/README.md 25-55 ===
+> que pasar por el dominio de Áurea.
+
+---
+
+## 📖 Orden de lectura
+
+Si llegas nuevo a este curso, en este orden y no en otro:
+
+1. **[`alcance-del-proyecto.md`](alcance-del-proyecto.md)** — qué es el curso, para quién, qué
+   produce y qué no hace. Incluye la regla de forma que lo define: **no hay apéndices**.
+2. **[`propuesta-fases-y-alcance.md`](propuesta-fases-y-alcance.md)** — la estructura. §4 tiene la
+   numeración oficial de las 18 fases; **§5 tiene el encargo detallado de cada una**; §9 tiene las
+   siete decisiones cerradas con su porqué.
+3. **[`guia-de-estilo-y-convenciones.md`](guia-de-estilo-y-convenciones.md)** — voz, idioma,
+   pedagogía, estilo de código, marcadores, la plantilla de 10 secciones, ejercicios, y el
+   checklist de cierre.
+4. **[`00-historia-de-aurea.md`](../00-historia-de-aurea.md)** — la empresa del curso.
+   Fuente de verdad de todo lo narrativo: personajes, cifras, cronología, reglas de negocio.
+
+Y como referencia, cuando toque:
+
+- **[`plantillas-de-capitulo.md`](plantillas-de-capitulo.md)** — el esqueleto de fase, que se
+  sigue literal. Es uno solo: no hay plantilla de apéndice porque no hay apéndices.
+- **[`formato-de-miniproyectos.md`](formato-de-miniproyectos.md)** — el miniproyecto obligatorio
+  de cada fase, cómo se calibra y su prueba bloqueante.
+- **[`formato-de-mediciones.md`](formato-de-mediciones.md)** — el arnés, la forma de una medición
+  y las reglas de honestidad.
+- **[`contrato-del-cli.md`](contrato-del-cli.md)** — qué gana el CLI de Patricia en cada fase, y
+  qué nombres ya están congelados. **Obligatorio antes de escribir cualquier fase entre la 01 y
+  la 09, y la 15**, porque el curso se redacta fuera del orden numérico.
+- **[`prompts-de-tracks-ia-ds.md`](prompts-de-tracks-ia-ds.md)** — el marco común y los 17 bloques
+=== prompts/README.md 88-100 ===
+| Archivo | Qué es | Manda sobre |
+|---|---|---|
+| `alcance-del-proyecto.md` | Encuadre y versiones. **Su §0 fija que el curso es autocontenido** | Todo. Es el techo |
+| `propuesta-fases-y-alcance.md` | Estructura y alcance por fase | La guía de estilo y las plantillas |
+| `guia-de-estilo-y-convenciones.md` | Voz, código y forma | Las plantillas y los formatos |
+| `plantillas-de-capitulo.md` | El esqueleto de fase | — |
+| `formato-de-miniproyectos.md` | La sección 7 de cada fase | — |
+| `formato-de-mediciones.md` | La sección 6 y `BENCHMARKS.md` | — |
+| `00-historia-de-aurea.md` | La empresa del curso, y la única | Todo lo narrativo |
+| `prompts-documentos-raiz.md` | Los 3 prompts de la raíz | — |
+| `prompts-de-fase.md` | El marco común + los 18 prompts del camino base | — |
+| `prompts-de-tracks-ia-ds.md` | El marco común + los 17 prompts de `ia` y `ds` | Las 17 secciones complementarias |
+| `contrato-del-cli.md` | La forma del CLI fase por fase, congelada | Las fases 01-09 y 15 |
+=== prompts/prompts-de-fase.md 38-56 ===
+1. `prompts/alcance-del-proyecto.md` — qué es el curso y qué no. **Es el techo: el curso es
+   autocontenido y no hereda reglas de ningún archivo de fuera de esta carpeta (§0).**
+2. `prompts/propuesta-fases-y-alcance.md` — **§5 tiene el alcance detallado de esta fase y se
+   sigue literal**; §4 tiene la numeración oficial, que no se cambia.
+3. `prompts/guia-de-estilo-y-convenciones.md` — voz, código, marcadores, plantilla, ejercicios.
+4. `prompts/plantillas-de-capitulo.md` — las 10 secciones, en orden, sin extras.
+5. `prompts/formato-de-miniproyectos.md` — el miniproyecto y su prueba de calibración.
+6. `prompts/formato-de-mediciones.md` — el arnés y la forma de la medición.
+7. `00-historia-de-aurea.md` — todo lo narrativo: personajes, cifras, cronología,
+   reglas de negocio.
+8. Los entregables de las fases anteriores.
+9. Las decisiones explícitas de este chat.
+
+`prompts/propuestas-fases-base-ia-datos.md` y `prompts/propuestas-temas-opcionales.md` son
+material exploratorio de los tracks complementarios y opcionales: alimentan la discusión y
+**pierden contra las fuentes de arriba** en cualquier contradicción. La única excepción es la §0
+del primero, que sí manda sobre nombres y forma de los complementos `ia` y `ds`.
+
+## Las siete reglas que más se rompen
+=== prompts/prompts-de-tracks-ia-ds.md 78-96 ===
+
+1. `prompts/alcance-del-proyecto.md` — el techo. Su **§0** fija que el curso es autocontenido y
+   no hereda reglas de fuera de esta carpeta; su **§9** tiene **las versiones fijadas**, incluida la segunda
+   tabla, la de estos dos tracks. Ninguna versión se pone de memoria.
+2. `prompts/propuestas-fases-base-ia-datos.md` — **§0 manda sobre nombres, tags y forma**; §5 y
+   §6 tienen el alcance temático de cada sección.
+3. `prompts/guia-de-estilo-y-convenciones.md` — voz, código, marcadores, ejercicios.
+4. `prompts/plantillas-de-capitulo.md` — las 10 secciones, en orden, sin extras.
+5. `prompts/formato-de-miniproyectos.md` y `prompts/formato-de-mediciones.md`.
+6. `00-historia-de-aurea.md` — **§5 (la historia clínica), §7 (los dos proyectos
+   de IA) y §8 (los dos de datos)** son el encargo literal.
+7. Las 18 fases del camino base, que son código que ya existe y que no se reescribe.
+8. Las secciones anteriores del mismo track.
+9. Las decisiones explícitas de este chat.
+
+`prompts/propuestas-temas-opcionales.md` **no cuenta** aquí: gobierna la carta opcional, que es
+otra cosa.
+
+## Las nueve reglas que más se rompen aquí
+=== prompts/alcance-del-proyecto.md 142-155 ===
+
+El curso construye software para una empresa ficticia: **Áurea**, una red odontológica
+colombiana de diez sedes —cuatro propias y seis franquiciadas— con 2.800 pacientes activos en
+ortodoncia, un producto insignia llamado **Arquitectura de Sonrisa** y una red de veintitrés
+odontólogos aliados.
+
+La historia completa vive en **[`00-historia-de-aurea.md`](../00-historia-de-aurea.md)**
+y es fuente de verdad para todo lo narrativo: personajes, cifras, cronología y reglas de
+negocio. Ninguna fase la contradice y ninguna fase la amplía por su cuenta.
+
+Tres propiedades de Áurea la hacen buena materia, y conviene tenerlas presentes al escribir:
+
+- **El lector es el único ingeniero.** No hay arquitecto, ni revisor, ni equipo de frontend,
+  ni quien reciba el turno. Eso hace que "no construyas esto" sea una respuesta legítima y
+=== prompts/guia-de-estilo-y-convenciones.md 560-572 ===
+
+---
+
+## 11. Coherencia de la ficción
+
+La empresa del curso se llama **Áurea** y es ficticia. Su historia completa —personajes,
+cifras, cronología y reglas de negocio— vive en
+[`00-historia-de-aurea.md`](../00-historia-de-aurea.md), que es la fuente de verdad
+narrativa. El curso **construye su software pieza por pieza**: al terminar, el lector tiene el
+código en su disco y puede abrir cualquier archivo del que el material haya hablado.
+
+Eso impone cuatro reglas.
+
+=== prompts/guia-de-estilo-y-convenciones.md 610-624 ===
+- **No contradecir fases anteriores.** Un fragmento de la fase 12 no puede usar una forma del
+  dominio distinta a la que definió la fase 4.
+- **No reescribir decisiones aprobadas** sin señalar la incompatibilidad y explicar por qué.
+- **Nombres estables.** Módulos, funciones y modelos se mantienen idénticos entre fases. Si
+  algo se renombra, se documenta y se ajustan las fases afectadas.
+- **Fuentes de verdad, en este orden:** (1) `alcance-del-proyecto.md` —el techo, y su §0 fija que
+  no hay nada por encima—, (2) `propuesta-fases-y-alcance.md`, (3) esta guía,
+  (4) `plantillas-de-capitulo.md`, `formato-de-miniproyectos.md` y `formato-de-mediciones.md`,
+  (5) `00-historia-de-aurea.md` para todo lo narrativo, (6) entregables ya aprobados de
+  fases anteriores, (7) decisiones explícitas del chat actual.
+
+  `propuestas-fases-base-ia-datos.md` y `propuestas-temas-opcionales.md` son **material
+  exploratorio**: alimentan la discusión de fases, y pierden contra (2) y (3) en cualquier
+  contradicción.

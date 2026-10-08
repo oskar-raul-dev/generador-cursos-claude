@@ -1,0 +1,25 @@
+Release {{ .Release.Name }} en {{ .Release.Namespace }} (revisión {{ .Release.Revision }}).
+
+  página:  http://{{ .Values.global.hosts.storefront }}:{{ .Values.global.publicPort }}
+  API:     http://{{ .Values.global.hosts.api }}:{{ .Values.global.publicPort }}/<servicio>/…
+
+Interruptores: métricas={{ .Values.observability.metrics.enabled }} tableros={{ .Values.observability.dashboards.enabled }} logs={{ .Values.observability.logs.enabled }} trazas={{ .Values.observability.traces.enabled }} valkey={{ .Values.bus.valkey.enabled }} nats={{ .Values.bus.nats.enabled }}
+{{- with .Values.observability }}
+{{- if .metrics.enabled }}
+  Prometheus: http://{{ (($.Values.prometheus).host) | default "prometheus.localhost" }}:{{ $.Values.global.publicPort }}
+{{- end }}
+{{- if .dashboards.enabled }}
+  Grafana:    http://{{ (($.Values.grafana).host) | default "grafana.localhost" }}:{{ $.Values.global.publicPort }}
+{{- end }}
+{{- if .logs.enabled }}
+  Loki:       desde Grafana (Explore, fuente Loki); Fluent Bit, un pod por nodo de trabajo
+{{- end }}
+{{- if .traces.enabled }}
+  Tempo:      desde Grafana (Explore, fuente Tempo); los servicios mandan sus spans por OTLP
+{{- end }}
+{{- end }}
+{{- if .Values.global.bus.nats.enabled }}
+  Bus:        NATS con JetStream en data (task bus:on -- nats); los avisos de reposición van como eventos
+{{- else if .Values.global.bus.valkey.enabled }}
+  Bus:        Valkey pub/sub en data (task bus:on -- valkey); un aviso sin suscriptor se pierde
+{{- end }}

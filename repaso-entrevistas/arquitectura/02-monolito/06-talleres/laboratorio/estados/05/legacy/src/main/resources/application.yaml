@@ -1,0 +1,33 @@
+# mono-legacy. No tocar sin preguntar a Julián (ya no está en la empresa).
+server:
+  port: 38081
+
+spring:
+  application:
+    name: mono-legacy
+  web:
+    error:
+      include-stacktrace: never     # taller 04: la traza se queda en el log, nunca en el cuerpo
+      include-message: never
+  main:
+    allow-circular-references: true
+  datasource:
+    url: jdbc:postgresql://localhost:35432/mono_legacy
+    username: mono_legacy
+    password: mono-lab-pass
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 2000
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+legacy:
+  jwt:
+    secret: mono-legacy-jwt-secret-do-not-share-2021
+    ttl-seconds: 900
+  psp:
+    url: http://localhost:38185     # a través de Toxiproxy
+    timeout-ms: 2000
+  daily-close:
+    every-ms: 30000

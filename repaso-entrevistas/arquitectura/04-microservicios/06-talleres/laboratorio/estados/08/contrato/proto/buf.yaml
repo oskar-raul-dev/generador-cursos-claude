@@ -1,0 +1,11 @@
+# buf: compilador, linter y detector de cambios incompatibles del contrato gRPC (taller 04).
+# Se ejecuta en Docker (bufbuild/buf:1.73.0) a través de `lab.py buf`: nada que instalar.
+version: v2
+modules:
+  - path: .
+lint:
+  use:
+    - STANDARD
+breaking:
+  use:
+    - FILE        # cambios que rompen a quien genera código a partir del archivo: números, tipos, nombres

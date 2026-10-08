@@ -1,0 +1,45 @@
+## 🧪 8. Ejercicios ({{total}})
+
+**🟢 Fácil (1–{{a}})**
+1. {{...}}
+
+**🟡 Intermedio ({{a+1}}–{{b}})**
+**🟠 Difícil ({{b+1}}–{{c}})**
+**🔴 Muy difícil ({{c+1}}–{{total}})**
+**🔥 Opcionales**
+
+{{20 mínimo, 24 ideal, hasta 30 en las densas. Numeración continua; el título
+lleva el conteo. Accionables y con criterio de éxito medible. Al menos un tercio
+de diagnóstico (se entrega algo roto). Desde la Fase 02, al menos dos de
+detección de ☕. Al menos uno de línea de comandos. Anclados al dominio de
+Meridian, nunca `foo` y `bar`. Cada 🔴 lleva rúbrica o solución de referencia.}}
+
+---
+
+## 📚 9. Referencias
+════
+## 📚 9. Referencias
+
+**Documentación oficial**
+- {{URL completa}} — {{qué resuelve; advertencia de versión si aplica}}
+
+**Libros**
+- {{Autor, *Título*}} — {{capítulo o tema; sin inventar ISBN ni páginas}}
+
+**Artículos y charlas**
+- {{...}}
+
+**Video**
+- {{título y canal, con la advertencia de fecha}}
+
+**Orden de lectura sugerido:** {{qué leer antes de escribir código → qué
+consultar durante → a qué volver después}}
+
+> ⚠️ URLs, títulos y contenidos pueden haber cambiado; verifícalos. {{Y en el
+> Bloque A, la advertencia propia: casi toda la documentación en línea describe
+> Go moderno, así que un ejemplo con genéricos o `slog` no es un error del autor
+> — es que estamos trabajando en 2019 a propósito.}}
+
+---
+
+## ⚖️ 10. Veredicto y cierre

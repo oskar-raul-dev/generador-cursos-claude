@@ -1,0 +1,24 @@
+suma horas: 131 fases: 18
+=== tags declarados en la convención ===
+19:meridian/
+25:  labs/                    los 28 mini proyectos
+60:**Y los mini proyectos, su nombre:**
+100:**`fase-NN`**, uno por fase, anotado, al cerrarla con su checklist en verde:
+103:git tag -a fase-09 -m "F9 cerrada: OpsReport y EventRelay sobre PostgreSQL con goose; pool configurado y justificado; SKIP LOCKED para la cola; paginación por cursor; storeagent con SQLite en WAL; B-13 a B-16 medidos"
+111:Eso convierte `git tag -n99 -l 'fase-*'` en el índice del curso:
+114:git tag -n99 -l 'fase-*'
+117:### 3.2 Tags de proyecto
+142:| `bloque-a-completo` | cierre de la Fase 07 | **el punto de partida de la migración**; la Fase 08 lo usa dos veces |
+143:| `plataforma/v1.0-rc1` | cierre de la Fase 14 | los cuatro servicios en estado de producción |
+144:| `plataforma/v1.0-rc2` | cierre de la Fase 15 | banco de pruebas listo para el duelo |
+145:| `duelo/v1.0` | cierre de la Fase 16 | el duelo medido, con sus condiciones |
+146:| `meridian/v1.0` + `curso-completo` | cierre de la Fase 17 | la plataforma completa |
+148:> 🧭 **`bloque-a-completo` es el más importante de los cinco.** Es lo que hace
+151:> git diff bloque-a-completo fase-08 --stat
+152:> git diff bloque-a-completo fase-08 -- services/opsreport/internal/httpapi/
+160:git tag -l 'fase-*'            # el índice del curso: 18 tags
+195:git switch -c epoca/go113 bloque-a-completo
+233:git tag -a fase-NN -m "FN cerrada: <checklist en una línea por ítem>"
+237:git tag -n99 -l 'fase-*'
+243:git diff bloque-a-completo fase-08 --stat
+246:git bisect start fase-09 fase-08

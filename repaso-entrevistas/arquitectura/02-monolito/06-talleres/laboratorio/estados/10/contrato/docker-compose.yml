@@ -1,0 +1,52 @@
+# Entorno común del bloque 06 · Talleres del corpus de monolito.
+# Nombres, puertos y credenciales: §12 de la guía. Imágenes verificadas el 2026-09-29 (las mismas que
+# usan los laboratorios hexagonal y de microservicios). mono-legacy y psp-simulator NO van aquí:
+# corren en el host con `lab.py`, para pararlos, matarlos y recompilarlos sin reconstruir imágenes.
+name: mono-lab
+
+services:
+  postgres:
+    image: postgres:17.11-alpine
+    container_name: mono-postgres
+    environment:
+      POSTGRES_USER: mono_legacy
+      POSTGRES_PASSWORD: mono-lab-pass
+      POSTGRES_DB: mono_legacy
+    ports:
+      - "35432:5432"          # 3xxxx: no choca con hexagonal (15432), microservicios (25432) ni el de bases (5432)
+    volumes:
+      - ./seed:/seed:ro       # la semilla, accesible para `lab.py seed`
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mono_legacy -d mono_legacy"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  toxiproxy:
+    # delante del proveedor de pago (y, desde el taller 10, de mono-inventory): latencia y cortes sin
+    # tocar el código
+    image: ghcr.io/shopify/toxiproxy:2.12.0
+    container_name: mono-toxiproxy
+    command: ["-host=0.0.0.0", "-config=/config/proxies.json"]
+    ports:
+      - "38474:8474"          # API de control
+      - "38185:38185"         # proxy hacia psp-simulator (:38085 en el host)
+      - "38182:38182"         # taller 10: proxy hacia mono-inventory (:38082 en el host)
+    volumes:
+      - ./toxiproxy/proxies.json:/config/proxies.json:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # en Docker Desktop ya existe; en Linux no
+
+  prism:
+    # Taller 04: proxy que valida cada respuesta del legado contra el contrato (solo con `lab.py
+    # contract`). -m false: un solo proceso, como en los otros dos laboratorios.
+    image: stoplight/prism:5.15.10
+    container_name: mono-prism
+    profiles: ["contract"]
+    command: ["proxy", "-h", "0.0.0.0", "-p", "4010", "-m", "false", "/contract/openapi.yaml", "http://host.docker.internal:38081"]
+    ports:
+      - "34010:4010"
+    volumes:
+      - ./openapi.yaml:/contract/openapi.yaml:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

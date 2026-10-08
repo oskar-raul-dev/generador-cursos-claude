@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Consentimientos</h1>
+<form method="get"><input name="q" value="{{ q }}" placeholder="soporte">
+<input name="phase_kind" placeholder="fase"><button>Buscar</button></form>
+<table border="1">
+<tr><th>Plan</th><th>Fase</th><th>Firma</th><th>Soporte</th><th></th></tr>
+{% for c in consents %}
+<tr><td>{{ c.plan_id }}</td><td>{{ c.phase_kind }}</td><td>{{ c.signed_on }}</td>
+<td>{{ c.document_ref }}</td><td><a href="/consents/{{ c.id }}">editar</a></td></tr>
+{% endfor %}
+</table>
+{% endblock %}

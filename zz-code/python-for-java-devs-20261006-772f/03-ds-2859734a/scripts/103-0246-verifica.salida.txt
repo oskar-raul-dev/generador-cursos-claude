@@ -1,0 +1,34 @@
+=== cadena Depende/Habilita y numeración de los tracks ===
+ia01-el-modelo-de-acceso-de-un-llm.md   Python para desarrolladores Java senior · Track `ia` · sección 1 de 8 Depende de: el camino base completo (00–17) · Habilita: `ia02` Re
+
+ia02-salida-estructurada.md             Python para desarrolladores Java senior · Track `ia` · sección 2 de 8 Depende de: `ia01` · Habilita: `ia03`, `ia05` Registro de esta se
+
+ia03-tool-calling-y-el-bucle-de-agente.mdPython para desarrolladores Java senior · Track `ia` · sección 3 de 8 Depende de: `ia01`, `ia02` · Habilita: `ia07` Registro de esta se
+
+ia04-embeddings-y-busqueda-semantica.md Python para desarrolladores Java senior · Track `ia` · sección 4 de 8 Depende de: `ia01`, `ia02`, y la Fase 11 (Postgres) · Habilita: `
+
+ia05-normarag.md                        Python para desarrolladores Java senior · Track `ia` · sección 5 de 8 Depende de: `ia01`, `ia02`, `ia04` · Habilita: `ia06` Registro de
+
+ia06-evaluacion.md                      Python para desarrolladores Java senior · Track `ia` · sección 6 de 8 Depende de: `ia01`, `ia02`, `ia04`, `ia05` · Habilita: `ia07`, `i
+
+ia07-recepcion-asistida.md              Python para desarrolladores Java senior · Track `ia` · sección 7 de 8 Depende de: `ia01`, `ia02`, `ia03`, `ia06` · Habilita: `ia08` Reg
+
+ia08-produccion-y-el-veredicto.md       Python para desarrolladores Java senior · Track `ia` · sección 8 de 8 🏁 Depende de: todo el track · Habilita: el track `ds` Registro de
+
+ds01-numpy-y-el-modelo-vectorizado.md   Python para desarrolladores Java senior · Track `ds` · sección 1 de 9 Depende de: Fase 02 (el arnés), Fase 06 (formatos), Fase 07 (`uv`
+
+ds02-pandas.md                          Python para desarrolladores Java senior · Track `ds` · sección 2 de 9 Depende de: `ds01`, Fase 11 (Postgres) · Habilita: `ds03` Registr
+
+ds03-polars-y-el-modelo-lazy.md         Python para desarrolladores Java senior · Track `ds` · sección 3 de 9 Depende de: `ds01`, `ds02`, Fase 11 (SQL) · Habilita: `ds04` Regi
+
+ds04-embudo.md                          Python para desarrolladores Java senior · Track `ds` · sección 4 de 9 Depende de: `ds01`, `ds02`, `ds03` · Habilita: `ds05` Registro de
+
+ds05-visualizacion.md                   Python para desarrolladores Java senior · Track `ds` · sección 5 de 9 Depende de: `ds04` · Habilita: `ds06` Registro de esta sección: s
+
+ds06-notebooks-y-reproducibilidad.md    Python para desarrolladores Java senior · Track `ds` · sección 6 de 9 Depende de: `ds04`, `ds05` · Habilita: `ds07` Registro de esta se
+
+ds07-scikit-learn.md                    Python para desarrolladores Java senior · Track `ds` · sección 7 de 9 Depende de: `ds01`, `ds06` · Habilita: `ds08` Registro de esta se
+
+ds08-ausentismo.md                      Python para desarrolladores Java senior · Track `ds` · sección 8 de 9 Depende de: `ds07` · Habilita: `ds09` Registro de esta sección: s
+
+ds09-servir-el-modelo.md                Python para desarrolladores Java senior · Track `ds` · sección 9 de 9 Depende de: `ds08`, Fase 10 (FastAPI), Fase 15 (el cierre nocturn

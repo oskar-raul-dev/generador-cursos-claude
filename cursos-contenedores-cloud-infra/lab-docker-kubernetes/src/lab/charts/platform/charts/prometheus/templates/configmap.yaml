@@ -1,0 +1,74 @@
+# El scrape_config a mano (Fase 17): sin operator ni ServiceMonitor, para que se vea qué hace Prometheus.
+# Le pregunta a la API de Kubernetes qué pods hay (kubernetes_sd_configs) y con las reglas de relabel
+# decide a cuáles ir, a qué puerto y con qué etiquetas guardar lo que encuentre.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus
+  namespace: observability
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: {{ .Values.scrapeInterval }}
+      evaluation_interval: {{ .Values.scrapeInterval }}
+    scrape_configs:
+      # Él mismo: cuánto ocupa y cuántas series guarda.
+      - job_name: prometheus
+        static_configs: [{targets: ["localhost:9090"]}]
+
+      # Los backends del sistema, uno por pod: el pull. Prometheus va a buscar; el servicio no empuja nada.
+      - job_name: backends
+        metrics_path: /metrics
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces: {names: {{ .Values.namespaces | toJson }}}
+        relabel_configs:
+          # Solo los pods del sistema que son backend: ni Postgres, ni el storefront, ni los Job.
+          - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_part_of, __meta_kubernetes_pod_label_app_kubernetes_io_component]
+            regex: lab;backend
+            action: keep
+          # Y de cada pod, solo el puerto que se llama http (en catalog, el de nginx).
+          - source_labels: [__meta_kubernetes_pod_container_port_name]
+            regex: http
+            action: keep
+          # Las etiquetas con que se guarda cada serie: servicio, cadena, namespace y pod.
+          - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+            target_label: service
+          - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_instance]
+            target_label: chain
+          - source_labels: [__meta_kubernetes_namespace]
+            target_label: namespace
+          - source_labels: [__meta_kubernetes_pod_name]
+            target_label: pod
+    {{- if .Values.cadvisor.enabled }}
+
+      # Lo que el cluster da gratis: memoria y CPU de cada contenedor, medidas por el kubelet. Pasa por el
+      # proxy de la API, que presenta un certificado que Prometheus sí acepta (el del kubelet de kind, no:
+      # es el mismo problema de metrics-server en la Fase 16).
+      - job_name: cadvisor
+        scheme: https
+        tls_config: {ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt}
+        authorization: {credentials_file: /var/run/secrets/kubernetes.io/serviceaccount/token}
+        kubernetes_sd_configs: [{role: node}]
+        relabel_configs:
+          - target_label: __address__
+            replacement: kubernetes.default.svc:443
+          - source_labels: [__meta_kubernetes_node_name]
+            target_label: __metrics_path__
+            replacement: /api/v1/nodes/$1/proxy/metrics/cadvisor
+          - source_labels: [__meta_kubernetes_node_name]
+            target_label: node
+        # cAdvisor publica miles de series por nodo; el tablero lee dos. El resto se descarta al llegar.
+        metric_relabel_configs:
+          - source_labels: [__name__]
+            regex: container_memory_working_set_bytes|container_cpu_usage_seconds_total
+            action: keep
+          - source_labels: [namespace]
+            regex: {{ join "|" .Values.cadvisor.namespaces }}
+            action: keep
+          - source_labels: [container]
+            regex: ""
+            action: drop
+    {{- end }}

@@ -1,0 +1,18 @@
+# trust-manager reparte la CA del laboratorio (Fase 19): lee el certificado público del Secret lab-ca (en
+# cert-manager, su namespace de confianza) y escribe un ConfigMap lab-ca con la clave ca.crt en cada
+# namespace del sistema. La clave privada de la CA no sale de cert-manager: solo viaja la parte pública.
+apiVersion: trust.cert-manager.io/v1alpha1
+kind: Bundle
+metadata:
+  name: lab-ca
+spec:
+  sources:
+    - secret:
+        name: lab-ca
+        key: tls.crt
+  target:
+    configMap:
+      key: ca.crt
+    namespaceSelector:
+      matchLabels:
+        app.kubernetes.io/part-of: lab

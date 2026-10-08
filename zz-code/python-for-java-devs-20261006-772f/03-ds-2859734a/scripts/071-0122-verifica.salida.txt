@@ -1,0 +1,12 @@
+> 🚧 **El track `ds` va por `ds06`, y el bloque del Embudo está cerrado.** T6 dejó los dos
+> conjuntos de datos; T7 escribió `ds01` y `ds02`; T8, `ds03`; T9, `ds04`; T10, `ds05` y `ds06`.
+> **Seis de las siete mediciones están ejecutadas** —no cuestan dinero ni API, así
+> que aquí no hay `⏳`— y sus entradas están en `BENCHMARKS.md`. La de `ds03` son **dos tablas con
+> ganadores distintos**: la consulta con el motor caliente y el informe de punta a punta. La de
+> `ds04` no mide tiempo: mide **cuánto cambia la respuesta al negocio** según el modelo de
+> atribución, y da 7,5×. Siguiente: T10, `ds05` y `ds06`.
+>
+> El único insumo que no se puede generar es `juicios_humanos.jsonl` de `ia06`, y `bench_judges.py`
+(eval):4: no matches found: src/ds0*/data
+=== lint + pruebas de todo el track ===
+  ds01-numpy-y-el-modelo-vectorizado              LINT FALLA ·   ds02-pandas                                     LINT FALLA ·   ds03-polars-y-el-modelo-lazy                    LINT FALLA ·   ds04-embudo                                     LINT FALLA ·   ds05-visualizacion                              LINT FALLA ·   ds06-notebooks-y-reproducibilidad               LINT FALLA ·   ds07-scikit-learn                               LINT FALLA ·

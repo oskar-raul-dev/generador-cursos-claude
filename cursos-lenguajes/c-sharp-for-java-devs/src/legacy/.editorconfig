@@ -1,0 +1,23 @@
+# Este código no se moderniza. El .editorconfig de `src/` impondría estilo de C# 14 sobre
+# archivos de 2017, y el primer `dotnet format` reescribiría doscientos archivos sin que
+# ninguna prueba fallara. Así que aquí se corta la herencia y se apagan las reglas de estilo.
+#
+# La regla del curso, dicha donde se aplica: **`dotnet format` nunca se ejecuta sobre
+# `legacy/`**. Un fix de tres líneas en un formulario de 2017 se escribe como el resto de ese
+# formulario.
+root = true
+
+[*]
+charset = utf-8
+end_of_line = crlf
+insert_final_newline = true
+indent_style = space
+indent_size = 4
+
+[*.cs]
+# Estilo de 2017, tal cual lo escribieron: llaves en línea aparte, using dentro del namespace,
+# namespace con llaves. Nada de esto es una preferencia del curso: es lo que hay en el archivo.
+csharp_new_line_before_open_brace = all
+csharp_style_namespace_declarations = block_scoped:silent
+csharp_using_directive_placement = inside_namespace:silent
+dotnet_analyzer_diagnostic.severity = none

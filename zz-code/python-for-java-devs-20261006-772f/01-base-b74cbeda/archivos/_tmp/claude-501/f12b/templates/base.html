@@ -1,0 +1,7 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><title>Consultorio · Áurea</title></head>
+<body>
+<nav><a href="/plans">Planes</a> · {{ user.username if user else "" }} · <a href="/logout">salir</a></nav>
+<hr>
+{% block content %}{% endblock %}
+</body></html>

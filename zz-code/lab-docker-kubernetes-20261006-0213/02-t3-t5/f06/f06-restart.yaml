@@ -1,0 +1,10 @@
+# replenish con restart: always y una sonda que siempre falla.
+name: f06
+services:
+  replenish:
+    image: lab/replenish
+    restart: always
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/no-existe"]
+      interval: 2s
+      retries: 3

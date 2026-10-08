@@ -1,0 +1,6 @@
+GET /availability                mediana   0.83 ms   p95   1.28 ms
+GET /availability-raw            mediana   0.83 ms   p95   1.06 ms
+POST /bookings                   mediana   0.80 ms   p95   1.12 ms
+POST /bookings inválido (422)    mediana   0.67 ms   p95   1.01 ms
+servidor detenido
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

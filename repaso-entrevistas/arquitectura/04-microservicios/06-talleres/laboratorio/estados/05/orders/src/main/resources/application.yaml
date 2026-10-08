@@ -1,0 +1,64 @@
+# orders (taller 04). Valores de §14 de la guía.
+server:
+  port: 28082
+
+spring:
+  application:
+    name: ms-orders
+  datasource:
+    url: jdbc:postgresql://localhost:25432/ms_orders
+    username: ms_orders
+    password: ms-lab-pass
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 2000
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+  grpc:
+    client:
+      channel:                         # singular en Boot 4; `channels` se ignora en silencio
+        inventory:
+          target: static://localhost:28193   # `target`, no `address`; a través de Toxiproxy (proxy `inventory-grpc`)
+
+# taller 05: liveness y readiness. La readiness dice "puedo atender tráfico": depende de lo MÍO (mi
+# base), no de mis dependencias. `payments` existe como indicador, pero NO está en el grupo: meterlo
+# es la provocación (lab.py orders --readiness-includes-payments).
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      group:
+        readiness:
+          include: readinessState,db
+        liveness:
+          include: livenessState
+
+ms:
+  catalog:
+    base-url: http://localhost:28081   # el monolito conserva catalog y customers
+    read-timeout-ms: 800
+  inventory:
+    deadline-ms: 800                   # plazo por llamada gRPC; viaja en la llamada (grpc-timeout)
+  payments:
+    base-url: http://localhost:28184
+    connect-timeout-ms: 500
+    read-timeout-ms: 2500
+    propagate-key: true
+    retry:
+      max-attempts: 3
+      base-backoff-ms: 200
+    bulkhead:
+      max-concurrent: 4                # llamadas a payments a la vez; la quinta se rechaza (taller 05)
+    breaker:
+      window: 10
+      minimum-calls: 4
+      failure-rate: 50
+      open-seconds: 10
+      half-open-calls: 2

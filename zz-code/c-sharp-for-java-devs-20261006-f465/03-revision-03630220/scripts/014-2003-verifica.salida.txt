@@ -1,0 +1,47 @@
+════ barrido amplio de referencias externas ════
+24-veredicto-y-defensa.md:441:> Y la verificación que sí pasó, que es la que protegía al curso de mentirse: **cero citas ilegales**. Ninguna de
+09-acceso-a-datos-esquema-hostil.md:665:   archivo**, y una búsqueda en el repositorio demuestra que no hay ninguna conversión de `char(8)` a
+09-acceso-a-datos-esquema-hostil.md:945:> vacío donde uno esperaba un cambio es la forma que tiene este curso de decir *"se envuelve, no se
+11-migrar-el-runtime.md:573:4. **Ninguna API de la categoría 3 queda como está.** Una búsqueda en el repositorio lo demuestra: cada
+BENCHMARKS.md:1598:| **Citas ilegales** —una fase que use una fila ⏳ o 🔜 como argumento— | **0** ✅ | es la verificación que protegía al curso de mentirse |
+20-contenedor-y-la-factura.md:417://    ⏳ Las dos cifras se calculan en el miniproyecto. Es el ejemplo más claro del curso de un atajo
+23-el-duelo.md:202:Este es el 📖 más completo del curso porque la fase lo permite: los dos lados existen en el repositorio.
+00-convencion-de-git-y-tags.md:96:De ahí sale lo único que este curso le pide a git y que un curso de un solo runtime no necesita:
+05-async-await-y-cancelacion.md:658:   búsqueda en el repositorio lo demuestra, y el resultado se pega en el commit.
+18-blazor-server-wasm-mvc.md:883:  construir la mitad de un sistema de trazas y después tirarlo. Es el mejor ejemplo del curso de una deuda
+00-historia-de-cordillera.md:547:a ser **empate** — que es la palabra que menos aparece en los cursos de tecnología y la que más
+04-ceremonia-delegados-y-recursos.md:343:> claro del curso de que la versión del lenguaje y el estilo del código son dos cosas distintas.
+04-ceremonia-delegados-y-recursos.md:758:el recurso de auditoría es el que trae la trampa.
+19-observabilidad-y-operacion.md:886:líneas**. Eso justifica retroactivamente haberla aplazado, y es el mejor ejemplo del curso de una deuda tomada
+16-identidad-secretos-y-configuracion.md:41:      escritas a mano, ni en el repositorio.
+14-veredicto-del-escritorio.md:170:un curso de tecnología; se aprende habiendo visto dos reescrituras que no terminaron.
+INSTINTOS.md:1273:aparece en los cursos de tecnología y la que más falta hace.
+0-ESTRUCTURA-CURSO.md:13:**Bloque 0 · el ambiente** *(fase 00)*. En otro curso esto sería un apéndice de instalación. Aquí
+0-ESTRUCTURA-CURSO.md:254:Este curso **no tiene apéndices**, y no es un detalle de organización. Todo lo que en otro curso
+13-wpf-y-mvvm.md:725:1. `StockViewModel` **no referencia ningún tipo de WPF**. Una búsqueda en el repositorio lo demuestra, y el
+prompts/propuesta-fases-y-alcance.md:24:Cuatro rasgos que lo separan de un curso de lenguaje corriente, y que explican casi todas las
+prompts/propuesta-fases-y-alcance.md:34:**No hay apéndices.** Todo lo que en otro curso sería material de consulta es aquí una fase o
+prompts/propuesta-fases-y-alcance.md:40:miniproyecto ocupa el lugar del cuaderno de incidentes de un curso de sistemas heredados; el avance de
+prompts/propuesta-fases-y-alcance.md:99:equivalente en un curso de backend, y la respuesta honesta —*a veces, nada*— es de las más
+prompts/propuesta-fases-y-alcance.md:110:> 🧭 **Esta secuencia no es la de un curso de lenguaje con un bloque de nube pegado al final.**
+prompts/propuesta-fases-y-alcance.md:785:resolverlo bien es un registro de modelos, que es otro curso.
+prompts/propuesta-fases-y-alcance.md:888:otro curso habría tenido su `aNN-` y dónde quedó aquí:
+prompts/propuesta-fases-y-alcance.md:950:| Sin auditoría de quién vio qué | F18 | **F19** | Que la observabilidad la vuelve barata. **Es el único cobro del
+prompts/propuesta-fases-y-alcance.md:951:| Modelo servido sin versionar | F21 | **nunca** | Que un registro de modelos es otro curso, y decirlo es mejor qu
+prompts/propuesta-fases-y-alcance.md:974:> modelo sin versionar (F21), porque un registro de modelos es otro curso. Que las dos aparezcan en
+prompts/propuesta-fases-y-alcance.md:997:- **El sistema heredado son 340 formularios WinForms.** Un curso de migración que evite el
+prompts/propuesta-fases-y-alcance.md:1004:  el mismo módulo, con el mismo arnés, es una comparación que un curso de Java no puede hacer.
+prompts/propuesta-fases-y-alcance.md:1217:material. Es divergencia declarada frente a la práctica habitual de otros cursos, que sí las
+21-datos-y-onnx.md:68:- **Un registro de modelos.** Es la deuda declarada, y es otro curso.
+21-datos-y-onnx.md:180:Es un reflejo con buena intención —una plataforma menos que mantener, un lenguaje menos en el repositorio— y
+21-datos-y-onnx.md:496:> promoción entre entornos, comparación de candidatos, reversión— y eso es otro curso, no un apartado de este.
+21-datos-y-onnx.md:893:porque eso es otro curso y montar la mitad sería peor que declararlo.
+03-linq-y-evaluacion-diferida.md:753:- Lee la implementación de `Enumerable.Where` en el repositorio de `dotnet/runtime` y encuentra la
+prompts/alcance-del-proyecto.md:146:versiones— viva en apéndices `aNN-`. **Aquí no.** Todo lo que en otro curso sería un apéndice
+prompts/alcance-del-proyecto.md:179:  sería habitual en un curso de sistemas heredados. Su formato está en
+prompts/formato-de-miniproyectos.md:5:mecanismo principal de consolidación del curso: ocupa el lugar que en un curso de sistemas
+prompts/formato-de-miniproyectos.md:38:Un curso de sistemas heredados enseña a **arreglar** un sistema que ya existe, y por eso su
+prompts/prompts-de-fase.md:654:  menos aparece en los cursos de tecnología y la que más falta hace.
+prompts/guia-de-estilo-y-convenciones.md:637:> fin, sin acceso a nada más que a este repositorio, un SDK de .NET y un runtime de
+prompts/guia-de-estilo-y-convenciones.md:655:- **Autocontención.** El curso no remite a ningún otro curso como material necesario, ni
+prompts/formato-de-mediciones.md:62:cursos de tecnología y la que más falta hace — y en el duelo de la Fase 23 va a aparecer varias

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: catalog
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/component: backend
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: catalog
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http   # el puerto con nombre del contenedor nginx

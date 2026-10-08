@@ -1,0 +1,109 @@
+# inventory en el cluster: el Deployment de la Fase 12, con huecos donde cambia algo por perfil o por cadena.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inventory
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+spec:
+  {{- include "lab-common.deploymentSpec" . | nindent 2 }}
+  selector:
+    matchLabels:
+      {{- include "lab-common.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "lab-common.podLabels" . | nindent 8 }}
+    spec:
+      # El plazo entre SIGTERM y SIGKILL: el preStop más el apagado del proceso caben de sobra (Fase 16).
+      terminationGracePeriodSeconds: 30
+      {{- include "lab-common.podSecurity" . | nindent 6 }}
+      {{- if .Values.global.bus.nats.enabled }}
+      # G13 (Fase 26): el publicador del outbox, como sidecar nativo: un initContainer con restartPolicy Always
+      # arranca antes que inventory, vive lo mismo que el pod, y se apaga después. La misma imagen, otro binario.
+      initContainers:
+        - name: outbox-relay
+          image: {{ include "lab-common.image" . }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          restartPolicy: Always
+          command: ["/app/outbox-relay"]
+          {{- include "lab-common.containerSecurity" . | nindent 10 }}
+          env:
+            {{- include "lab-common.databaseEnv" . | nindent 12 }}
+            - {name: NATS_URL, value: "nats://nats.data.svc.cluster.local:4222"}
+          resources:
+            requests: {cpu: 10m, memory: 16Mi}
+            limits: {memory: 64Mi}
+      {{- end }}
+      containers:
+        - name: inventory
+          image: {{ include "lab-common.image" . }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          {{- include "lab-common.containerSecurity" . | nindent 10 }}
+          ports:
+            - name: http
+              containerPort: 8080
+          {{- include "lab-common.probes" . | trim | nindent 10 }}
+          {{- include "lab-common.shutdown" . | trim | nindent 10 }}
+          {{- include "lab-common.resources" . | nindent 10 }}
+          envFrom:
+            - configMapRef:
+                name: neighbors
+          env:
+            {{- include "lab-common.databaseEnv" . | nindent 12 }}
+            {{- if .Values.global.chaos.enabled }}
+            # Fase 22: el vecino que el caos intercepta se llama a través del generador.
+            - name: {{ upper .Values.global.chaos.target }}_URL
+              value: http://chaos.{{ .Release.Namespace }}.svc.cluster.local:8080
+            {{- end }}
+            {{- if .Values.global.mtls.enabled }}
+            # G8 (Fase 19): a pricing, por su puerto con TLS mutuo. Solo inventory: el ConfigMap de vecinos
+            # sigue diciendo http, porque lo leen también el seed y quien no tiene certificado (Fase 20).
+            - name: PRICING_URL
+              value: https://pricing.{{ .Release.Namespace }}.svc.cluster.local:8443
+            {{- if .Values.global.grpc.enabled }}
+            # G10 (Fase 23): el precio por gRPC. Con balancing=client, el Service headless y round_robin; con
+            # balancing=service, el Service normal, y pick_first (lo que hace grpc-java por defecto).
+            {{- if eq .Values.global.grpc.balancing "client" }}
+            - {name: PRICING_GRPC_TARGET, value: "dns:///pricing-grpc.{{ .Release.Namespace }}.svc.cluster.local:9090"}
+            - {name: PRICING_GRPC_POLICY, value: round_robin}
+            {{- else }}
+            - {name: PRICING_GRPC_TARGET, value: "pricing.{{ .Release.Namespace }}.svc.cluster.local:9090"}
+            - {name: PRICING_GRPC_POLICY, value: pick_first}
+            {{- end }}
+            {{- end }}
+            # G8 (Fase 19): el bundle "pricing" de Spring Boot, desde los PEM que monta el pod. Se recarga
+            # cuando cert-manager renueva el certificado de cliente.
+            - {name: SPRING_SSL_BUNDLE_PEM_PRICING_KEYSTORE_CERTIFICATE, value: "file:/etc/tls/client/tls.crt"}
+            - {name: SPRING_SSL_BUNDLE_PEM_PRICING_KEYSTORE_PRIVATEKEY, value: "file:/etc/tls/client/tls.key"}
+            - {name: SPRING_SSL_BUNDLE_PEM_PRICING_TRUSTSTORE_CERTIFICATE, value: "file:/etc/tls/ca/ca.crt"}
+            - {name: SPRING_SSL_BUNDLE_PEM_PRICING_RELOADONUPDATE, value: "true"}
+            {{- end }}
+            {{- include "lab-common.otelEnv" . | nindent 12 }}
+            {{- include "lab-common.busEnv" . | nindent 12 }}
+            {{- if not .Values.global.traces.enabled }}
+            # G10: sin trazas, el agente de OpenTelemetry no se carga (ni cuesta memoria ni arranque).
+            - {name: OTEL_JAVAAGENT_ENABLED, value: "false"}
+            {{- end }}
+            {{- with .Values.jvm.options }}
+            # Las opciones de la JVM (Fase 15). La JVM las lee al arrancar desde esta variable.
+            - name: JAVA_TOOL_OPTIONS
+              value: {{ . | quote }}
+            {{- end }}
+          volumeMounts:
+            - {name: tmp, mountPath: /tmp}     # Fase 20: las carpetas de trabajo de Tomcat
+            {{- if .Values.global.mtls.enabled }}
+            - {name: tls-client, mountPath: /etc/tls/client, readOnly: true}
+            - {name: lab-ca, mountPath: /etc/tls/ca, readOnly: true}
+            {{- end }}
+      volumes:
+        # Fase 20: lo único escribible del contenedor (la raíz es de solo lectura).
+        - name: tmp
+          emptyDir: {}
+        {{- if .Values.global.mtls.enabled }}
+        # Sin subPath: el kubelet actualiza los archivos cuando cert-manager renueva el Secret.
+        - name: tls-client
+          secret: {secretName: inventory-client-tls}
+        - name: lab-ca
+          configMap: {name: lab-ca}
+        {{- end }}

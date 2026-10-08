@@ -1,0 +1,1 @@
+{"volumeMounts":[{"name":"tls-client","mountPath":"/etc/tls/client","readOnly":true},{"name":"lab-ca","mountPath":"/etc/tls/ca","readOnly":true}]}

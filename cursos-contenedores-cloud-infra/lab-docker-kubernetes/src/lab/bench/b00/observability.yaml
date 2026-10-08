@@ -1,0 +1,137 @@
+# B-00 · Solo para medir: cada pieza de observabilidad en reposo, con la configuración mínima.
+# Se construyen de verdad en las Fases 17, 18 y 23.
+apiVersion: v1
+kind: Namespace
+metadata: {name: observability}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: prometheus, namespace: observability}
+data:
+  prometheus.yml: |
+    global: {scrape_interval: 15s}
+    scrape_configs:
+      - job_name: prometheus
+        static_configs: [{targets: ["localhost:9090"]}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: prometheus, namespace: observability}
+spec:
+  selector: {matchLabels: {app.kubernetes.io/name: prometheus}}
+  template:
+    metadata: {labels: {app.kubernetes.io/name: prometheus}}
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus@sha256:87861b8cf91579109319ebc300f3f1060e6da9c05d6ae8ad15a20c879e84e32e  # prom/prometheus:v3.13.4
+          args: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.retention.time=2d"]
+          volumeMounts: [{name: config, mountPath: /etc/prometheus}]
+      volumes: [{name: config, configMap: {name: prometheus}}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: grafana, namespace: observability}
+spec:
+  selector: {matchLabels: {app.kubernetes.io/name: grafana}}
+  template:
+    metadata: {labels: {app.kubernetes.io/name: grafana}}
+    spec:
+      containers:
+        - name: grafana
+          image: grafana/grafana@sha256:b28bae15e219c998fb0e0424ed724930cc61b1f61fb404d47c862f9a23f9e572  # grafana/grafana:13.2.3
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: loki, namespace: observability}
+spec:
+  selector: {matchLabels: {app.kubernetes.io/name: loki}}
+  template:
+    metadata: {labels: {app.kubernetes.io/name: loki}}
+    spec:
+      containers:
+        - name: loki
+          image: grafana/loki@sha256:1107dd5274e0ada47e42472b7a7e71f3b2a2fe878878108f3e2f9e51528f0193  # grafana/loki:3.7.8
+          args: ["-config.file=/etc/loki/local-config.yaml"]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: loki, namespace: observability}
+spec:
+  selector: {app.kubernetes.io/name: loki}
+  ports: [{port: 3100}]
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: fluent-bit, namespace: observability}
+data:
+  fluent-bit.yaml: |
+    pipeline:
+      inputs:
+        - name: tail
+          path: /var/log/containers/*.log
+          parser: cri
+          tag: kube.*
+      outputs:
+        - name: loki
+          match: "*"
+          host: loki.observability.svc.cluster.local
+          port: 3100
+          labels: job=fluent-bit
+  parsers.yaml: |
+    parsers:
+      - name: cri
+        format: regex
+        regex: '^(?<time>[^ ]+) (?<stream>stdout|stderr) (?<logtag>[^ ]*) (?<message>.*)$'
+        time_key: time
+        time_format: '%Y-%m-%dT%H:%M:%S.%L%z'
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata: {name: fluent-bit, namespace: observability}
+spec:
+  selector: {matchLabels: {app.kubernetes.io/name: fluent-bit}}
+  template:
+    metadata: {labels: {app.kubernetes.io/name: fluent-bit}}
+    spec:
+      containers:
+        - name: fluent-bit
+          image: fluent/fluent-bit@sha256:c5542543523c9678398dd78d927c05e8425ec15b038f226b67b3b019b1a70845  # fluent/fluent-bit:5.1.3
+          args: ["-c", "/fluent-bit/etc/conf/fluent-bit.yaml", "-R", "/fluent-bit/etc/conf/parsers.yaml"]
+          volumeMounts:
+            - {name: config, mountPath: /fluent-bit/etc/conf}
+            - {name: varlog, mountPath: /var/log, readOnly: true}
+      volumes:
+        - {name: config, configMap: {name: fluent-bit}}
+        - {name: varlog, hostPath: {path: /var/log}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: tempo, namespace: observability}
+data:
+  tempo.yaml: |
+    server: {http_listen_port: 3200}
+    distributor:
+      receivers:
+        otlp:
+          protocols: {grpc: {endpoint: "0.0.0.0:4317"}, http: {endpoint: "0.0.0.0:4318"}}
+    storage:
+      trace:
+        backend: local
+        local: {path: /var/tempo/traces}
+        wal: {path: /var/tempo/wal}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: tempo, namespace: observability}
+spec:
+  selector: {matchLabels: {app.kubernetes.io/name: tempo}}
+  template:
+    metadata: {labels: {app.kubernetes.io/name: tempo}}
+    spec:
+      containers:
+        - name: tempo
+          image: grafana/tempo@sha256:3076b8dcdfb32fd6bc5ccef85e7b7313e6199b9cb84366257fc17ecb696db5fd  # grafana/tempo:3.1.0
+          args: ["-config.file=/etc/tempo/tempo.yaml"]
+          volumeMounts: [{name: config, mountPath: /etc/tempo}, {name: data, mountPath: /var/tempo}]
+      volumes: [{name: config, configMap: {name: tempo}}, {name: data, emptyDir: {}}]

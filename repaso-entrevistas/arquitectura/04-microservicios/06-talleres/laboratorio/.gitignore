@@ -1,0 +1,19 @@
+# Lo que se regenera en el laboratorio no se versiona. Este es el único .gitignore del
+# laboratorio: los patrones sin "/" valen en cualquier subcarpeta, también en estados/NN/.
+
+# ── Java (Maven): monolith/ y orders/ ────────────────────────────────────────
+target/
+
+# ── Go: inventory/ ───────────────────────────────────────────────────────────
+# Solo el binario; inventory/gen/ (stubs de gRPC) SÍ se versiona.
+bin/
+
+# ── Python: payments/ y tools/bench/ ─────────────────────────────────────────
+.venv/
+__pycache__/
+# Stubs de gRPC del bench, regenerados desde el .proto
+**/tools/bench/gen/
+
+# ── Observabilidad ───────────────────────────────────────────────────────────
+# El agente de Java se descarga con lab.py (Maven Central); no se versiona
+**/tools/otel/*.jar

@@ -1,0 +1,15 @@
+(eval):2: no matches found: src/ds0*/data
+links rotos: ninguno
+
+     768 ds01-numpy-y-el-modelo-vectorizado.md
+     674 ds02-pandas.md
+     718 ds03-polars-y-el-modelo-lazy.md
+     758 ds04-embudo.md
+     660 ds05-visualizacion.md
+     598 ds06-notebooks-y-reproducibilidad.md
+     686 ds07-scikit-learn.md
+     745 ds08-ausentismo.md
+     701 ds09-servir-el-modelo.md
+    6308 total
+
+directorios ds en src: 9

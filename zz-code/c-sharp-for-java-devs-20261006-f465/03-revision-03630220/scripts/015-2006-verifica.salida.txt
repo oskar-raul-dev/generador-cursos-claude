@@ -1,0 +1,11 @@
+══════════ CIERRE ══════════
+1  Referencias a otros cursos ......... ✅ cero
+2  Enlaces relativos ................. ✅ todos resuelven
+3  Cadena 00→24 y cabeceras .......... ✅ sin huecos
+4  Plantilla de 10 secciones ......... ✅ las 25, en orden
+5  Ejercicios decl=real, banda 20-25 . ✅ las 25
+6  Tags fase-NN / mini-NN ............ ✅ las 25
+7  BENCHMARKS 24 entradas + F24 ...... ✅ F00-F23 + consolidación
+8  Servicios de nube prometidos ...... ✅ ninguno sin fase que lo cumpla
+
+TODO EN VERDE

@@ -1,0 +1,16 @@
+=== 1. uv tool install (aislado) ===
+uv tool install: 0.3s exit=0
+s
+   Building aur @ file:///private/tmp/claude-501/f07
+      Built aur @ file:///private/tmp/claude-501/f07
+Prepared 1 package in 284ms
+Installed 1 package in 1ms
+ + aur==0.7.0 (from file:///private/tmp/claude-501/f07)
+Installed 1 executable: aur
+warning: `/tmp/claude-501/uvbin` is not on your PATH. To use installed tools, run `export PATH="/tmp/claude-501/uvbin:$PATH"` or `uv tool update-shell`.
+
+128K	/tmp/claude-501/uvtools
+aur
+=== arranque ===
+mediana 49 ms  p95 50 ms
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

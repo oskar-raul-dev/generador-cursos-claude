@@ -1,0 +1,19 @@
+OK
+ventana madura: hasta 2025-12-25 · gasto total 6,059,295,284 → 5,283,929,067
+
+=== CAC por modelo, ventana coherente ===
+canal           primer toque    último toque          lineal     decaimiento
+google            2,761,060       1,553,096       2,009,282       1,898,620 
+instagram         1,136,250       3,346,105       1,738,322       1,809,633 
+tiktok            1,061,255       7,961,814       1,931,814       2,137,157 
+
+=== el efecto del filtro de madurez (último toque) ===
+  google     sin filtro    1,588,548 → maduros    1,553,096  (-2.2%)
+  instagram  sin filtro    3,557,016 → maduros    3,346,105  (-5.9%)
+  tiktok     sin filtro    8,706,318 → maduros    7,961,814  (-8.6%)
+
+=== suma de créditos: ¿cuántos pacientes reparte cada modelo? ===
+  primer toque      5451.0  (adquiridos maduros: 5451)
+  último toque      5451.0  (adquiridos maduros: 5451)
+  lineal            5451.0  (adquiridos maduros: 5451)
+  decaimiento       5451.0  (adquiridos maduros: 5451)

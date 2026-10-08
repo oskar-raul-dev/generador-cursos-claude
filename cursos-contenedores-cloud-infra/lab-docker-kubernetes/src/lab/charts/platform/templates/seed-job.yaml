@@ -1,0 +1,33 @@
+{{- if .Values.seed.enabled }}
+# El seed (Fase 12): generate.py y load.py de a01, como Job. Helm lo corre DESPUÉS de instalar, y solo
+# al instalar: en un upgrade, los datos ya están. Carga por la API: el seed no conoce ninguna tabla.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: seed
+  labels:
+    app.kubernetes.io/name: seed
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  backoffLimit: 2
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: seed
+        app.kubernetes.io/part-of: lab
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: seed
+          image: {{ .Values.seed.image }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          env:
+            - {name: STORES, value: {{ .Values.seed.stores | quote }}}
+          envFrom:
+            - configMapRef: {name: neighbors}
+{{- end }}

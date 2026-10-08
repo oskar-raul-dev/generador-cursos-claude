@@ -1,0 +1,6 @@
+ds01-numpy-y-el-modelo-vectorizado         39 passed in 13.14s
+ds02-pandas                                10 passed in 2.16s
+ds07-scikit-learn                          19 passed in 0.54s
+lint ds01-numpy-y-el-modelo-vectorizado    OK
+lint ds02-pandas                           OK
+lint ds07-scikit-learn                     OK

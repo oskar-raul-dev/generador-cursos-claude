@@ -1,0 +1,16 @@
+# Permiso para cruzar namespaces (Fase 10): las rutas de `apps` pueden mandar tráfico al Service
+# contingencia de `legacy`. Lo escribe el dueño del destino, no el de la ruta.
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: apps-a-contingencia
+  namespace: legacy
+spec:
+  from:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      namespace: apps
+  to:
+    - group: ""
+      kind: Service
+      name: contingencia

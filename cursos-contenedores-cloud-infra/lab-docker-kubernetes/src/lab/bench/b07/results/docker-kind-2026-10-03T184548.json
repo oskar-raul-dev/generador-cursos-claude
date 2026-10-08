@@ -1,0 +1,27 @@
+{
+  "engine": "docker",
+  "tool": "kind",
+  "date": "2026-10-03T18:45:48",
+  "runs": [
+    {
+      "ready_s": 26.7,
+      "vm_before_mib": 652,
+      "vm_after_mib": 1284,
+      "cluster_mib": 632
+    },
+    {
+      "ready_s": 25.7,
+      "vm_before_mib": 647,
+      "vm_after_mib": 1315,
+      "cluster_mib": 668
+    },
+    {
+      "ready_s": 26.5,
+      "vm_before_mib": 655,
+      "vm_after_mib": 1306,
+      "cluster_mib": 651
+    }
+  ],
+  "server_version": "v1.36.4",
+  "three_nodes_s": 36.2
+}

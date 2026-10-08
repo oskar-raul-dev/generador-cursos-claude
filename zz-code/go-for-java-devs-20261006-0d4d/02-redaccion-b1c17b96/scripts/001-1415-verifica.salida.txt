@@ -1,0 +1,20 @@
+=== SECCIONES POR FASE (deben ser 10, en orden) ===
+00-ambiente-y-tooling.md                 1 2 3 4 5 6 7 8 9 10 
+00-convencion-de-git-y-tags.md           1 2 3 4 5 6 7 8 
+01-sintaxis-y-valores.md                 1 2 3 4 5 6 7 8 9 10 
+02-structs-interfaces-composicion.md     1 2 3 4 5 6 7 8 9 10 
+03-errores-paquetes-io.md                1 2 3 4 5 6 7 8 9 10 
+04-testing-dobles-cobertura.md           1 2 3 4 5 6 7 8 9 10 
+05-http-rest-stdlib.md                   1 2 3 4 5 6 7 8 9 10 
+06-concurrencia.md                       1 2 3 4 5 6 7 8 9 10 
+07-context-y-ciclo-de-vida.md            1 2 3 4 5 6 7 8 9 10 
+08-migracion-a-go-moderno.md             1 2 3 4 5 6 7 8 9 10 
+09-sql-postgres-sqlite.md                1 2 3 4 5 6 7 8 9 10 
+10-clientes-http-y-apis-externas.md      1 2 3 4 5 6 7 8 9 10 
+11-mongodb-y-modelado-documental.md      1 2 3 4 5 6 7 8 9 10 
+12-cache-con-valkey.md                   1 2 3 4 5 6 7 8 9 10 
+13-lotes-scheduling-y-asincronia.md      1 2 3 4 5 6 7 8 9 10 
+14-observabilidad-y-hardening.md         1 2 3 4 5 6 7 8 9 10 
+15-rendimiento-y-profiling.md            1 2 3 4 5 6 7 8 9 10 
+16-go-frente-a-spring-boot.md            1 2 3 4 5 6 7 8 9 10 
+17-capstone.md                           1 2 3 4 5 6 7 8 9 10

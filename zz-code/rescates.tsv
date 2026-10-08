@@ -1,0 +1,34 @@
+# Rescates de zz-code reconstruidos desde las transcripciones de Claude Code. Lo lee regenerar-rescates.py.
+# Columnas (tabulador): directorio · carpeta generada · sesión (o - para un paso posterior) · opciones de
+# rescatar-transcripcion.py, o el comando del paso posterior con {dir} (el directorio) y {dest} (la raíz de salida).
+directorio	carpeta	sesion	opciones
+angular-16-legacy-for-backend-devs-20261006-ab79	01-apendices-babb5b75	babb5b75-c366-4b28-8e94-3edf8c8289a5	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'
+angular-16-legacy-for-backend-devs-20261006-ab79	02-sondas-be-f803daaa	f803daaa-f024-4042-af34-b44d49809430	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/' --incluir 'certcore|phpcheck'
+angular-16-legacy-for-backend-devs-20261006-ab79	03-forense-2924cb25	2924cb25-75c3-4115-bbc1-54e92ba194f2	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'
+angular-16-legacy-for-backend-devs-20261006-ab79	04-track-be-31a544c8	31a544c8-743c-4327-84b8-a34d9fce769e	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'
+angular-8-legacy-for-backend-devs-20261006-8291	01-forense-6edc206c	6edc206c-14b6-4874-8e4e-e3c76f720d90	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'
+angular-8-legacy-for-backend-devs-20261006-8291	02-sondas-be-f803daaa	f803daaa-f024-4042-af34-b44d49809430	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/' --incluir 'labcore'
+angular-8-legacy-for-backend-devs-20261006-8291	03-revision-9890285f	9890285f-c3d2-451f-b4c1-bb3582ab905d	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'
+angular-8-legacy-for-backend-devs-20261006-8291	04-autocontenido-70a2da9f	70a2da9f-4377-4097-8175-04d5f3b7e008	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'
+angular-8-legacy-for-backend-devs-20261006-8291	05-forense-fd43dd61	fd43dd61-45e4-4c68-a03a-349c75d31fa2	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'
+angular-8-legacy-for-backend-devs-20261006-8291	06-track-be-13793b0f	13793b0f-cc80-46c4-b71d-4f3ec9375796	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'
+angular-8-legacy-for-backend-devs-20261006-8291	07-revision-ba539b99	ba539b99-1109-4792-8e3e-93ac9d2547da	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'
+c-sharp-for-java-devs-20261006-f465	01-preparacion-3a759429	3a759429-f737-40e7-8978-df701a07831d	--sin-ediciones
+c-sharp-for-java-devs-20261006-f465	02-redaccion-aadc4f68	aadc4f68-f121-46e6-ade7-a28037b0fe0c	--sin-ediciones
+c-sharp-for-java-devs-20261006-f465	03-revision-03630220	03630220-8285-47af-bd48-9f631cee549b	--sin-ediciones
+go-for-java-devs-20261006-0d4d	01-preparacion-918474ae	918474ae-7460-472e-b793-f214b48c19f6	--sin-ediciones
+go-for-java-devs-20261006-0d4d	02-redaccion-b1c17b96	b1c17b96-6d1e-4b11-8dfe-ad530444b436	--sin-ediciones
+go-for-java-devs-20261006-0d4d	03-revision-c9051874	c9051874-1218-483a-96ca-bbd129a78447	--sin-ediciones
+python-for-java-devs-20261006-772f	01-base-b74cbeda	b74cbeda-4ebe-41e8-a4a9-572ad0a26258	--sin-ediciones
+python-for-java-devs-20261006-772f	02-ia-bd47dbaf	bd47dbaf-516b-4200-8446-14e29aeb9c84	--sin-ediciones
+python-for-java-devs-20261006-772f	03-ds-2859734a	2859734a-d7e6-4986-b771-4890bf56e42b	--sin-ediciones
+python-for-java-devs-20261006-772f	04-carta-5c52573d	5c52573d-4a56-4998-bca3-5d686d0c5368	--sin-ediciones --solo-perdidos
+python-for-java-devs-20261006-772f	04-carta-5c52573d/humo-por-seccion.sh	-	python3 {dir}/extraer_humo.py {dest}/04-carta-5c52573d/comandos.sh > {dest}/04-carta-5c52573d/humo-por-seccion.sh && chmod +x {dest}/04-carta-5c52573d/humo-por-seccion.sh
+python-for-java-devs-20261006-772f	05-carta-codigo	-	DEST={dest}/05-carta-codigo {dir}/copiar_codigo_carta.sh
+react-16-legacy-for-backend-devs-20261006-d22a	01-track-be-2c56f1ab	2c56f1ab-75fc-4f7e-a091-e4bef521ae0b	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'
+react-16-legacy-for-backend-devs-20261006-d22a	02-forense-5d4ed58d	5d4ed58d-ca5c-4efb-aaa8-eb9512597a47	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'
+react-16-legacy-for-backend-devs-20261006-d22a	03-nombres-be-14cfaf06	14cfaf06-578d-44da-99e0-ba6788d8c1c8	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'
+react-16-legacy-for-backend-devs-20261006-d22a	04-revision-zz-073aaed3	073aaed3-80c7-4a5a-b910-f2313b95f58a	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'
+vue2-legacy-for-backend-devs-20261006-c6c0	01-forense-8654ffa2	8654ffa2-c3be-4e38-8c48-f270a0c7e8e8	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'
+vue2-legacy-for-backend-devs-20261006-c6c0	02-forense-51943195	51943195-594f-48db-896d-65f9d0a7faaf	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'
+vue2-legacy-for-backend-devs-20261006-c6c0	03-forense-f9f4966e	f9f4966e-40c6-443c-bf3d-e3e59987dc49	--sin-ediciones --excluir '/\.claude/|\.md$|\.env$|^/usr/'

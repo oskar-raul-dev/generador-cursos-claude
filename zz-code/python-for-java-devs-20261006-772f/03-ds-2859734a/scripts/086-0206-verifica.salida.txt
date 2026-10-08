@@ -1,0 +1,29 @@
+candidato                      AUC    Brier     ECE
+regla de 3                  0.6723   0.1952  0.1918
+logística de 5              0.7993   0.1204  0.0127
+logística + interacción     0.8118   0.1114  0.0106
+red neuronal                0.8118   0.1116  0.0107
+
+fiabilidad por decil (red neuronal): predicho → observado
+  0.039 → 0.042  (n=3,322)
+  0.049 → 0.052  (n=3,322)
+  0.060 → 0.068  (n=3,322)
+  0.076 → 0.071  (n=3,322)
+  0.095 → 0.098  (n=3,322)
+  0.122 → 0.121  (n=3,322)
+  0.184 → 0.175  (n=3,322)
+  0.272 → 0.265  (n=3,322)
+  0.367 → 0.326  (n=3,322)
+  0.795 → 0.769  (n=3,326)
+
+umbral de sobreagendamiento con ratio 3.0: p > 0.75
+  regla de 3                 sobreagenda  6187 de 33,224 cupos · esperado -2584.3 · real -12938.0
+  logística de 5             sobreagenda  1247 de 33,224 cupos · esperado -5188.9 · real -4938.0
+  logística + interacción    sobreagenda  1878 de 33,224 cupos · esperado -3895.9 · real -3596.0
+  red neuronal               sobreagenda  1994 de 33,224 cupos · esperado -3600.2 · real -3579.0
+  ratio 1.0: umbral 0.50 · sobreagenda 3,168 · esperado -2311 · real -2288
+  ratio 1.5: umbral 0.60 · sobreagenda 2,632 · esperado -2833 · real -2808
+  ratio 2.0: umbral 0.67 · sobreagenda 2,329 · esperado -3173 · real -3120
+
+artefactos: red 4.0 KB · logística 1.2 KB
+entrenamiento red 1.8 s · parámetros 241

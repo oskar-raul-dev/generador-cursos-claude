@@ -1,0 +1,12 @@
+# La configuración del storefront (G2, Fase 11): nginx la lee al arrancar y la sirve en /config.json.
+# Su hash va en el pod: cambiarla con helm upgrade reinicia el storefront.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: storefront-config
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+data:
+  # La dirección pública del API: la que ve el navegador, no la del cluster.
+  API_BASE_URL: {{ printf "http://%s:%v" .Values.global.hosts.api .Values.global.publicPort | quote }}
+  BRAND_NAME: {{ .Values.brandName | quote }}

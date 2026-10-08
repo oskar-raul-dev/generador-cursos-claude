@@ -1,0 +1,13 @@
+# Incidente 09: la circular de precios nueva baja el tope del salbutamol de 20.000 a 18.000.
+# Se aplica sobre el ConfigMap de pricing, y nada más.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pricing-regulated-caps
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: pricing
+    app.kubernetes.io/part-of: lab
+data:
+  regulated-caps.csv: |
+    SKU-0003,18000

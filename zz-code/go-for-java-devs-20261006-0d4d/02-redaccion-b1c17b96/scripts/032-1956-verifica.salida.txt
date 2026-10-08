@@ -1,0 +1,93 @@
+═══ repaso-aws README ═══
+# AWS Core Refresh — repaso para entrevistas y laboratorio práctico
+
+> **Objetivo:** refrescar AWS para entrevistas técnicas y conversaciones de arquitectura
+> backend/Senior/Architect, y practicar en una cuenta real solo aquello que **únicamente**
+> se puede aprender en la nube.
+> **Audiencia:** gente que ya programa y ya entiende sistemas distribuidos. No se explica
+> qué es una base de datos ni qué es un contenedor.
+> **Vigencia:** 6 de septiembre de 2026. Los 264 enlaces de documentación oficial del
+> curso se verificaron uno a uno en esa fecha, y los enlaces internos entre documentos
+> resuelven todos, incluidas sus anclas.
+
+Esta guía no intenta cubrir el catálogo de AWS. Cubre el vocabulario, los mecanismos y
+los matices que separan a quien entiende el modelo de quien memorizó la lista de
+servicios. Cada documento cierra con preguntas sin respuesta a la vista; todas las
+respuestas, explicadas, viven en un único sitio: [`13`](13-respuestas.md).
+
+**El curso tiene dos mitades independientes.** Puedes leer solo la teórica, o hacer solo
+los labs, pero rinden mucho más juntas.
+
+---
+
+## Parte 1 — Documentos teóricos
+
+Se leen en orden la primera vez, y después se consultan sueltos: cada uno abre con un
+índice de salto rápido.
+
+| # | Documento | Qué te deja poder explicar |
+|---|---|---|
+| 01 | **[Infraestructura global y redes](01-infraestructura-global-y-redes.md)** | Regions, AZ, VPC, CIDR, subnets, route tables, IGW, NAT, Security Groups, NACL, endpoints, peering y Transit Gateway |
+| 02 | **[Cómputo, contenedores y balanceo](02-computo-contenedores-y-balanceo.md)** | EC2, AMI, EBS, Auto Scaling, ECR, ECS, Fargate, EKS, Lambda en profundidad, ALB y NLB |
+| 03 | **[Almacenamiento y bases SQL](03-almacenamiento-y-bases-sql.md)** | S3, EBS, EFS, RDS, Aurora, Multi-AZ, read replicas, AWS Backup y ElastiCache |
+| 04 | **[DynamoDB y NoSQL](04-dynamodb-nosql.md)** | Partition key, sort key, access patterns, Query vs Scan, GSI/LSI, consistencia, capacidad, TTL, Streams y transacciones |
+| 05 | **[Seguridad, IAM, cifrado y secretos](05-seguridad-iam-kms-secretos.md)** | IAM, STS, policy evaluation, least privilege, Cognito, JWT authorizers, KMS, Secrets Manager y estrategia multi-cuenta |
+| 06 | **[Route 53, DNS y conectividad](06-route53-dns-conectividad.md)** | Hosted zones, registros, Alias vs CNAME, routing policies, health checks, CloudFront, ACM, VPN, Direct Connect y PrivateLink |
+| 07 | **[Mensajería, eventos e integración](07-mensajeria-eventos-integracion.md)** | SQS, SNS, EventBridge, Kinesis, DLQ, idempotencia, fan-out y patrones asíncronos |
+| 08 | **[Observabilidad, auditoría y gobierno](08-observabilidad-auditoria-gobierno.md)** | CloudWatch, CloudTrail, AWS Config, Flow Logs, X-Ray, Reachability Analyzer y tags |
+| 09 | **[CloudFormation e Infrastructure as Code](09-cloudformation-iac.md)** | Templates, stacks, funciones intrínsecas, Change Sets, `DeletionPolicy`, drift y rollback |
+| 11 | **[Resiliencia y Well-Architected](11-resiliencia-y-well-architected.md)** | Los 6 pilares, trade-offs, circuit breaker, retry con backoff+jitter, bulkhead, timeout budgets y las 4 estrategias de DR con RTO/RPO |
+| 12 | **[Orquestación y CI/CD](12-orquestacion-y-cicd.md)** | Step Functions, State Machines, CodePipeline, CodeBuild, CodeDeploy y estrategias de despliegue |
+| 10 | **[Simulación de entrevista](10-preguntas-entrevista-y-mapa-mental.md)** | 60 preguntas `P#` y 6 escenarios de arquitectura resueltos. Se hace al final, no al principio |
+| 13 | **[Respuestas](13-respuestas.md)** | Solucionario centralizado de **todo** el curso: `01`–`09`, `11`–`12`, las `P#` de `10` y la serie práctica `L00`–`L04`/`A01`–`A02` |
+
+> El orden numérico y el orden de lectura no coinciden a propósito: `10` es la simulación
+> final y `13` es la referencia. Los documentos `11` y `12` se escribieron después de `10`
+> y conservan su número.
+
+═══ líneas por doc (aws) ═══
+     709 repaso-aws-entrevistas/l04-observabilidad-y-destruccion-verificada.md
+     297 repaso-aws-entrevistas/README.md
+   11565 total
+
+═══ maestria-ia README ═══
+# maestria-ia: Especialización Autodidacta en Inteligencia Artificial
+
+📚 Este directorio contiene un **currículo integral de especialización en IA** de ~30–34 meses (a 6 h/semana) diseñado para ingenieros con base sólida en desarrollo de software que buscan profundidad sistemática en aprendizaje automático, sistemas de IA y paradigmas de razonamiento.
+
+## Visión General
+
+**maestria-ia** es un programa autodidacta estructurado en dos pistas paralelas:
+
+- **Pista A — El eje (secuencial):** Matemáticas aplicadas → IA simbólica → ingeniería de datos → ML → deep learning → subcampos especializados (visión, NLP, RL) → sistemas en producción.
+  
+- **Pista B — Práctica (solo Fase 0):** Herramientas modernas (agentes de código, MCP, fine-tuning, modelos locales) que corren en paralelo con la reconstrucción matemática, cerrándose al terminar la Fase 0.
+
+**Filosofía:** El criterio de avance no es terminar lecciones; es poder **explicar cada concepto sin notas y reescribir el código desde cero** (estándar Feynman/Karpathy). Cada fase incluye un diagnóstico de entrada (obligatorio), mini-proyectos productibles, y bitácora de aprendizaje.
+
+## Estructura de Directorios
+
+```
+maestria-ia/
+├── README.md                           # Este archivo
+│
+├── 📋 Documentos Maestros
+├── Curriculo_Maestro_IA_VFinal.md      # Mapa completo: 11 fases, duraciones, bibliografía
+├── guia-estilo-maestria-ia.md          # Estándares editoriales (tono, lenguaje, convenciones)
+├── guia-aprendizaje.md                 # Método de estudio: calendario, retención, repaso espaciado
+├── guia-proyecto.md                    # Proyecto tesis: especificación y entregas
+├── perfil_personal_VFinal.md           # Perfil del estudiante: restricciones, base matemática
+├── instrucciones_project.md            # Detalles del capstone y evaluación
+│
+├── 📌 track_a/                         # PISTA A: Eje secuencial (11 fases, 0–10)
+│   ├── README.md
+│   ├── 00-reconstrucción-activa/       # Fase 0: Cálculo, álgebra lineal, probabilidad
+│   ├── 01-ia-clásica-simbólica/        # Fase 1: GOFAI, búsqueda, razonamiento
+│   ├── 02-ingeniería-de-datos/         # Fase 2: Pipelines, simulador de datos
+│   ├── 03-machine-learning-estadístico/# Fase 3: Distribuciones, clasificación, regresión
+│   ├── 04-inferencia-causal/           # Fase 4: Causalidad, d-separación, backdoors
+│   ├── 05-redes-neuronales-deep-learning/   # Fase 5: Backprop, optimización, arquitecturas
+│   ├── 06-visión-por-computador/       # Fase 6: CNNs, detección, segmentación
+│   ├── 07-nlp-modelos-de-lenguaje/     # Fase 7: Transformers, atención, LLMs
+│   ├── 08-aprendizaje-por-refuerzo/    # Fase 8: MDPs, Q-learning, políticas
+│   ├── 09-sistemas-ia-producción/      # Fase 9: MLOps, fine-tuning riguroso, gobernanza

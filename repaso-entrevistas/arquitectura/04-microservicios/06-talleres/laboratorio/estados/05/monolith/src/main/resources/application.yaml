@@ -1,0 +1,53 @@
+# ms-monolith. Valores de §14 de la guía.
+server:
+  port: 28081
+
+spring:
+  application:
+    name: ms-monolith
+  datasource:
+    url: jdbc:postgresql://localhost:25432/ms_monolith
+    username: ms_monolith
+    password: ms-lab-pass
+    hikari:
+      maximum-pool-size: 5          # pequeño, como tantos monolitos que nunca lo tocaron
+      connection-timeout: 2000      # quien no consigue conexión en 2 s recibe un error
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none                # el esquema es contrato/seed/monolith/schema.sql
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics     # /actuator/metrics/hikaricp.connections.* para ver el pool
+
+ms:
+  jwt:
+    secret: ms-lab-dev-secret-change-me-0123456789   # HS256 exige al menos 32 bytes (este tiene 38)
+    ttl-seconds: 900
+  inventory:
+    mode: local                         # local: las tablas de ms_monolith · remote: el servicio inventory (taller 02)
+    base-url: http://localhost:28183    # a través de Toxiproxy (proxy `inventory`)
+    connect-timeout-ms: 500
+    read-timeout-ms: 800                # la primera llamada remota nace con timeout (0 = sin timeout, para la provocación)
+  payments:
+    mode: local                         # local: el monolito llama al PSP · remote: el servicio payments (taller 03)
+    base-url: http://localhost:28184    # a través de Toxiproxy (proxy `payments`)
+    connect-timeout-ms: 500
+    read-timeout-ms: 2500               # mayor que el timeout de payments hacia el PSP (2 s): payments contesta antes
+    propagate-key: true                 # false = la provocación del doble cobro
+    retry:
+      max-attempts: 3                   # el primero y dos reintentos
+      base-backoff-ms: 200              # 200 ms, 400 ms… con ±50 % de jitter
+    breaker:
+      window: 10                        # últimas 10 llamadas
+      minimum-calls: 4                  # no se decide nada con menos
+      failure-rate: 50                  # % de fallos para abrir
+      open-seconds: 10                  # abierto 10 s antes de probar
+      half-open-calls: 2                # llamadas de prueba en semiabierto
+  psp:
+    base-url: http://localhost:28185   # a través de Toxiproxy (proxy `psp`), no directo a :28085
+    connect-timeout-ms: 1000
+    read-timeout-ms: 2000               # el importe 666.00 tarda 3 s: aquí se vuelve "resultado incierto"

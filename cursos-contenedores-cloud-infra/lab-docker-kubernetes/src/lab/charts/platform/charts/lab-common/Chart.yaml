@@ -1,0 +1,7 @@
+# Las plantillas que los cinco servicios comparten (Fase 13). Es un chart de librería: no crea objetos,
+# solo define plantillas con nombre que los demás incluyen.
+apiVersion: v2
+name: lab-common
+description: Plantillas compartidas de los servicios del laboratorio
+type: library
+version: 0.13.0

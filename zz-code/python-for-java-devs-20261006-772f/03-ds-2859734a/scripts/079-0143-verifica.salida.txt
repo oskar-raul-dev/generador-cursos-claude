@@ -1,0 +1,5 @@
+predict marca 3,268 de 33,224 (9.8%) · tasa real 19.9%
+a umbral 0,5: precisión 0.690 recall 0.342 marcadas 3,268
+OK
+......................................                                   [100%]
+38 passed in 2.24s

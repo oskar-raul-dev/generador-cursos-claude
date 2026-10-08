@@ -1,0 +1,7 @@
+# Los datos del sistema (Fase 12): Postgres aquí; Valkey y NATS en la Parte IV.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: data
+  labels:
+    app.kubernetes.io/part-of: lab

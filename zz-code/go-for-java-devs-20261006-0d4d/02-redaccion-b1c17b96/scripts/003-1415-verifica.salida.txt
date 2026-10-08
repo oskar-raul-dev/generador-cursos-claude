@@ -1,0 +1,20 @@
+=== SECCIONES OBLIGATORIAS ===
+ARCHIVO                                🪞    🩻    🧨    ⚰️   📖    ⚖️   🏷️   📌   
+00-ambiente-y-tooling.md               1    2    2    0    1    1    1    1   
+01-sintaxis-y-valores.md               1    5    2    0    1    1    1    1   
+02-structs-interfaces-composicion.md   1    2    1    1    1    1    1    1   
+03-errores-paquetes-io.md              1    3    2    1    1    1    1    1   
+04-testing-dobles-cobertura.md         1    2    1    1    1    1    1    1   
+05-http-rest-stdlib.md                 1    3    1    1    1    1    1    1   
+06-concurrencia.md                     1    1    3    1    1    1    1    1   
+07-context-y-ciclo-de-vida.md          1    1    1    1    1    1    1    1   
+08-migracion-a-go-moderno.md           1    1    1    1    1    1    1    1   
+09-sql-postgres-sqlite.md              1    2    1    1    1    1    1    1   
+10-clientes-http-y-apis-externas.md    1    1    2    1    1    1    1    1   
+11-mongodb-y-modelado-documental.md    1    1    2    1    1    1    1    1   
+12-cache-con-valkey.md                 1    3    1    1    1    1    1    1   
+13-lotes-scheduling-y-asincronia.md    1    1    2    1    1    1    1    1   
+14-observabilidad-y-hardening.md       1    1    2    1    1    1    1    1   
+15-rendimiento-y-profiling.md          1    0    2    1    1    1    1    1   
+16-go-frente-a-spring-boot.md          1    1    1    1    1    1    1    1   
+17-capstone.md                         1    1    1    1    0    1    1    1

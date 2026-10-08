@@ -1,0 +1,4 @@
+3 enlaces rotos
+  08-el-contrato-del-codigo.md  →  x: T
+  08-el-contrato-del-codigo.md  →  items: Iterable[T]
+  08-el-contrato-del-codigo.md  →  ...

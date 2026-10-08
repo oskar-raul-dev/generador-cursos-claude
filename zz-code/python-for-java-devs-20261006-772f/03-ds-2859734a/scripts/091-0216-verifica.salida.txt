@@ -1,0 +1,7 @@
+(eval):2: no matches found: src/ds0*/data
+links rotos: ninguno
+     686 ds07-scikit-learn.md
+     745 ds08-ausentismo.md
+    5607 total
+OK memoria
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

@@ -1,0 +1,9 @@
+# Una caja que pregunta la existencia apenas arranca, y espera a inventory con depends_on.
+name: f06
+services:
+  inventory:
+    image: lab/inventory
+  caja:
+    image: lab/replenish
+    command: ["wget", "-qO-", "http://inventory:8080/stock/DRO-007/SKU-0003"]
+    depends_on: [inventory]

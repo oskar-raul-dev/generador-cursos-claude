@@ -1,0 +1,13 @@
+name: lab-p11
+services:
+  pricing:
+    build: ../services/pricing
+    image: lab/pricing:g0
+    labels: {curso: lab-docker-kubernetes}
+  conformance:
+    image: ghcr.io/orange-opensource/hurl:8.0.1
+    labels: {curso: lab-docker-kubernetes}
+    profiles: [conformance]
+    volumes: ["../contracts/conformance:/suite:ro"]
+    command: ["--test", "--variable", "base_url=http://pricing:8080", "/suite/pricing.g0.hurl"]
+    depends_on: [pricing]

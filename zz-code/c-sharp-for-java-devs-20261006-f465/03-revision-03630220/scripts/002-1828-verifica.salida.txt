@@ -1,0 +1,28 @@
+== cross-curso restante en material publicado ==
+== enlaces ==
+== cadena de fases ==
+> Depende de: 00 · Habilita: 02
+> Depende de: 01 · Habilita: 03
+> Depende de: 02 · Habilita: 04
+> Depende de: 03 · Habilita: 05
+> Depende de: 04 · Habilita: 06
+> Depende de: 05 · Habilita: 07
+> Depende de: 06 · Habilita: 08
+> Depende de: 07 · Habilita: 09
+> Depende de: 08 · Habilita: 10
+> Depende de: 09 · Habilita: 11
+> Depende de: 10 · Habilita: 12
+> Depende de: 11 · Habilita: 13
+> Depende de: 11, 15, 16, 17, 18, 19 · Habilita: 21
+> Depende de: 12 · Habilita: 14
+> Depende de: 13 · Habilita: 15
+> Depende de: 14 · Habilita: 16
+> Depende de: 15 · Habilita: 17
+> Depende de: 15, 16, 17, 18 · Habilita: 20
+> Depende de: 16 · Habilita: 18
+> Depende de: 17 · Habilita: 19
+> Depende de: 20 · Habilita: 22
+> Depende de: 21 · Habilita: 23
+> Depende de: 22 · Habilita: 24
+> Depende de: 23 · Habilita: ninguna
+> Depende de: ninguna · Habilita: 01

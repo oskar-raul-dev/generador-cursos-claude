@@ -1,0 +1,11 @@
+=== 4. BENCHMARKS: una entrada por fase 00-23 + consolidación ===
+  entradas 📐: 24
+  consolidación 🧮: 1
+  ✅ F00–F23 sin huecos ni duplicados
+  ❌ índice: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '10', '50']
+
+=== 5. Cada fase tiene su §6 Medición y su 🧱 §7 ===
+  ✅ las 25
+
+=== 6. INSTINTOS: enlaces 'Desarrollado en' ===
+  ✅ cada reflejo apunta a su fase

@@ -1,0 +1,39 @@
+=== Desafios de cierre presentes ===
+00-ambiente-y-tooling.md               seccion=1 desafios=3
+01-sintaxis-y-valores.md               seccion=1 desafios=3
+02-structs-interfaces-composicion.md   seccion=1 desafios=3
+03-errores-paquetes-io.md              seccion=1 desafios=3
+04-testing-dobles-cobertura.md         seccion=1 desafios=3
+05-http-rest-stdlib.md                 seccion=1 desafios=3
+06-concurrencia.md                     seccion=1 desafios=3
+07-context-y-ciclo-de-vida.md          seccion=1 desafios=3
+08-migracion-a-go-moderno.md           seccion=1 desafios=3
+09-sql-postgres-sqlite.md              seccion=1 desafios=3
+10-clientes-http-y-apis-externas.md    seccion=1 desafios=3
+11-mongodb-y-modelado-documental.md    seccion=1 desafios=3
+12-cache-con-valkey.md                 seccion=1 desafios=3
+13-lotes-scheduling-y-asincronia.md    seccion=1 desafios=3
+14-observabilidad-y-hardening.md       seccion=1 desafios=3
+15-rendimiento-y-profiling.md          seccion=1 desafios=3
+16-go-frente-a-spring-boot.md          seccion=1 desafios=3
+17-capstone.md                         seccion=1 desafios=3
+
+=== el conteo declarado de ejercicios NO cambio ===
+00-ambiente-y-tooling.md               ## 🧪 8. Ejercicios (20) numerados=20
+01-sintaxis-y-valores.md               ## 🧪 8. Ejercicios (24) numerados=24
+02-structs-interfaces-composicion.md   ## 🧪 8. Ejercicios (26) numerados=26
+03-errores-paquetes-io.md              ## 🧪 8. Ejercicios (24) numerados=24
+04-testing-dobles-cobertura.md         ## 🧪 8. Ejercicios (26) numerados=26
+05-http-rest-stdlib.md                 ## 🧪 8. Ejercicios (26) numerados=26
+06-concurrencia.md                     ## 🧪 8. Ejercicios (30) numerados=30
+07-context-y-ciclo-de-vida.md          ## 🧪 8. Ejercicios (24) numerados=24
+08-migracion-a-go-moderno.md           ## 🧪 8. Ejercicios (26) numerados=26
+09-sql-postgres-sqlite.md              ## 🧪 8. Ejercicios (30) numerados=30
+10-clientes-http-y-apis-externas.md    ## 🧪 8. Ejercicios (28) numerados=28
+11-mongodb-y-modelado-documental.md    ## 🧪 8. Ejercicios (24) numerados=24
+12-cache-con-valkey.md                 ## 🧪 8. Ejercicios (22) numerados=22
+13-lotes-scheduling-y-asincronia.md    ## 🧪 8. Ejercicios (28) numerados=28
+14-observabilidad-y-hardening.md       ## 🧪 8. Ejercicios (26) numerados=26
+15-rendimiento-y-profiling.md          ## 🧪 8. Ejercicios (26) numerados=26
+16-go-frente-a-spring-boot.md          ## 🧪 8. Ejercicios (30) numerados=30
+17-capstone.md                         ## 🧪 8. Ejercicios (20) numerados=20

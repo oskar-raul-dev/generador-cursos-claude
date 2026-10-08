@@ -1,0 +1,25 @@
+# Perfil `minimo`: un solo nodo. Es el cluster de casi todo el camino base.
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: minimo
+# Activa la carpeta de configuración de registries de containerd. No cambia nada hasta la Fase 19,
+# y ponerla desde el principio evita recrear el cluster cuando llegue el registry con CA propia.
+containerdConfigPatches:
+  - |-
+    [plugins."io.containerd.grpc.v1.cri".registry]
+      config_path = "/etc/containerd/certs.d"
+nodes:
+  - role: control-plane
+    # kindest/node:v1.36.4 — la última que soporta el controlador de Gateway del curso (a01).
+    image: kindest/node@sha256:099e049362a1526b2db71494e1947aae99bd16290d7c895f2b7ea312e3cbfaed
+    # La entrada al cluster: el host escucha solo en 127.0.0.1, en puertos sin privilegios
+    # (Podman sin root no publica el 80 ni el 443), y los reenvía a dos NodePort fijos.
+    extraPortMappings:
+      - containerPort: 30080
+        hostPort: 8080
+        listenAddress: "127.0.0.1"
+        protocol: TCP
+      - containerPort: 30443
+        hostPort: 8443
+        listenAddress: "127.0.0.1"
+        protocol: TCP

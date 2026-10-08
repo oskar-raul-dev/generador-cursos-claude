@@ -1,0 +1,13 @@
+# El tipo de entrada del laboratorio: lo implementa Envoy Gateway, con la configuración de envoyproxy.yaml.
+# Lo escribe quien opera la plataforma, una vez (Fase 10).
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: eg
+spec:
+  controllerName: gateway.envoyproxy.io/gatewayclass-controller
+  parametersRef:
+    group: gateway.envoyproxy.io
+    kind: EnvoyProxy
+    name: nodeport
+    namespace: gateway

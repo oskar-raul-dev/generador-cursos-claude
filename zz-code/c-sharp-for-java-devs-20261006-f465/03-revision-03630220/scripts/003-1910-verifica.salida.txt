@@ -1,0 +1,9 @@
+=== 1. Referencias a otros cursos / repo externo ===
+16-identidad-secretos-y-configuracion.md:102:3. secretos de usuario                  ← SOLO en desarrollo. Fuera del repositorio, en el perfil del usuario.
+16-identidad-secretos-y-configuracion.md:254:| — | `dotnet user-secrets` | **No tiene equivalente directo.** Guarda secretos de desarrollo fuera del repositorio, en el perfil del usuario, sin configurar nada |
+
+=== 2. Enlaces relativos ===
+  ✅ todos resuelven
+
+=== 3. Cadena Depende/Habilita ===
+  ✅ cadena 00→24 completa y cabeceras correctas

@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Sabor Java del bloque 06 · Talleres. Versiones verificadas el 2026-09-27 en Maven Central. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>4.1.1</version>
+    <relativePath/>
+  </parent>
+
+  <groupId>dev.hex</groupId>
+  <artifactId>hex-orders-java</artifactId>
+  <version>1.5.0</version>
+  <name>hex-orders-java</name>
+
+  <properties>
+    <java.version>25</java.version>
+    <archunit.version>1.5.1</archunit.version>
+  </properties>
+
+  <dependencies>
+    <!-- entrada HTTP -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-webmvc</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-validation</artifactId>
+    </dependency>
+    <!-- autenticación: resource server con JWT HS256; el mismo secreto emite y verifica -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-security</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-oauth2-resource-server</artifactId>
+    </dependency>
+    <!-- salidas: PostgreSQL vía JPA, MongoDB para el catálogo (parte 3), Redis para revocación -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-mongodb</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-redis</artifactId>
+    </dependency>
+    <!-- taller 09: tópicos (productor de la outbox y dos consumidores). En Boot 4 la autoconfiguración de
+         Kafka vive en su propio módulo: `spring-kafka` a secas compila pero no crea el KafkaTemplate -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-kafka</artifactId>
+    </dependency>
+    <!-- taller 11: lotes con Spring Batch (6.0.5 por el BOM); el JobRepository vive en hex_orders -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-batch</artifactId>
+    </dependency>
+    <!-- taller 10: cliente gRPC del proveedor de pagos; stubs generados desde ../contrato/proto -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-grpc-client</artifactId>
+    </dependency>
+    <!-- taller 08: entrada por cola JMS (ActiveMQ Artemis); la versión del cliente la fija el BOM de Boot (2.53.0) -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-artemis</artifactId>
+    </dependency>
+
+    <!-- pruebas: dominio puro, casos de uso con dobles y regla de dependencias con ArchUnit -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <!-- taller 10: servidor gRPC en proceso para probar el adaptador sin red -->
+    <dependency>
+      <groupId>io.grpc</groupId>
+      <artifactId>grpc-inprocess</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.tngtech.archunit</groupId>
+      <artifactId>archunit-junit5</artifactId>
+      <version>${archunit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+      <!-- taller 10: los stubs se generan del .proto compartido en cada build -->
+      <plugin>
+        <groupId>io.github.ascopes</groupId>
+        <artifactId>protobuf-maven-plugin</artifactId>
+        <configuration>
+          <protocVersion>${protobuf-java.version}</protocVersion>
+          <sourceDirectories>
+            <sourceDirectory>${project.basedir}/../contrato/proto</sourceDirectory>
+          </sourceDirectories>
+          <binaryMavenPlugins>
+            <binaryMavenPlugin>
+              <groupId>io.grpc</groupId>
+              <artifactId>protoc-gen-grpc-java</artifactId>
+              <version>${grpc-java.version}</version>
+            </binaryMavenPlugin>
+          </binaryMavenPlugins>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>generate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

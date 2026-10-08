@@ -1,0 +1,2 @@
+{'ok': 143, 'falla cert (3)': 14, 'advertencia (5)': 23, 'cuelga (7)': 20} total 200
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

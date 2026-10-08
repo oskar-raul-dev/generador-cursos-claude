@@ -1,0 +1,11 @@
+syntax = "proto3";
+package aurea.agenda;
+
+message SedeRequest { string sede = 1; int32 demora_ms = 2; }
+message Disponibilidad { string sede = 1; repeated string horas = 2; }
+message EventoCita { string sede = 1; string tipo = 2; int32 secuencia = 3; }
+
+service Agenda {
+  rpc ConsultarDisponibilidad (SedeRequest) returns (Disponibilidad);
+  rpc EventosDeSede (SedeRequest) returns (stream EventoCita);
+}

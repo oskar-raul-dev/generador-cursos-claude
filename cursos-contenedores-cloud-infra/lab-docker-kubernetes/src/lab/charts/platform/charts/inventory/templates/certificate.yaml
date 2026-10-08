@@ -1,0 +1,22 @@
+{{- if .Values.global.mtls.enabled }}
+# G8 (Fase 19): el certificado de cliente de inventory, el que presenta a pricing. Solo sirve para
+# autenticar un cliente (usages), y lo emite y renueva cert-manager.
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: inventory-client-tls
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+spec:
+  secretName: inventory-client-tls
+  duration: 720h
+  renewBefore: 240h
+  privateKey: {algorithm: ECDSA, size: 256, rotationPolicy: Always}
+  usages: [client auth]
+  commonName: inventory.{{ .Release.Namespace }}
+  dnsNames:
+    - inventory.{{ .Release.Namespace }}.svc.cluster.local
+  issuerRef:
+    kind: ClusterIssuer
+    name: {{ .Values.global.mtls.issuer }}
+{{- end }}

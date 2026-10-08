@@ -1,0 +1,13 @@
+--- goleak F08:
+1705:- **`goleak`** — la Fase 07 dejó escrito que esta fase lo introduciría sustituyendo
+--- testify F09:
+2247:- **`testify/require`** — la guía de estilo §7.4 dice que entra en esta fase,
+--- claimed_at F09:
+899:>   AND claimed_at < now() - INTERVAL '5 minutes';
+902:> Eso obliga a añadir una columna `claimed_at`, y **es exactamente el tipo de
+2256:- **La columna `claimed_at`** del recuperador de entregas huérfanas (§6.4) — se
+--- heap F06:
+1912:    *Rúbrica:* (a) sin usar `container/heap` compartido entre goroutines sin
+2195:- **`container/heap`** — pendiente desde la Fase 01 (ejercicio 24) y reaparece
+--- httptrace F15:
+1765:- **`httptrace`** — la **Fase 10** anotó que su uso serio correspondía a esta fase.

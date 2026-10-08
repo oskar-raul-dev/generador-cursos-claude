@@ -1,0 +1,10 @@
+backend         arranque       p50       p95   artefacto
+pickle           1.10 s   0.90 ms   1.22 ms      1.2 KB
+onnx             0.38 s   0.71 ms   0.99 ms      0.5 KB
+
+500 peticiones por backend, 50 de calentamiento descartadas.
+Los dos backends devuelven la misma probabilidad: diferencia 3.81e-08
+--- import en frío, por separado ---
+  fastapi+uvicorn     0.25 s
+  + sklearn           1.03 s
+  + onnxruntime       0.32 s

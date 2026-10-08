@@ -1,0 +1,28 @@
+# El seed del laboratorio (Fase 12): generate.py de a01 y load.py, como Job, después de las migraciones
+# y del rollout. Carga por la API: el seed no conoce ninguna tabla.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: seed
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: seed
+    app.kubernetes.io/part-of: lab
+spec:
+  backoffLimit: 2
+  ttlSecondsAfterFinished: 600
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: seed
+        app.kubernetes.io/part-of: lab
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: seed
+          image: lab/seed:g3
+          imagePullPolicy: IfNotPresent
+          env:
+            - {name: STORES, value: "20"}
+          envFrom:
+            - configMapRef: {name: neighbors}

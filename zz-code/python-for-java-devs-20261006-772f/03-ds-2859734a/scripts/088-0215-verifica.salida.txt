@@ -1,0 +1,15 @@
+=== lint ===
+19 +
+20 | from calibration import brier_score, expected_calibration_error, reliability
+   |
+
+Found 1 error.
+[*] 1 fixable with the `--fix` option.
+  ds01-numpy-y-el-modelo-vectorizado            OK
+  ds02-pandas                                   OK
+  ds03-polars-y-el-modelo-lazy                  OK
+  ds04-embudo                                   OK
+  ds05-visualizacion                            OK
+  ds06-notebooks-y-reproducibilidad             OK
+  ds07-scikit-learn                             OK
+  ds08-ausentismo                               FALLA

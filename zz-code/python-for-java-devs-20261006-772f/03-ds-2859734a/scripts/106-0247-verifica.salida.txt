@@ -1,0 +1,22 @@
+=== encabezados de sección de INSTINTOS y su frase de conteo ===
+406:## 🤖 Los reflejos del track de IA
+407-
+408-Los cinco que aparecieron al construir NormaRAG y Recepción asistida. Van aparte porque el lector
+409-llega a ellos con las dieciocho fases hechas, y porque todos nacen de una misma raíz: **tratar a un
+--
+489:## 📊 Los reflejos del track de datos
+490-
+491-Los dos que aparecieron al construir el Embudo. Nacen de la misma raíz —**pensar en filas**— y se
+492-corrigen con la misma pregunta: *¿de dónde vienen estos datos y cuántas cuentas voy a hacer con
+--
+640:## 🧪 Los reflejos de método
+641-
+642-Estos no son de Java: son de cualquiera que mida. Aparecieron **escribiendo el curso**, y por eso
+643-están aquí — todos son errores que cometió quien lo escribió.
+
+=== cuántos reflejos hay en cada bloque ===
+   8  ## 🤖 Los reflejos del track de IA
+  10  ## 📊 Los reflejos del track de datos
+   4  ## 🧪 Los reflejos de método
+
+=== claims de conteo en README y ESTRUCTURA ===

@@ -1,0 +1,24 @@
+services:
+  toolchain:
+    image: legacy-node-toolchain:phase15        # docker run <imagen>
+    container_name: legacy-node-dev             # --name
+    platform: linux/amd64                       # --platform
+    working_dir: /workspace                     # -w
+    environment:
+      NODE_VERSION: "10.24.1"                   # -e
+    volumes:
+      - type: bind                              # --mount type=bind
+        source: .
+        target: /workspace
+      - type: volume                            # --mount type=volume
+        source: node-modules
+        target: /workspace/node_modules
+    ports:
+      - "127.0.0.1:3000:3000"                   # -p
+      - "127.0.0.1:9229:9229"                   # el inspector, F10
+    init: true                                  # --init, F16 §8
+    command: sleep infinity                     # el comando, F09 §7
+
+volumes:
+  node-modules:                                 # docker volume create
+    name: legacy-vue2-node10-amd64-modules      # la convención de F22 §7

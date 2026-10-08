@@ -1,0 +1,41 @@
+=== F06 heap ===
+## 📌 Pendientes sugeridos
+
+- **`container/heap`** — pendiente desde la Fase 01 (ejercicio 24) y reaparece
+  aquí en el ejercicio 27 con la complicación concurrente. **No hay fase que lo
+  trate formalmente.** Decidir: o se queda como ejercicio 🔴 aquí, o se le da una
+  sección corta en la Fase 13 (donde la cola de lotes lo justificaría).
+- **El `errgroup` escrito a mano** (🔥) — es una preparación excelente para la Fase
+  08. **Verificar que la Fase 08 lo recoge** y pide comparar con el real.
+=== F05 negociacion ===
+13-lotes-scheduling-y-asincronia.md:1940:- **Negociación de contenido (`Accept`)** — la **Fase 05** anotó que aquí se
+05-http-rest-stdlib.md:21:negociación de contenido, conversión de tipos, validación declarativa— es
+05-http-rest-stdlib.md:203:conversión de tipos, negociación de contenido, resolución de argumentos por
+05-http-rest-stdlib.md:1653:- Implementa negociación de contenido: el mismo endpoint devuelve JSON o CSV según
+05-http-rest-stdlib.md:1831:| `@RequestBody Dto dto` | `json.NewDecoder(r.Body).Decode(&req)` | Sin negociación de contenido automática. Solo JSON, salvo que la escribas |
+05-http-rest-stdlib.md:1907:- **Negociación de contenido (JSON/CSV por `Accept`)** — ejercicio 🔥 aquí. Se
+=== F03 errWriter ===
+13-lotes-scheduling-y-asincronia.md:1925:- **El patrón `errWriter` de Rob Pike** — la **Fase 03** lo anotó como pendiente
+03-errores-paquetes-io.md:1738:  ejemplo del `errWriter` es el que hay que robar.
+03-errores-paquetes-io.md:1780:  cuarenta `if err != nil` idénticos, o inventar el patrón `errWriter` de Pike,
+03-errores-paquetes-io.md:1877:- **El patrón `errWriter` de Rob Pike** (acumular el error en un struct para no
+=== F12 metricas ===
+60:- Métricas de caché exportadas a Prometheus → Fase 14. Hoy los contadores existen y
+1729:| Micrometer con métricas de caché | contadores propios (Fase 14) | Se escriben; a cambio mides lo que quieres |
+1794:  la **Fase 14**. Verificar que allí se usan estos y no se inventan otros.
+1797:  de la Fase 14 lo recoge cuando se endurezca.
+=== F13 ResponseController ===
+13-lotes-scheduling-y-asincronia.md:1110:> La buena, desde Go 1.20: `http.ResponseController` permite ajustar el plazo **de
+13-lotes-scheduling-y-asincronia.md:1113:> rc := http.NewResponseController(w)
+13-lotes-scheduling-y-asincronia.md:1495:*Fix mínimo:* `http.ResponseController.SetWriteDeadline` en ese handler, no subir
+13-lotes-scheduling-y-asincronia.md:1724:- **`http.ResponseController`** — https://pkg.go.dev/net/http#ResponseController —
+14-observabilidad-y-hardening.md:2256:- **`http.ResponseController`** — usado en la Fase 13 §6.6 y **no mencionado aquí**
+=== JSONB ===
+11-mongodb-y-modelado-documental.md:1574:**D1 — La comparación que falta: `JSONB` de PostgreSQL.**
+11-mongodb-y-modelado-documental.md:1575:El curso decidió Mongo para AtlasSync **sin evaluar `JSONB`**, y esa es una omisión
+11-mongodb-y-modelado-documental.md:1577:*Rúbrica:* (a) modelas `countries` en PostgreSQL con una columna `JSONB` y los
+11-mongodb-y-modelado-documental.md:1712:error, solo que menos frecuente y menos grave —porque `JSONB` de PostgreSQL cubre
+11-mongodb-y-modelado-documental.md:1819:- **`JSONB` de PostgreSQL** — se menciona en el ⚖️ como alternativa que cubre buena
+11-mongodb-y-modelado-documental.md:1822:  países en una columna `JSONB`. **Recomendación: añadir un párrafo corto a la Fase
+09-sql-postgres-sqlite.md:522:    payload         JSONB       NOT NULL,
+09-sql-postgres-sqlite.md:1129:de tipos nativo (arrays, `JSONB`, `hstore`, tipos compuestos) sin envoltorios,

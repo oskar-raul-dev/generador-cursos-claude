@@ -1,0 +1,21 @@
+{{ include "lab-common.service" . }}
+{{- if and .Values.global.mtls.enabled .Values.global.grpc.enabled }}
+---
+# G10 (Fase 23): el gRPC de pricing sin dirección virtual (headless): el DNS devuelve la IP de cada réplica, y el
+# cliente reparte las llamadas entre todas (round_robin). Con el Service normal, la conexión de HTTP/2 se queda en
+# una sola réplica: es el fallo que la Fase 23 mide.
+apiVersion: v1
+kind: Service
+metadata:
+  name: pricing-grpc
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+spec:
+  clusterIP: None
+  selector:
+    {{- include "lab-common.selectorLabels" . | nindent 4 }}
+  ports:
+    - name: grpc
+      port: 9090
+      targetPort: grpc
+{{- end }}

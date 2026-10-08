@@ -1,0 +1,2 @@
+['adolorido', 'comer', 'dolor', 'duele', 'masticar', 'no', 'puedo']
+escala? True

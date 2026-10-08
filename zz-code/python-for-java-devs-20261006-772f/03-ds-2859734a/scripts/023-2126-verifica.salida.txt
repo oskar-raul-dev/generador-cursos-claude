@@ -1,0 +1,17 @@
+=== links rotos ===
+./src/ds07-scikit-learn/README.md:3 -> ../../ds07-scikit-learn.md
+=== wc ===
+     766 ds01-numpy-y-el-modelo-vectorizado.md
+     673 ds02-pandas.md
+     170 src/ds01-numpy-y-el-modelo-vectorizado/acquisition.py
+     139 src/ds01-numpy-y-el-modelo-vectorizado/bench_vectorized.py
+      62 src/ds01-numpy-y-el-modelo-vectorizado/ejercicio_16_lento.py
+     420 src/ds01-numpy-y-el-modelo-vectorizado/generar_embudo.py
+     142 src/ds01-numpy-y-el-modelo-vectorizado/test_acquisition.py
+     319 src/ds01-numpy-y-el-modelo-vectorizado/test_generar_embudo.py
+     126 src/ds02-pandas/bench_merge.py
+     126 src/ds02-pandas/collections_report.py
+     144 src/ds02-pandas/test_collections_report.py
+     300 src/ds07-scikit-learn/generar_ausentismo.py
+     234 src/ds07-scikit-learn/test_generar_ausentismo.py
+    3621 total

@@ -1,0 +1,33 @@
+# ms-monolith. Valores de §14 de la guía.
+server:
+  port: 28081
+
+spring:
+  application:
+    name: ms-monolith
+  datasource:
+    url: jdbc:postgresql://localhost:25432/ms_monolith
+    username: ms_monolith
+    password: ms-lab-pass
+    hikari:
+      maximum-pool-size: 5          # pequeño, como tantos monolitos que nunca lo tocaron
+      connection-timeout: 2000      # quien no consigue conexión en 2 s recibe un error
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none                # el esquema es contrato/seed/monolith/schema.sql
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,metrics     # /actuator/metrics/hikaricp.connections.* para ver el pool
+
+ms:
+  jwt:
+    secret: ms-lab-dev-secret-change-me-0123456789   # HS256 exige al menos 32 bytes (este tiene 38)
+    ttl-seconds: 900
+  psp:
+    base-url: http://localhost:28185   # a través de Toxiproxy (proxy `psp`), no directo a :28085
+    connect-timeout-ms: 1000
+    read-timeout-ms: 2000               # el importe 666.00 tarda 3 s: aquí se vuelve "resultado incierto"

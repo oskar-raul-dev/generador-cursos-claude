@@ -1,0 +1,35 @@
+   1 src/ia08-produccion-y-el-veredicto/test_produccion.py:173:37:
+   1 src/ia08-produccion-y-el-veredicto/test_produccion.py
+   1 src/ia06-evaluacion/statistics_helpers.py:25:30:
+   1 src/ia06-evaluacion/generar_evalset.py:39:101:
+   1 src/ia06-evaluacion/bench_judges.py:47:40:
+   1 src/ia05-normarag/test_normarag.py:73:101:
+   1 src/ia05-normarag/test_normarag.py
+   1 src/ia05-normarag/bench_answers.py:50:101:
+   1 src/ia05-normarag/bench_answers.py:100:101:
+   1 src/ia05-normarag/bench_answers.py
+   1 src/ia04-embeddings-y-busqueda-semantica/generar_corpus.py:308:101:
+   1 src/ia04-embeddings-y-busqueda-semantica/generar_corpus.py:307:101:
+   1 src/ia03-tool-calling-y-el-bucle-de-agente/agent_runner.py:30:31:
+   1 src/13-integraciones/socio_falible.py:73:57:
+   1 src/13-integraciones/socio_falible.py:73:33:
+   1 Found
+   1 [*]
+--- detalle ---
+src/13-integraciones/socio_falible.py:73:33: E702 Multiple statements on one line (semicolon)
+src/13-integraciones/socio_falible.py:73:57: E702 Multiple statements on one line (semicolon)
+src/ia03-tool-calling-y-el-bucle-de-agente/agent_runner.py:30:31: F821 Undefined name `agenda`
+src/ia04-embeddings-y-busqueda-semantica/generar_corpus.py:307:101: E501 Line too long (105 > 100)
+src/ia04-embeddings-y-busqueda-semantica/generar_corpus.py:308:101: E501 Line too long (103 > 100)
+src/ia05-normarag/bench_answers.py:23:58: F401 [*] `answer.verify_citations` imported but unused
+src/ia05-normarag/bench_answers.py:50:101: E501 Line too long (101 > 100)
+src/ia05-normarag/bench_answers.py:100:101: E501 Line too long (104 > 100)
+src/ia05-normarag/test_normarag.py:10:22: F401 [*] `datetime.date` imported but unused
+src/ia05-normarag/test_normarag.py:73:101: E501 Line too long (101 > 100)
+src/ia06-evaluacion/bench_judges.py:47:40: B905 `zip()` without an explicit `strict=` parameter
+src/ia06-evaluacion/generar_evalset.py:39:101: E501 Line too long (111 > 100)
+src/ia06-evaluacion/statistics_helpers.py:25:30: B905 `zip()` without an explicit `strict=` parameter
+src/ia08-produccion-y-el-veredicto/test_produccion.py:173:36: UP037 [*] Remove quotes from type annotation
+src/ia08-produccion-y-el-veredicto/test_produccion.py:173:37: F821 Undefined name `Event`
+Found 48 errors.
+[*] 36 fixable with the `--fix` option (2 hidden fixes can be enabled with the `--unsafe-fixes` option).

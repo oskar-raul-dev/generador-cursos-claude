@@ -1,0 +1,21 @@
+{
+  "engine": "docker",
+  "profile": "servicios",
+  "date": "2026-10-03T04:20:08",
+  "before": {
+    "total_mib": 3916,
+    "used_mib": 785
+  },
+  "ready_seconds": 9.2,
+  "after": {
+    "total_mib": 3916,
+    "used_mib": 1231
+  },
+  "containers_mib": {
+    "lab-catalog-1": 55.7,
+    "lab-inventory-1": 243.7,
+    "lab-replenish-1": 40.9,
+    "lab-storefront-1": 92.0,
+    "lab-pricing-1": 4.9
+  }
+}

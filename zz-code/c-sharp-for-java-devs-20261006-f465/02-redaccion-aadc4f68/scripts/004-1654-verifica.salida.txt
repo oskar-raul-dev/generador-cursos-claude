@@ -1,0 +1,2 @@
+prompts/historia-propuesta-1-cordillera.md ['Ω']
+sin caracteres raros

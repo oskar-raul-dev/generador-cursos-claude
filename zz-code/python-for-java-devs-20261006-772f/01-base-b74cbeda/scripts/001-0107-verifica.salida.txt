@@ -1,0 +1,6 @@
+2026.2.2 2026-09-07
+--- vscode python ext ---
+ms-python.python: Python | Microsoft | 2026.7.2026082601
+ms-python.vscode-pylance: Pylance | Microsoft | 2026.3.102
+ms-python.debugpy: Python Debugger | Microsoft | 2026.7.12401012
+charliermarsh.ruff: Ruff | Astral Software | 2026.80.0

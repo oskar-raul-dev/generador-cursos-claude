@@ -1,0 +1,236 @@
+# Entorno del corpus `repaso-bases-de-datos-entrevistas`.
+#
+# Versiones fijas y verificadas: ver `prompts/dominio-entorno-y-datos-fijos.md` §4.1.
+# Nunca `latest`: una imagen movil invalida todos los planes pegados en el corpus.
+#
+#   docker compose up -d          levanta los cinco servicios
+#   docker compose ps             comprueba que los healthcheck estan en `healthy`
+#   docker compose down -v        teardown: borra tambien los volumenes
+
+name: bd-lab
+
+services:
+
+  postgres:
+    image: postgres:18.6
+    container_name: bd-lab-postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: tienda
+      # Ruta explicita del directorio de datos: la imagen 18 la cambio respecto de
+      # ramas anteriores, y fijarla aqui hace que el volumen se comporte igual en todas.
+      PGDATA: /var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    shm_size: 1gb            # memoria compartida para ordenaciones y hash joins grandes
+    command:
+      - postgres
+      # Parametros fijados a proposito: sin esto cada maquina elige los suyos y los
+      # planes pegados en el corpus dejan de ser comparables entre capitulos.
+      - -c
+      - shared_buffers=256MB
+      - -c
+      - effective_cache_size=1GB
+      - -c
+      - work_mem=8MB
+      - -c
+      - maintenance_work_mem=256MB
+      - -c
+      - random_page_cost=1.1          # disco SSD: leer al azar cuesta casi lo mismo que en secuencia
+      - -c
+      # Paralelismo APAGADO por defecto, a proposito. Con `Gather` de por medio, el
+      # numero de workers depende de los nucleos de cada maquina y ningun plan pegado
+      # en el corpus seria comparable. El capitulo que ensena consulta paralela lo
+      # enciende con un `SET max_parallel_workers_per_gather = 2` a la vista.
+      - max_parallel_workers_per_gather=0
+      - -c
+      - jit=off                       # la compilacion JIT mete ruido en los tiempos de EXPLAIN ANALYZE
+      - -c
+      - track_io_timing=on            # habilita los tiempos de E/S de EXPLAIN (ANALYZE, BUFFERS)
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./:/entorno:ro                # los .sql de esta carpeta, visibles dentro del contenedor
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d tienda"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  mysql:
+    image: mysql:9.7.2
+    container_name: bd-lab-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: tienda
+      MYSQL_USER: tienda_app
+      MYSQL_PASSWORD: tienda_app
+    ports:
+      - "3306:3306"
+    command:
+      - --character-set-server=utf8mb4     # el `utf8` de MySQL son tres bytes y no cubre los emoji
+      - --collation-server=utf8mb4_0900_ai_ci
+      - --local-infile=1
+      - --innodb-buffer-pool-size=512M
+    volumes:
+      - mysqldata:/var/lib/mysql
+      - ./:/entorno:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -proot --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  maria:
+    image: mariadb:12.3.3
+    container_name: bd-lab-maria
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: tienda
+      MARIADB_USER: tienda_app
+      MARIADB_PASSWORD: tienda_app
+    ports:
+      - "3307:3306"        # puerto distinto en el host: convive con MySQL
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_uca1400_ai_ci
+      - --innodb-buffer-pool-size=512M
+    volumes:
+      - mariadata:/var/lib/mysql
+      - ./:/entorno:ro
+    healthcheck:
+      test: ["CMD-SHELL", "healthcheck.sh --connect --innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  redis:
+    image: redis:8.10.1
+    container_name: bd-lab-redis
+    ports:
+      - "6379:6379"
+    command:
+      - redis-server
+      - --appendonly
+      - "yes"            # AOF encendido: el bloque 07 compara su durabilidad con la de RDB
+      - --save
+      - "60 1000"
+    volumes:
+      - redisdata:/data
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep -q PONG"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  mongo:
+    image: mongo:8.0.20
+    container_name: bd-lab-mongo
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: tienda
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodata:/data/db
+      - ./:/entorno:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.adminCommand({ping:1}).ok' | grep -q 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+
+  # ---------------------------------------------------------------------------
+  #  Los cuatro lenguajes de los bloques 10, 11 y 13. Perfil propio: `up -d` no los
+  #  levanta. Se usan de uno en uno y se borran al terminar:
+  #    docker compose --profile lenguajes build
+  #    docker compose run --rm java java Pedido.java
+  #  El codigo lo escribe el lector en ./codigo, que no se versiona.
+  # ---------------------------------------------------------------------------
+  java:
+    build: ./lenguajes/java
+    image: bd-lab-java:25.0.4
+    profiles: ["lenguajes"]
+    environment: &conexion
+      PGHOST: postgres           # nombre del servicio dentro de la red del compose
+      PGPORT: "5432"
+      PGDATABASE: tienda
+      PGUSER: tienda_app         # el rol de la aplicacion, no el superusuario
+      PGPASSWORD: tienda_app
+    volumes:
+      - ./codigo:/codigo
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  python:
+    build: ./lenguajes/python
+    image: bd-lab-python:3.14.7
+    profiles: ["lenguajes"]
+    environment: *conexion
+    volumes:
+      - ./codigo:/codigo
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  node:
+    build: ./lenguajes/node
+    image: bd-lab-node:24.21.0
+    profiles: ["lenguajes"]
+    environment: *conexion
+    volumes:
+      - ./codigo:/codigo
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  go:
+    build: ./lenguajes/go
+    image: bd-lab-go:1.27.1
+    profiles: ["lenguajes"]
+    environment: *conexion
+    volumes:
+      - ./codigo:/opt/modulo/codigo   # dentro del modulo Go de la imagen
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  # ---------------------------------------------------------------------------
+  #  DynamoDB para los capitulos 05 y 06 del bloque 07. Perfil propio, como los
+  #  lenguajes: `up -d` no lo levanta. DynamoDB Local es la version de AWS que
+  #  corre en un contenedor, sin cuenta y sin coste:
+  #    docker compose --profile dynamodb up -d dynamodb
+  #    docker compose run --rm aws dynamodb list-tables
+  #  En memoria: al parar el contenedor se pierden las tablas, que es su teardown.
+  # ---------------------------------------------------------------------------
+  dynamodb:
+    image: amazon/dynamodb-local:3.3.1
+    container_name: bd-lab-dynamodb
+    profiles: ["dynamodb"]
+    command: ["-jar", "DynamoDBLocal.jar", "-sharedDb", "-inMemory"]
+    ports:
+      - "8000:8000"
+
+  aws:
+    image: amazon/aws-cli:2.37.4
+    profiles: ["dynamodb"]
+    environment:
+      AWS_ENDPOINT_URL: http://dynamodb:8000   # todas las ordenes van al DynamoDB local
+      AWS_ACCESS_KEY_ID: tienda                 # DynamoDB Local acepta cualquier credencial
+      AWS_SECRET_ACCESS_KEY: tienda
+      AWS_DEFAULT_REGION: us-east-1
+      AWS_PAGER: ""                             # sin paginador: la salida va entera a la terminal
+    volumes:
+      - ./datos:/datos                          # los lotes de carga que genera PostgreSQL
+    depends_on:
+      - dynamodb
+
+volumes:
+  pgdata:
+  mysqldata:
+  mariadata:
+  redisdata:
+  mongodata:

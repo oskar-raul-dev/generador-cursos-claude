@@ -1,0 +1,5 @@
+00-historia-de-cordillera.md:55:En el curso de Go la frontera era 1.13 → moderno: una actualización de runtime. En C# la
+00-historia-de-cordillera.md:537:El curso de Go cerraba midiendo Go contra Spring Boot. Pero **el duelo más parejo que existe es
+prompts/propuesta-fases-y-alcance.md:1004:  el mismo módulo, con el mismo arnés, es una comparación que un curso de Java no puede hacer.
+--- voz de autor en el documento publicado ---
+500:## 11. 🚀 Lo que este ecosistema le da al curso

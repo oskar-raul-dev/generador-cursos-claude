@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<handler-chains xmlns="https://jakarta.ee/xml/ns/jakartaee">
+  <handler-chain>
+    <handler>
+      <handler-name>basic-auth</handler-name>
+      <handler-class>co.coodrosan.contingencia.soap.BasicAuthHandler</handler-class>
+    </handler>
+  </handler-chain>
+</handler-chains>

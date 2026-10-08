@@ -1,0 +1,141 @@
+# El sistema en compose: los cinco servicios nuevos (por defecto) y el patrimonio de La Vecina
+# (perfil `legacy`). Más dos perfiles de herramientas: `conformance` (la suite) y `docs` (Swagger UI).
+name: lab
+
+services:
+  # ── Los servicios nuevos, paso G0 (Fase 02): esqueleto, sin datos y sin hablarse entre ellos ──
+  # Imágenes multi-stage desde la Fase 04.
+  pricing:
+    build: ../services/pricing
+    image: lab/pricing
+  inventory:
+    build: ../services/inventory
+    image: lab/inventory
+  # catalog son dos contenedores (Fase 04): PHP-FPM con la aplicación, y nginx delante.
+  catalog:
+    build: ../services/catalog
+    image: lab/catalog
+  catalog-nginx:
+    # nginxinc/nginx-unprivileged:1.30.5-alpine
+    image: nginxinc/nginx-unprivileged@sha256:ed04ec1ff34502c339ee5c3ae3f855442398edc1d05591e2b98981dcbbd20b1e
+    # Comparte la red de catalog, como dos contenedores de un pod: catalog:8080 es este nginx,
+    # y FPM le contesta en 127.0.0.1:9000.
+    network_mode: service:catalog
+    environment:
+      NGINX_ENTRYPOINT_QUIET_LOGS: "1"   # G7: sin el anuncio en texto de cada script del entrypoint
+    volumes:
+      - ../services/catalog/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ../services/catalog/nginx-main.conf:/etc/nginx/nginx.conf:ro   # G7: errores desde warn
+    depends_on: [catalog]
+  replenish:
+    build: ../services/replenish
+    image: lab/replenish
+  storefront:
+    build: ../services/storefront
+    image: lab/storefront
+    ports:
+      - "127.0.0.1:8082:8080"   # el único servicio nuevo que se mira con el navegador
+
+  # ── La suite de conformidad, desde adentro de la red: nadie publica puertos para probarse ──
+  conformance:
+    profiles: [conformance]
+    # ghcr.io/orange-opensource/hurl:8.0.1
+    image: ghcr.io/orange-opensource/hurl@sha256:49a02dc39d7084e5a6e8c57e2d4754ef102e4ee3761a02ef6dc0e305ab1a832d
+    volumes:
+      - ../contracts/conformance:/suite:ro
+    # El paso se elige con STEP (g0, g1…): task conformance -- G0.
+    command: ["--test", "--variables-file", "/suite/compose.env", "--glob", "/suite/*.${STEP:-g0}.hurl"]
+
+  # ── Swagger UI para leer los contratos; nunca entra al cluster ──
+  contracts-docs:
+    profiles: [docs]
+    # swaggerapi/swagger-ui:v5.33.1
+    image: swaggerapi/swagger-ui@sha256:c3f95bc6ccb41a39c842d7b4f957e1ccb4b3e43c15ec3520654efa4a28761c18
+    ports:
+      - "127.0.0.1:8090:8080"
+    volumes:
+      - ../contracts/openapi:/usr/share/nginx/html/openapi:ro
+    environment:
+      URLS: >-
+        [{"url":"openapi/pricing.yaml","name":"pricing"},{"url":"openapi/inventory.yaml","name":"inventory"},
+        {"url":"openapi/catalog.yaml","name":"catalog"},{"url":"openapi/replenish.yaml","name":"replenish"}]
+
+  # ── El patrimonio (a16): lo que La Vecina ya tiene, en la versión que cabe en un portátil ──
+  contingencia-db:
+    profiles: [legacy]
+    # postgres:18.6
+    image: postgres@sha256:5a5a84b19854a9ffaa54082c166ff4ec27473a361e496e5ea167f298f2da9722
+    environment:
+      TZ: America/Bogota
+      POSTGRES_DB: contingencia
+      POSTGRES_USER: contingencia
+      POSTGRES_PASSWORD: contingencia-lab   # solo de laboratorio
+    volumes:
+      - contingencia-data:/var/lib/postgresql
+      # El esquema, el procedimiento del préstamo y los datos iniciales, la primera vez.
+      - ../legacy/contingencia/db:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "contingencia", "-d", "contingencia"]
+      interval: 5s
+      retries: 20
+
+  contingencia:
+    profiles: [legacy]
+    build: ../legacy/contingencia
+    image: lab/legacy-contingencia
+    environment:
+      TZ: America/Bogota
+      DB_HOST: contingencia-db
+      DB_NAME: contingencia
+      DB_USER: contingencia
+      DB_PASSWORD: contingencia-lab
+      SOAP_USER: portal
+      SOAP_PASSWORD: Vecina2019*
+      # El central de verdad corre cada 15 minutos; en el laboratorio, cada 2 para no esperar.
+      TRANSFER_BATCH_MINUTES: "2"
+      TRANSFER_DIR: /var/lib/contingencia/traslados
+    volumes:
+      - traslados:/var/lib/contingencia/traslados
+    depends_on:
+      contingencia-db: {condition: service_healthy}
+
+  portal:
+    profiles: [legacy]
+    build: ../legacy/portal
+    image: lab/legacy-portal
+    environment:
+      TZ: America/Bogota
+    ports:
+      - "127.0.0.1:8081:8080"
+    depends_on: [contingencia]
+
+  braqui:
+    profiles: [legacy]
+    build: ../legacy/braqui
+    image: lab/legacy-braqui
+    environment:
+      TZ: America/Bogota
+      # La Braqui no tiene base propia: lee y escribe en la de Contingencia, como en el Siga.
+      DATABASE_URL: postgres://contingencia:contingencia-lab@contingencia-db:5432/contingencia
+    depends_on:
+      contingencia-db: {condition: service_healthy}
+
+  braqui-traslados:
+    profiles: [legacy]
+    build: ../legacy/braqui/transfers
+    image: lab/legacy-braqui-traslados
+    environment:
+      TZ: America/Bogota
+      DATABASE_URL: postgresql://contingencia:contingencia-lab@contingencia-db:5432/contingencia
+      TRANSFER_DIR: /var/lib/contingencia/traslados
+    volumes:
+      # La carpeta compartida hace de SharePoint: Contingencia escribe, el script lee.
+      - traslados:/var/lib/contingencia/traslados
+      - braqui-estado:/var/lib/braqui
+    depends_on:
+      contingencia-db: {condition: service_healthy}
+
+volumes:
+  contingencia-data:
+  traslados:
+  braqui-estado:

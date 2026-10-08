@@ -1,0 +1,106 @@
+openapi: 3.1.0
+info:
+  title: pricing
+  version: 1.0.0
+  description: |
+    El precio vigente de un producto en una droguería, en pesos colombianos. Sale del PriceService
+    de Contingencia. Cada operación dice en `x-lab-paso` en qué paso de la matriz de generación se
+    implementa; lo que todavía no existe responde 404 (o 405, si la ruta ya existe con otro método) hasta su paso.
+servers:
+  - url: http://pricing:8080
+tags:
+  - name: plataforma
+  - name: precios
+paths:
+  /health/live:
+    get:
+      tags: [plataforma]
+      summary: El proceso puede atender. Nunca consulta dependencias.
+      x-lab-paso: G0
+      responses:
+        '200': {description: Vivo, content: {application/json: {schema: {$ref: '#/components/schemas/Health'}}}}
+  /health/ready:
+    get:
+      tags: [plataforma]
+      summary: El servicio puede atender tráfico de verdad (trivial hasta G4).
+      x-lab-paso: G0
+      responses:
+        '200': {description: Listo, content: {application/json: {schema: {$ref: '#/components/schemas/Health'}}}}
+        '503': {description: No listo (desde G4), content: {application/json: {schema: {$ref: '#/components/schemas/Health'}}}}
+  /metrics:
+    get:
+      tags: [plataforma]
+      summary: Métricas en formato de exposición de Prometheus. Pendiente hasta G6 (Fase 17).
+      description: |
+        Iguales en los cuatro backends, para que un solo tablero los lea: un histograma
+        http_server_requests_seconds (en segundos) con las etiquetas method, uri (la ruta con sus
+        parámetros sin reemplazar, como /prices/{sku}) y status. Cada servicio puede sumar las suyas.
+      x-lab-paso: G6
+      responses:
+        '200': {description: Métricas, content: {text/plain: {schema: {type: string}}}}
+  /prices:
+    get:
+      tags: [precios]
+      summary: Los precios vigentes de una droguería. Pendiente hasta G1 (Fase 09).
+      x-lab-paso: G1
+      parameters:
+        - {name: store, in: query, required: true, schema: {$ref: '#/components/schemas/StoreId'}}
+      responses:
+        '200':
+          description: Lista de precios
+          content: {application/json: {schema: {type: array, items: {$ref: '#/components/schemas/Price'}}}}
+  /prices/{sku}:
+    parameters:
+      - {name: sku, in: path, required: true, schema: {$ref: '#/components/schemas/Sku'}}
+    get:
+      tags: [precios]
+      summary: El precio vigente de un producto en una droguería. En G0 devuelve un precio fijo.
+      x-lab-paso: G0
+      parameters:
+        - {name: store, in: query, required: false, schema: {$ref: '#/components/schemas/StoreId'}, description: 'Sin droguería, DRO-001.'}
+      responses:
+        '200': {description: Precio vigente, content: {application/json: {schema: {$ref: '#/components/schemas/Price'}}}}
+        '404': {description: Sin precio para ese producto (desde G1), content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+    put:
+      tags: [precios]
+      summary: Fija el precio de un producto en una droguería. Pendiente hasta G1 (Fase 09).
+      x-lab-paso: G1
+      requestBody:
+        required: true
+        content: {application/json: {schema: {$ref: '#/components/schemas/PriceUpdate'}}}
+      responses:
+        '200': {description: Precio guardado, content: {application/json: {schema: {$ref: '#/components/schemas/Price'}}}}
+        '400': {description: Precio inválido, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+components:
+  schemas:
+    Sku: {type: string, pattern: '^SKU-[0-9]{4}$', examples: [SKU-0003]}
+    StoreId: {type: string, pattern: '^DRO-[0-9]{3}$', examples: [DRO-007]}
+    Health:
+      type: object
+      required: [status]
+      properties:
+        status: {type: string, enum: [live, ready, not_ready]}
+    Price:
+      type: object
+      required: [sku, store, price, currency]
+      properties:
+        sku: {$ref: '#/components/schemas/Sku'}
+        store: {$ref: '#/components/schemas/StoreId'}
+        price: {type: integer, minimum: 0, description: Pesos colombianos, sin decimales.}
+        currency: {type: string, const: COP}
+        regulatedCap:
+          type: [integer, 'null']
+          description: El tope regulado del producto, si tiene. Desde G1; su tabla vive en un ConfigMap desde la Fase 11.
+        capped: {type: boolean, description: 'true si el precio se recortó al tope. Desde G1.'}
+    PriceUpdate:
+      type: object
+      required: [store, price]
+      properties:
+        store: {$ref: '#/components/schemas/StoreId'}
+        price: {type: integer, minimum: 0}
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: {type: string, examples: [not_found]}
+        message: {type: string}

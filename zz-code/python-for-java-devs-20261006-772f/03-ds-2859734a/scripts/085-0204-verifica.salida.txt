@@ -1,0 +1,5 @@
+logística 5                  AUC 0.7993
+logística 5 + interacción    AUC 0.8118
+red neuronal                 AUC 0.8118
+red − logística              Δ +0.0125  IC95 [+0.0109, +0.0141]
+interacción − logística      Δ +0.0126  IC95 [+0.0107, +0.0142]

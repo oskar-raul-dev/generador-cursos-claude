@@ -1,0 +1,4 @@
+8081 10515 True True ['Cartera']
+8082 2419 True False []
+
+tail: option used in invalid context -- 3

@@ -1,0 +1,13 @@
+[project]
+name = "aurea-cartera"
+version = "1.2.0"
+description = "Cálculos de cartera de la red Áurea"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+aurea-mora = "aurea_cartera.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

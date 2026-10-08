@@ -1,0 +1,8 @@
+flowchart LR
+    order["sales_order"]
+    line[["order_line"]]
+    has{{"has"}}
+    lno(["line_no"])
+    order ===|"1"| has
+    has ===|"N"| line
+    line --- lno

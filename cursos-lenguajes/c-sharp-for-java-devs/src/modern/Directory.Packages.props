@@ -1,0 +1,52 @@
+<Project>
+
+  <!-- Central Package Management: la versión de cada paquete se declara una vez, aquí, y
+       ningún .csproj la repite. Las versiones salen de prompts/alcance-del-proyecto.md §9
+       y se verificaron el 12 de septiembre de 2026. -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Acceso a datos y utilidades del runtime. Verificadas contra su ficha de NuGet. -->
+    <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="10.0.12" />
+    <PackageVersion Include="Dapper" Version="2.1.66" />
+    <PackageVersion Include="System.IO.Hashing" Version="10.0.12" />
+    <PackageVersion Include="Microsoft.Extensions.Resilience" Version="10.10.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Observabilidad (F19). La familia de OpenTelemetry se versiona junta: mezclar versiones
+         entre estos paquetes produce errores de resolución de tipos que no se parecen a un
+         problema de versiones. Si se sube uno, se suben los seis. -->
+    <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.18.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.18.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.18.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.SqlClient" Version="1.18.0" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.18.0" />
+    <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.18.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Bloque E: datos e IA aplicada (F21, F22). Verificadas el 13 de septiembre de 2026.
+         Dato del curso, no curiosidad: ONNX Runtime es de septiembre de 2026 y ML.NET de
+         noviembre de 2025. Ese contraste dice donde esta la inversion del ecosistema, y la F21
+         lo usa como argumento. Y las dos ultimas son las que mas rapido van a envejecer de
+         todas las fijadas aqui. -->
+    <PackageVersion Include="Microsoft.ML.OnnxRuntime" Version="1.30.0" />
+    <PackageVersion Include="Microsoft.ML" Version="5.0.0" />
+    <PackageVersion Include="Microsoft.Extensions.AI" Version="10.10.0" />
+    <PackageVersion Include="Microsoft.SemanticKernel" Version="1.80.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Pruebas -->
+    <PackageVersion Include="xunit.v3" Version="4.0.0" />
+    <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.0" />
+    <PackageVersion Include="Testcontainers.MsSql" Version="4.15.0" />
+    <PackageVersion Include="NSubstitute" Version="6.2.0" />
+  </ItemGroup>
+
+</Project>

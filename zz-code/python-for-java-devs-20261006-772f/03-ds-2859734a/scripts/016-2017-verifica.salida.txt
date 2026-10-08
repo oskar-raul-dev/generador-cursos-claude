@@ -1,0 +1,6 @@
+tiktok           9,394,725  (adq 215)
+instagram        3,550,765  (adq 569)
+google           1,529,579  (adq 1320)
+getsizeof lista: 8.000056 MB
+nbytes array: 8.0 MB
+int32 demo: 4000000000

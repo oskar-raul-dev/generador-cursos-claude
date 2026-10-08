@@ -1,0 +1,5 @@
+=== 2. zipapp ===
+zipapp build: 2 ms  tamaño: 6 KB
+arranque: mediana 54 ms
+salida: aur 0.7.0
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

@@ -1,0 +1,5 @@
+raíz:
+   36524 total
+prompts (incluye aprendizaje.md):
+     657 prompts/aprendizaje.md
+archivos en raíz: 23

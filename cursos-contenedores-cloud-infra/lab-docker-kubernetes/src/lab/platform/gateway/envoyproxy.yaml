@@ -1,0 +1,30 @@
+# Cómo despliega Envoy Gateway su proxy en este laboratorio (Fase 10).
+# kind publica 127.0.0.1:8080 → 30080 y 127.0.0.1:8443 → 30443 en el control-plane (D32): el Service del
+# proxy tiene que ser un NodePort fijo en esos dos puertos.
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: EnvoyProxy
+metadata:
+  name: nodeport
+  namespace: gateway
+spec:
+  provider:
+    type: Kubernetes
+    kubernetes:
+      envoyService:
+        type: NodePort
+        # Cluster, y no el Local que pone Envoy Gateway por defecto: en el perfil lab el proxy puede caer en
+        # un worker, y el NodePort del control-plane (el único mapeado al host) tiene que reenviarle.
+        # Lo que se pierde: la IP de origen del cliente (la Fase 10 lo rompe a propósito).
+        externalTrafficPolicy: Cluster
+        patch:
+          type: StrategicMerge
+          value:
+            spec:
+              ports:
+                - name: http-8080
+                  port: 8080
+                  nodePort: 30080
+                # HTTPS desde la Fase 19.
+                - name: https-8443
+                  port: 8443
+                  nodePort: 30443

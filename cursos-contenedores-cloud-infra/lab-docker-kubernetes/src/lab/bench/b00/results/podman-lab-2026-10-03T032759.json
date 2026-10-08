@@ -1,0 +1,44 @@
+{
+  "engine": "podman",
+  "profile": "lab",
+  "date": "2026-10-03T03:27:59",
+  "create_seconds": 36.2,
+  "cluster": {
+    "vm": {
+      "total_mib": 3886,
+      "used_mib": 1353
+    },
+    "pods_total_mib": 764.7,
+    "pods_by_ns": {
+      "kube-system": 715.9,
+      "local-path-storage": 48.8
+    }
+  },
+  "base": {
+    "vm": {
+      "total_mib": 3886,
+      "used_mib": 1801
+    },
+    "pods_total_mib": 785.7,
+    "pods_by_ns": {
+      "gateway": 67.3,
+      "kube-system": 710.4,
+      "local-path-storage": 8.0
+    }
+  },
+  "todo": {
+    "vm": {
+      "total_mib": 3886,
+      "used_mib": 2527
+    },
+    "pods_total_mib": 1855.0,
+    "pods_by_ns": {
+      "cert-manager": 91.2,
+      "data": 37.2,
+      "gateway": 122.4,
+      "kube-system": 956.6,
+      "local-path-storage": 8.7,
+      "observability": 638.9
+    }
+  }
+}

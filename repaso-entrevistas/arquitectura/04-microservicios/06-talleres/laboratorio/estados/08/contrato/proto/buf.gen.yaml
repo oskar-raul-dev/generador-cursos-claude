@@ -1,0 +1,11 @@
+# Generación de los stubs de Go para inventory (taller 04), con plugins remotos del Buf Schema Registry:
+# no hace falta protoc ni protoc-gen-go instalados. Se ejecuta desde contrato/proto con `lab.py buf generate`.
+# Java genera sus stubs en su propio build (protobuf-maven-plugin) y Python con grpcio-tools.
+version: v2
+plugins:
+  - remote: buf.build/protocolbuffers/go:v1.36.12
+    out: ../../inventory/gen
+    opt: paths=source_relative
+  - remote: buf.build/grpc/go:v1.6.2
+    out: ../../inventory/gen
+    opt: paths=source_relative

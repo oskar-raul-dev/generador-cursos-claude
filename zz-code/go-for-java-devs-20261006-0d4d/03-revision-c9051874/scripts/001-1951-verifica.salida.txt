@@ -1,0 +1,7 @@
+=== ../ links ===
+14-observabilidad-y-hardening.md:1113:> `/Users/oskar/dev/meridian/...` en cada volcado de pila y en los metadatos:
+prompts/guia-de-estilo-y-convenciones.md:585:> [`00-convencion-de-git-y-tags.md`](../00-convencion-de-git-y-tags.md).
+=== convención repo-wide ===
+prompts/alcance-del-proyecto.md:284:Los nombres de fase siguen la convención del repositorio: `NN-tema.md`,
+=== propuestas ===
+(eval):3: no matches found: --include=*.md

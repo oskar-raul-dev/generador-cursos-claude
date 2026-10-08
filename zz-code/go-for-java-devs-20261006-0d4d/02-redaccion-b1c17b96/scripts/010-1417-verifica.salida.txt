@@ -1,0 +1,42 @@
+=== CABECERA DE CADA FASE: horas y 'Fase N de 17' ===
+00-ambiente-y-tooling.md               > Go para desarrolladores Java senior · Fase 0 de 17 · **5 horas**
+01-sintaxis-y-valores.md               > Go para desarrolladores Java senior · Fase 1 de 17 · **7 horas**
+02-structs-interfaces-composicion.md   > Go para desarrolladores Java senior · Fase 2 de 17 · **7 horas**
+03-errores-paquetes-io.md              > Go para desarrolladores Java senior · Fase 3 de 17 · **7 horas**
+04-testing-dobles-cobertura.md         > Go para desarrolladores Java senior · Fase 4 de 17 · **8 horas**
+05-http-rest-stdlib.md                 > Go para desarrolladores Java senior · Fase 5 de 17 · **8 horas**
+06-concurrencia.md                     > Go para desarrolladores Java senior · Fase 6 de 17 · **9 horas**
+07-context-y-ciclo-de-vida.md          > Go para desarrolladores Java senior · Fase 7 de 17 · **7 horas**
+08-migracion-a-go-moderno.md           > Go para desarrolladores Java senior · Fase 8 de 17 · **8 horas**
+09-sql-postgres-sqlite.md              > Go para desarrolladores Java senior · Fase 9 de 17 · **9 horas**
+10-clientes-http-y-apis-externas.md    > Go para desarrolladores Java senior · Fase 10 de 17 · **8 horas**
+11-mongodb-y-modelado-documental.md    > Go para desarrolladores Java senior · Fase 11 de 17 · **7 horas**
+12-cache-con-valkey.md                 > Go para desarrolladores Java senior · Fase 12 de 17 · **6 horas**
+13-lotes-scheduling-y-asincronia.md    > Go para desarrolladores Java senior · Fase 13 de 17 · **8 horas**
+14-observabilidad-y-hardening.md       > Go para desarrolladores Java senior · Fase 14 de 17 · **7 horas**
+15-rendimiento-y-profiling.md          > Go para desarrolladores Java senior · Fase 15 de 17 · **7 horas**
+16-go-frente-a-spring-boot.md          > Go para desarrolladores Java senior · Fase 16 de 17 · **8 horas**
+17-capstone.md                         > Go para desarrolladores Java senior · Fase 17 de 17 · **5 horas**
+
+=== ¿La tabla de 0-ESTRUCTURA coincide en horas? ===
+| 5 | 20 |
+| 7 | 24 |
+| 7 | 26 |
+| 7 | 24 |
+| 8 | 26 |
+| 8 | 26 |
+| 9 | 30 |
+| 7 | 24 |
+| 8 | 26 |
+| 9 | 30 |
+| 8 | 28 |
+| 7 | 24 |
+| 6 | 22 |
+| 8 | 28 |
+| 7 | 26 |
+| 7 | 26 |
+| 8 | 30 |
+| 5 | 20 |
+
+=== suma de horas declaradas en las cabeceras ===
+usage: paste [-s] [-d delimiters] file ...

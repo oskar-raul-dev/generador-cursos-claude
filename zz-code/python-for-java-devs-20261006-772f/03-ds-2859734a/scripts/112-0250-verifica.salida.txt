@@ -1,0 +1,14 @@
+=== ¿están transcritas en la prosa? ===
+received.clear(); processed_keys.clear()             ./13-integraciones.md 
+_find_availability(agenda, branch                    ./ia03-tool-calling-y-el-bucle-de-agente.md 
+from contextlib import contextmanager                —
+preguntas anotadas ({', '.join                       —
+from answer import DraftAnswer, SYSTEM               —
+path.read_text(encoding="utf-8") for path in sorte   —
+Omite el competidor 1                                —
+from datetime import date                            ./03-python-sin-ceremonia.md ./02-secuencias-perezosas.md ./11-persistencia.md ./10-fastapi.md ./17-el-duelo-y-el-veredicto.md ./ia01-el-modelo-de-acceso-de-un-llm.md ./ia02-salida-estructurada.md ./ia03-tool-calling-y-el-bucle-de-agente.md ./ia04-embeddings-y-busqueda-semantica.md ./ia05-normarag.md ./ia07-recepcion-asistida.md ./ia08-produccion-y-el-veredicto.md 
+pypdf devuelve vacío ante un escaneado               —
+zip(a, b))                                           —
+Requiere autorización previa                         —
+zip(a, b) if x == y                                  ./ia06-evaluacion.md 
+overrides: object                                    —

@@ -1,0 +1,6 @@
+# trust-manager en el laboratorio (Fase 19): la versión de a01 (v0.25.0), con la imagen por digest.
+image:
+  digest: sha256:0521921c2a46d14d0417336b20bcde69215ef3164f2977cc939d53c6e5224a17
+# Sin el paquete de CA públicas de Debian: el laboratorio reparte una sola CA, la suya.
+defaultPackage:
+  enabled: false

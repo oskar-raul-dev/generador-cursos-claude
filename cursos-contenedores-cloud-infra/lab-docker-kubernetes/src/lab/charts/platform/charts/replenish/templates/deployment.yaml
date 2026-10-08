@@ -1,0 +1,51 @@
+# replenish en el cluster: el Deployment de la Fase 12, con huecos donde cambia algo por perfil o por cadena.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: replenish
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+spec:
+  {{- include "lab-common.deploymentSpec" . | nindent 2 }}
+  selector:
+    matchLabels:
+      {{- include "lab-common.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "lab-common.podLabels" . | nindent 8 }}
+    spec:
+      # El plazo entre SIGTERM y SIGKILL: el preStop más el apagado del proceso caben de sobra (Fase 16).
+      terminationGracePeriodSeconds: 30
+      {{- include "lab-common.podSecurity" . | nindent 6 }}
+      containers:
+        - name: replenish
+          image: {{ include "lab-common.image" . }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          {{- include "lab-common.containerSecurity" . | nindent 10 }}
+          ports:
+            - name: http
+              containerPort: 8080
+          {{- include "lab-common.probes" . | trim | nindent 10 }}
+          {{- include "lab-common.shutdown" . | trim | nindent 10 }}
+          {{- include "lab-common.resources" . | nindent 10 }}
+          envFrom:
+            - configMapRef:
+                name: neighbors
+          env:
+            {{- include "lab-common.databaseEnv" . | nindent 12 }}
+            {{- include "lab-common.otelEnv" . | nindent 12 }}
+            {{- include "lab-common.busEnv" . | nindent 12 }}
+            {{- if .Values.global.traces.enabled }}
+            # Las instrumentaciones que importan aquí; el resto (fs, dns, net…) llena la traza de ruido.
+            - {name: OTEL_NODE_ENABLED_INSTRUMENTATIONS, value: "http,express,nestjs-core,pg"}
+            # Sin los detectores de nube: el de Google pregunta a un servidor de metadatos que aquí no existe, y
+            # escribe su advertencia en texto plano, fuera de la línea JSON de G7 (Fase 24, H205).
+            - {name: OTEL_NODE_RESOURCE_DETECTORS, value: "env,host,os,process,serviceinstance,container"}
+            {{- end }}
+          volumeMounts:
+            - {name: tmp, mountPath: /tmp}
+      volumes:
+        # Fase 20: lo único escribible del contenedor (la raíz es de solo lectura).
+        - name: tmp
+          emptyDir: {}

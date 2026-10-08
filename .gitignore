@@ -1,0 +1,542 @@
+# ── macOS / iOS ──────────────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+.fseventsd
+.TemporaryItems
+.AppleDouble
+.LSOverride
+.apdisk
+Icon?
+*.code-workspace
+
+# ── Windows ──────────────────────────────────────────────────────────────────
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# ── Linux ────────────────────────────────────────────────────────────────────
+.directory
+.Trash-*
+.nfs*
+
+# ── Proyectos y workspaces de IDEs / editores ────────────────────────────────
+# VS Code (el workspace del repo sí se versiona)
+.vscode/
+.vscode-test/
+.history/
+*.vsix
+*.code-workspace
+!courses-ia-generated.code-workspace
+
+# JetBrains (IntelliJ, PyCharm, GoLand, Rider, CLion, WebStorm, RubyMine)
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+.fleet/
+cmake-build-*/
+.idea_modules/
+atlassian-ide-plugin.xml
+http-client.private.env.json
+
+# Eclipse / STS / Spring Tools
+.project
+.classpath
+.settings/
+.metadata/
+.factorypath
+.loadpath
+.recommenders/
+.springBeans
+.sts4-cache/
+.externalToolBuilders/
+.buildpath
+.target
+*.launch
+local.properties
+
+# NetBeans
+nbproject/private/
+nbbuild/
+nbdist/
+.nb-gradle/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.userprefs
+*.rsuser
+
+# Xcode (proyectos C/C++ en macOS)
+xcuserdata/
+*.xcuserstate
+DerivedData/
+
+# Otros editores y asistentes
+.zed/
+.cursor/
+.aider*
+.vim/
+.kate-swp
+tags
+TAGS
+GTAGS
+GRTAGS
+GPATH
+compile_commands.json
+.clangd/
+.ccls-cache/
+
+# ── Backups y temporales de editores ─────────────────────────────────────────
+*~
+*.bak
+*.orig
+*.rej
+*.tmp
+*.temp
+*.swp
+*.swo
+*.swn
+.*.sw[a-p]
+Session.vim
+.netrwhist
+\#*\#
+.\#*
+*.autosave
+*.sav
+*.old
+
+# ── Herramientas, secretos y logs varios ─────────────────────────────────────
+*.log
+logs/
+*.pid
+*.seed
+*.pid.lock
+.cache/
+# Variables de entorno locales (las plantillas .env.example sí se versionan)
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+!.env.mock
+# Claves y certificados que nunca deben subirse
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+!debug.keystore
+# Docker Compose local
+docker-compose.override.yml
+compose.override.yaml
+# Terraform (por si algún lab lo usa)
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+*.tfvars
+!example.tfvars
+
+# ── Java (Maven, Gradle, JVM) ────────────────────────────────────────────────
+# Bytecode y empaquetados
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+# Excepción: el wrapper de Maven y Gradle sí se versiona
+!.mvn/wrapper/maven-wrapper.jar
+!gradle/wrapper/gradle-wrapper.jar
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+# Gradle
+.gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+.kotlin/
+# Volcados de la JVM
+hs_err_pid*
+replay_pid*
+*.hprof
+*.jfr
+# Spring Boot DevTools / Spring Tool Suite
+.attach_pid*
+# Java Flight Recorder y JMH
+jmh-result.*
+
+# ── C# / .NET ────────────────────────────────────────────────────────────────
+# Salidas de compilación
+[Bb]in/
+[Oo]bj/
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Ww][Ii][Nn]32/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Ll]og/
+[Ll]ogs/
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+# Resultados de pruebas y cobertura
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+*.trx
+*.coverage
+*.coveragexml
+coverage*.json
+coverage*.xml
+coverage*.info
+# Caches de Visual Studio / Rider / ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+.ionide/
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp_proj
+*_wpftmp.csproj
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+# Secretos locales de ASP.NET
+appsettings.Development.local.json
+*.publishsettings
+PublishScripts/
+# Azure Functions
+local.settings.json
+# Paket / FAKE
+.paket/paket.exe
+paket-files/
+.fake/
+
+# ── Python ───────────────────────────────────────────────────────────────────
+# Bytecode y extensiones compiladas
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+# Empaquetado y distribución
+.Python
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+parts/
+sdist/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
+# Entornos virtuales
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.python-version
+__pypackages__/
+.pdm-python
+.pdm-build/
+# uv / Poetry / Pipenv: los lock files SÍ se versionan (uv.lock, poetry.lock, Pipfile.lock)
+# Pruebas, cobertura y linters
+.tox/
+.nox/
+.coverage
+.coverage.*
+htmlcov/
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+.ruff_cache/
+cython_debug/
+# Jupyter / IPython
+.ipynb_checkpoints
+profile_default/
+ipython_config.py
+# Django / Flask / Celery
+db.sqlite3
+db.sqlite3-journal
+instance/
+.webassets-cache
+celerybeat-schedule
+celerybeat.pid
+# Documentación generada
+docs/_build/
+/site/
+
+# ── JavaScript / TypeScript / Node ───────────────────────────────────────────
+# Dependencias
+node_modules/
+jspm_packages/
+bower_components/
+web_modules/
+# Gestores de paquetes (los lock files SÍ se versionan)
+.npm/
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+.pnp.*
+.pnpm-store/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+.yarn-integrity
+# Salidas de build y frameworks
+.next/
+.nuxt/
+.output/
+.svelte-kit/
+.angular/
+.docusaurus/
+.vuepress/dist/
+.astro/
+.vite/
+.parcel-cache/
+.turbo/
+.vercel/
+.netlify/
+.serverless/
+.dynamodb/
+.wrangler/
+storybook-static/
+*.tsbuildinfo
+# Pruebas y cobertura
+coverage/
+.nyc_output/
+lib-cov/
+junit.xml
+playwright-report/
+test-results/
+# Caches de linters y herramientas
+.eslintcache
+.stylelintcache
+.node_repl_history
+.npmrc.local
+*.tgz
+
+# ── C / C++ ──────────────────────────────────────────────────────────────────
+# Objetos y precompilados
+*.o
+*.ko
+*.obj
+*.elf
+*.d
+*.slo
+*.lo
+*.gch
+*.pch
+# Librerías
+*.a
+*.la
+*.lib
+*.dylib
+*.dll
+*.lai
+# Ejecutables
+*.exe
+*.out
+*.app
+*.i*86
+*.x86_64
+*.hex
+# Símbolos de depuración
+*.dSYM/
+*.su
+*.idb
+# CMake
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles/
+CMakeScripts/
+CMakeUserPresets.json
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+_deps/
+# Autotools / Make
+Makefile.in
+autom4te.cache/
+config.status
+config.cache
+aclocal.m4
+stamp-h1
+.deps/
+.dirstamp
+# Conan / vcpkg
+conanbuildinfo.*
+conaninfo.txt
+graph_info.json
+vcpkg_installed/
+# Ninja y Meson
+.ninja_deps
+.ninja_log
+builddir/
+
+# ── Go ───────────────────────────────────────────────────────────────────────
+# Binarios y pruebas compiladas
+*.test
+*.prof
+# Cobertura (go test -coverprofile)
+*.coverprofile
+cover.out
+coverage.out
+# Workspaces locales (go.work se decide por proyecto; aquí se ignora)
+go.work
+go.work.sum
+# Dependencias vendorizadas: descomentar si el proyecto no las versiona
+# vendor/
+# Herramientas
+.air.toml.local
+tmp/
+__debug_bin*
+
+# ── Ruby ─────────────────────────────────────────────────────────────────────
+# Gemas y Bundler (Gemfile.lock SÍ se versiona en aplicaciones)
+*.gem
+*.rbc
+/.config
+.bundle/
+vendor/bundle/
+lib/bundler/man/
+.rvmrc
+.ruby-gemset
+# Pruebas y cobertura
+/spec/reports/
+/spec/examples.txt
+/test/tmp/
+/test/version_tmp/
+.rspec_status
+# Documentación generada
+.yardoc/
+_yardoc/
+/doc/
+/rdoc/
+/.dot/
+# Rails
+/db/*.sqlite3
+/db/*.sqlite3-*
+/public/system/
+/public/assets/
+/public/packs/
+/public/packs-test/
+/storage/*
+!/storage/.keep
+/config/master.key
+/config/credentials/*.key
+.byebug_history
+.pry_history
+/node_modules/.yarn-integrity
+# ── Excepciones: nunca ignorar paquetes de código fuente ─────────────────────
+# Reglas genéricas como out/, bin/ o build/ atraparían paquetes Java/C# con ese
+# nombre (p. ej. application/port/out/ en una arquitectura hexagonal).
+!**/src/**/out/
+!**/src/**/bin/
+!**/src/**/obj/
+!**/src/**/build/
+!**/src/**/[Dd]ebug/
+!**/src/**/[Rr]elease/
+!**/src/**/[Ll]og/
+!**/src/**/logs/
+!**/src/**/env/
+!**/src/**/tmp/
+
+# ── Propias de este repositorio (heredadas del .gitignore anterior) ──────────
+# Configuración local de Claude Code
+.claude/
+# Emacs
+.emacs.desktop
+.emacs.desktop.lock
+# Generadores de documentación (Jekyll)
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+# Temporales sueltos
+*.backup
+.tmp/
+temp/
+
+# ── Excepciones de este repositorio: material que los cursos sí publican ─────
+# Las dependencias Java que el taller de Access trae empaquetadas (no hay Maven)
+!cursos-bd/ruta-sql/taller/accdb-museo/lib/*.jar
+# La versión de Python fijada por los cursos que la declaran
+!cursos-*/**/.python-version

@@ -1,0 +1,4 @@
+# Perfil medicion (contrato §5): solo lo que se mide y su generador de carga. Sin página y sin datos de
+# ejemplo; cada medición enciende lo suyo con --set (task measure lo hace).
+storefront: { enabled: false }
+seed: { enabled: false }

@@ -1,0 +1,564 @@
+===== arranque, con el menú de atajos ('')
+ Context: kind-lab [R]                             <0> all       <d>       Describe        <o> Show Node
+ Cluster: kind-lab                                 <1> apps      <?>       Help            <f> Show PortForward
+ User:    kind-lab                                 <2> default   <shift-j> Jump Owner      <w> Warp To Namespace
+ K9s Rev: v0.51.0                                                <l>       Logs            <y> YAML
+ K8s Rev: v1.36.4                                                <p>       Logs Previous
+ CPU:     0%↓                                                    <shift-f> Port-Forward
+ MEM:     0%↓
+┌─────────────────────────────────────────────────────────────────────── pods(apps)[9] ────────────────────────────────────────────────────────────────────────┐
+│ NAME↑                          PF   READY   STATUS         RESTARTS   CPU   %CPU/R   %CPU/L   MEM   %MEM/R   %MEM/L IP             NODE           AGE        │
+│ catalog-9b8c4ccf9-4rwnx        ●    2/2     Running               0     5        4      n/a    41       52       26 10.244.2.13    lab-worker     65m        │
+│ catalog-migrate-wqckv          ●    0/1     Completed             0     0        0      n/a     0        0        0 10.244.1.21    lab-worker2    58m        │
+│ inventory-7dbc8c44d5-k2m6f     ●    2/2     Running               0     7        2      n/a   351       87       61 10.244.1.23    lab-worker2    58m        │
+│ inventory-migrate-g6cdk        ●    0/1     Completed             0     0        0      n/a     0        0        0 10.244.2.19    lab-worker     58m        │
+│ pricing-f9d6cf87-dzh9k         ●    1/1     Running               2     1        2      n/a     9       31        7 10.244.2.2     lab-worker     3h37m      │
+│ pricing-migrate-mkxmv          ●    0/1     Completed             0     0        0      n/a     0        0        0 10.244.1.22    lab-worker2    58m        │
+│ replenish-77cf474d7d-g8ttb     ●    1/1     Running               5     6       12      n/a    71      111       55 10.244.1.5     lab-worker2    3h14m      │
+│ replenish-migrate-69msn        ●    0/1     Completed             0     0        0      n/a     0        0        0 10.244.2.20    lab-worker     58m        │
+│ storefront-7475c55d7f-jq8l6    ●    1/1     Running              11     1        5      n/a     7       48       24 10.244.2.5     lab-worker     11h        │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  <pod>
+===== filtro /inventory ('/inventory\\r')
+ Context: kind-lab [R]                             <0> all       <d>       Describe        <o> Show Node
+ Cluster: kind-lab                                 <1> apps      <?>       Help            <f> Show PortForward
+ User:    kind-lab                                 <2> default   <shift-j> Jump Owner      <w> Warp To Namespace
+ K9s Rev: v0.51.0                                                <l>       Logs            <y> YAML
+ K8s Rev: v1.36.4                                                <p>       Logs Previous
+ CPU:     0%↓                                                    <shift-f> Port-Forward
+ MEM:     0%↓
+┌───────────────────────────────────────────────────────────────── pods(apps)[2] </inventory> ─────────────────────────────────────────────────────────────────┐
+│ NAME↑                         PF   READY   STATUS         RESTARTS   CPU   %CPU/R   %CPU/L   MEM   %MEM/R    %MEM/L IP              NODE            AGE      │
+│ inventory-7dbc8c44d5-k2m6f    ●    2/2     Running               0     7        2      n/a   351       87        61 10.244.1.23     lab-worker2     58m      │
+│ inventory-migrate-g6cdk       ●    0/1     Completed             0     0        0      n/a     0        0         0 10.244.2.19     lab-worker      58m      │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  <pod>
+===== d: describe ('d')
+ Context: kind-lab [R]                             <c>       Copy
+ Cluster: kind-lab                                 <n>       Next Match
+ User:    kind-lab                                 <shift-n> Prev Match
+ K9s Rev: v0.51.0                                  <r>       Toggle Auto-Refresh
+ K8s Rev: v1.36.4                                  <x>       Toggle Decode
+ CPU:     0%↓                                      <f>       Toggle FullScreen
+ MEM:     0%↓
+┌───────────────────────────────────────────────────────── Describe(apps/inventory-7dbc8c44d5-k2m6f) ──────────────────────────────────────────────────────────┐
+│ Name:             inventory-7dbc8c44d5-k2m6f                                                                                                                 │
+│ Namespace:        apps                                                                                                                                       │
+│ Priority:         0                                                                                                                                          │
+│ Service Account:  default                                                                                                                                    │
+│ Node:             lab-worker2/192.168.0.4                                                                                                                    │
+│ Start Time:       Mon, 05 Oct 2026 03:04:01 -0500                                                                                                            │
+│ Labels:           app.kubernetes.io/component=backend                                                                                                        │
+│                   app.kubernetes.io/instance=lab                                                                                                             │
+│                   app.kubernetes.io/managed-by=Helm                                                                                                          │
+│                   app.kubernetes.io/name=inventory                                                                                                           │
+│                   app.kubernetes.io/part-of=lab                                                                                                              │
+│                   app.kubernetes.io/version=g13                                                                                                              │
+│                   pod-template-hash=7dbc8c44d5                                                                                                               │
+│ Annotations:      kubectl.kubernetes.io/restartedAt: 2026-10-04T21:38:06-05:00                                                                               │
+│ Status:           Running                                                                                                                                    │
+│ SeccompProfile:   RuntimeDefault                                                                                                                             │
+│ IP:               10.244.1.23                                                                                                                                │
+│ IPs:                                                                                                                                                         │
+│   IP:           10.244.1.23                                                                                                                                  │
+│ Controlled By:  ReplicaSet/inventory-7dbc8c44d5                                                                                                              │
+│ Init Containers:                                                                                                                                             │
+│   outbox-relay:                                                                                                                                              │
+│     Container ID:  containerd://44c7e18175580aa0a3d2395d79261ecbb72784dcc3d445895ac1d67df3baa56d                                                             │
+│     Image:         lab/inventory:g13                                                                                                                         │
+│     Image ID:      docker.io/library/import-2026-10-05@sha256:0dcdbf544fc7849a04faeea69622284b0b90e221327df378999ce1737b22bd1b                               │
+│     Port:          <none>                                                                                                                                    │
+│     Host Port:     <none>                                                                                                                                    │
+│     Command:                                                                                                                                                 │
+│       /app/outbox-relay                                                                                                                                      │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  <pod>   <describe>
+===== esc ('\\x1b')
+ Context: kind-lab [R]                             <0> all       <d>       Describe        <o> Show Node
+ Cluster: kind-lab                                 <1> apps      <?>       Help            <f> Show PortForward
+ User:    kind-lab                                 <2> default   <shift-j> Jump Owner      <w> Warp To Namespace
+ K9s Rev: v0.51.0                                                <l>       Logs            <y> YAML
+ K8s Rev: v1.36.4                                                <p>       Logs Previous
+ CPU:     0%↓                                                    <shift-f> Port-Forward
+ MEM:     0%↓
+┌───────────────────────────────────────────────────────────────── pods(apps)[2] </inventory> ─────────────────────────────────────────────────────────────────┐
+│ NAME↑                         PF   READY   STATUS         RESTARTS   CPU   %CPU/R   %CPU/L   MEM   %MEM/R    %MEM/L IP              NODE            AGE      │
+│ inventory-7dbc8c44d5-k2m6f    ●    2/2     Running               0     7        2      n/a   351       87        61 10.244.1.23     lab-worker2     58m      │
+│ inventory-migrate-g6cdk       ●    0/1     Completed             0     0        0      n/a     0        0         0 10.244.2.19     lab-worker      58m      │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  <pod>
+===== l: logs ('l')
+ Context: kind-lab [R]                             <0> tail   <6> 1h   <shift-c> Clear               <f> Toggle FullScreen
+ Cluster: kind-lab                                 <1> head            <c>       Copy                <t> Toggle Timestamp
+ User:    kind-lab                                 <2> 1m              <m>       Mark                <w> Toggle Wrap
+ K9s Rev: v0.51.0                                  <3> 5m              <ctrl-s>  Save
+ K8s Rev: v1.36.4                                  <4> 15m             <s>       Toggle AutoScroll
+ CPU:     1%↑                                      <5> 30m             <shift-l> Toggle ColumnLock
+ MEM:     13%↑
+┌──────────────────────────────────────────────────────── Logs(apps/inventory-7dbc8c44d5-k2m6f)[tail] ─────────────────────────────────────────────────────────┐
+│                                     Autoscroll:On      ColumnLock:Off     FullScreen:Off     Timestamps:Off     Wrap:Off                                     │
+│ inventory {"time":"2026-10-05T09:01:10.782308841Z","msg":"request","level":"INFO","request_id":"e07a1c9f-f195-4a55-9f93-bc9f5db5ac70","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:01:11.716815008Z","msg":"request","level":"INFO","request_id":"7ac3d8f6-cbe5-4a4f-b59d-58b7e550444e","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:01:15.78382926Z","msg":"request","level":"INFO","request_id":"99e6c3fe-e5f0-430b-950c-bdfd27696bd1","method":"GET","uri":"/ │
+│ inventory {"time":"2026-10-05T09:01:20.783478638Z","msg":"request","level":"INFO","request_id":"06b6d3de-1aef-46ca-b44d-85eec4e172e7","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:01:21.714785263Z","msg":"request","level":"INFO","request_id":"e82c5271-8195-4045-9aee-6b4093567ca1","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:01:25.783080292Z","msg":"request","level":"INFO","request_id":"89b42037-fbf0-4503-bffe-94797f9de978","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:01:30.782522836Z","msg":"request","level":"INFO","request_id":"fde6cb93-0f89-451c-bcf5-28a15f4f4c2c","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:01:31.716929087Z","msg":"request","level":"INFO","request_id":"c7e97147-9b2b-412a-aa55-69358f354dba","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:01:35.783860214Z","msg":"request","level":"INFO","request_id":"22e57bea-c1ef-4401-b4bf-ccdcd158ace4","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:01:40.783027299Z","msg":"request","level":"INFO","request_id":"31e0e269-0cc4-4ce8-b971-215e9ae43903","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:01:41.714665467Z","msg":"request","level":"INFO","request_id":"83d7e750-7523-49d2-9177-bd60296c9642","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:01:45.78349401Z","msg":"request","level":"INFO","request_id":"d9d3e10a-5e43-47ba-b823-a3e3bfa1d5e9","method":"GET","uri":"/ │
+│ inventory {"time":"2026-10-05T09:01:50.781268888Z","msg":"request","level":"INFO","request_id":"1f9a6aba-b712-4db3-a556-3e1ae1ec04df","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:01:51.714753846Z","msg":"request","level":"INFO","request_id":"13a8578b-8ccd-4574-b6fc-3750fa9836e0","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:01:55.781323459Z","msg":"request","level":"INFO","request_id":"75a83f00-f963-4cd4-bc84-bc6f947b289d","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:02:00.783437836Z","msg":"request","level":"INFO","request_id":"9bcfa798-b831-472b-a787-7033585183e6","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:02:01.714897087Z","msg":"request","level":"INFO","request_id":"0addc44e-b6b8-4242-82ba-4298e7e7347f","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:02:05.784264714Z","msg":"request","level":"INFO","request_id":"296866db-ec6f-43c4-a05f-f0f4314a064c","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:02:10.782454633Z","msg":"request","level":"INFO","request_id":"f84dfafc-d804-4321-a520-c6c63006f7f4","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:02:11.717284425Z","msg":"request","level":"INFO","request_id":"05307706-c6d0-446d-b27e-0d0d9a2ef2bb","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:02:15.783865927Z","msg":"request","level":"INFO","request_id":"99ef2b25-6bc8-46e0-b26d-225c98c51ad1","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:02:20.783300096Z","msg":"request","level":"INFO","request_id":"bf88ee0f-12af-481c-96c0-e05c14871ac7","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:02:21.715480513Z","msg":"request","level":"INFO","request_id":"edaf17cc-c72b-49de-95e7-80c9cd1b310a","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:02:25.784678959Z","msg":"request","level":"INFO","request_id":"cfab93ae-b9c3-4fed-8616-30959a950249","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:02:30.784400128Z","msg":"request","level":"INFO","request_id":"c371dfa2-164d-4be3-bb9d-9d158fdb60af","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:02:31.715369003Z","msg":"request","level":"INFO","request_id":"6fefa7fd-90ef-4bfd-b4fa-6ff1eae0fd37","method":"GET","uri":" │
+│ inventory {"time":"2026-10-05T09:02:35.782857422Z","msg":"request","level":"INFO","request_id":"390d4725-25ac-4ace-8daa-99687f883d3b","method":"GET","uri":" │
+│                                                                                                                                                              │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  <pod>   <logs>
+===== esc ('\\x1b')
+ Context: kind-lab [R]                             <0> all       <d>       Describe        <o> Show Node
+ Cluster: kind-lab                                 <1> apps      <?>       Help            <f> Show PortForward
+ User:    kind-lab                                 <2> default   <shift-j> Jump Owner      <w> Warp To Namespace
+ K9s Rev: v0.51.0                                                <l>       Logs            <y> YAML
+ K8s Rev: v1.36.4                                                <p>       Logs Previous
+ CPU:     1%↑                                                    <shift-f> Port-Forward
+ MEM:     13%↑
+┌───────────────────────────────────────────────────────────────── pods(apps)[2] </inventory> ─────────────────────────────────────────────────────────────────┐
+│ NAME↑                         PF   READY   STATUS         RESTARTS   CPU   %CPU/R   %CPU/L   MEM   %MEM/R    %MEM/L IP              NODE            AGE      │
+│ inventory-7dbc8c44d5-k2m6f    ●    2/2     Running               0     7        2      n/a   351       87        61 10.244.1.23     lab-worker2     58m      │
+│ inventory-migrate-g6cdk       ●    0/1     Completed             0     0        0      n/a     0        0         0 10.244.2.19     lab-worker      58m      │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  <pod>
+===== esc del filtro ('\\x1b')
+ Context: kind-lab [R]                             <0> all       <d>       Describe        <o> Show Node
+ Cluster: kind-lab                                 <1> apps      <?>       Help            <f> Show PortForward
+ User:    kind-lab                                 <2> default   <shift-j> Jump Owner      <w> Warp To Namespace
+ K9s Rev: v0.51.0                                                <l>       Logs            <y> YAML
+ K8s Rev: v1.36.4                                                <p>       Logs Previous
+ CPU:     1%↑                                                    <shift-f> Port-Forward
+ MEM:     13%↑
+┌─────────────────────────────────────────────────────────────────────── pods(apps)[9] ────────────────────────────────────────────────────────────────────────┐
+│ NAME↑                          PF   READY   STATUS         RESTARTS   CPU   %CPU/R   %CPU/L   MEM   %MEM/R   %MEM/L IP             NODE           AGE        │
+│ catalog-9b8c4ccf9-4rwnx        ●    2/2     Running               0     5        4      n/a    41       52       26 10.244.2.13    lab-worker     65m        │
+│ catalog-migrate-wqckv          ●    0/1     Completed             0     0        0      n/a     0        0        0 10.244.1.21    lab-worker2    58m        │
+│ inventory-7dbc8c44d5-k2m6f     ●    2/2     Running               0     7        2      n/a   351       87       61 10.244.1.23    lab-worker2    58m        │
+│ inventory-migrate-g6cdk        ●    0/1     Completed             0     0        0      n/a     0        0        0 10.244.2.19    lab-worker     58m        │
+│ pricing-f9d6cf87-dzh9k         ●    1/1     Running               2     1        2      n/a     9       31        7 10.244.2.2     lab-worker     3h37m      │
+│ pricing-migrate-mkxmv          ●    0/1     Completed             0     0        0      n/a     0        0        0 10.244.1.22    lab-worker2    58m        │
+│ replenish-77cf474d7d-g8ttb     ●    1/1     Running               5     6       12      n/a    71      111       55 10.244.1.5     lab-worker2    3h15m      │
+│ replenish-migrate-69msn        ●    0/1     Completed             0     0        0      n/a     0        0        0 10.244.2.20    lab-worker     58m        │
+│ storefront-7475c55d7f-jq8l6    ●    1/1     Running              11     1        5      n/a     7       48       24 10.244.2.5     lab-worker     11h        │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  <pod>
+===== :deploy (':deploy\\r')
+ Context: kind-lab [R]                             <0> all       <d>       Describe        <z> ReplicaSets
+ Cluster: kind-lab                                 <1> apps      <?>       Help            <f> Show PortForward
+ User:    kind-lab                                 <2> default   <shift-j> Jump Owner      <w> Warp To Namespace
+ K9s Rev: v0.51.0                                                <l>       Logs            <y> YAML
+ K8s Rev: v1.36.4                                                <p>       Logs Previous
+ CPU:     1%↑                                                    <shift-f> Port-Forward
+ MEM:     13%↑
+┌──────────────────────────────────────────────────────────────────── deployments(apps)[5] ────────────────────────────────────────────────────────────────────┐
+│ NAME↑                                                   READY                       UP-TO-DATE                        AVAILABLE AGE                          │
+│ catalog                                                   1/1                                1                                1 25h                          │
+│ inventory                                                 1/1                                1                                1 25h                          │
+│ pricing                                                   1/1                                1                                1 25h                          │
+│ replenish                                                 1/1                                1                                1 25h                          │
+│ storefront                                                1/1                                1                                1 22h                          │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  <deployment>
+                                                        😎 Viewing apps/v1/deployments in namespace apps
+===== :events (':events\\r')
+ Context: kind-lab [R]                             <0> all       <d> Describe
+ Cluster: kind-lab                                 <1> apps      <?> Help
+ User:    kind-lab                                 <2> default   <w> Warp To Namespace
+ K9s Rev: v0.51.0                                                <y> YAML
+ K8s Rev: v1.36.4
+ CPU:     1%↑
+ MEM:     13%↑
+┌────────────────────────────────────────────────────────────────────── events(apps)[80] ──────────────────────────────────────────────────────────────────────┐
+│ LAST SEEN↓  TYPE     REASON             OBJECT                           MESSAGE                                                                             │
+│ 60m         Normal   Completed          job/replenish-migrate            Job completed                                                                       │
+│ 60m         Normal   SuccessfulCreate   job/replenish-migrate            Created pod: replenish-migrate-7c9gc                                                │
+│ 60m         Normal   Started            pod/replenish-migrate-7c9gc      Container started                                                                   │
+│ 60m         Normal   Created            pod/replenish-migrate-7c9gc      Container created                                                                   │
+│ 60m         Normal   Pulled             pod/replenish-migrate-7c9gc      Container image "lab/replenish:g13" already present on machine and can be accessed  │
+│ 60m         Normal   SuccessfulCreate   job/pricing-migrate              Created pod: pricing-migrate-tnkdc                                                  │
+│ 60m         Normal   Completed          job/pricing-migrate              Job completed                                                                       │
+│ 60m         Normal   Created            pod/pricing-migrate-tnkdc        Container created                                                                   │
+│ 60m         Normal   Pulled             pod/pricing-migrate-tnkdc        Container image "lab/pricing:g10" already present on machine and can be accessed by │
+│ 60m         Normal   Started            pod/pricing-migrate-tnkdc        Container started                                                                   │
+│ 60m         Normal   ScalingReplicaSet  deployment/inventory             Scaled up replica set inventory-7bdc8fc86 from 0 to 1                               │
+│ 60m         Normal   ScalingReplicaSet  deployment/inventory             Scaled down replica set inventory-7dbc8c44d5 from 1 to 0                            │
+│ 60m         Normal   Completed          job/inventory-migrate            Job completed                                                                       │
+│ 60m         Normal   SuccessfulDelete   replicaset/inventory-7dbc8c44d5  Deleted pod: inventory-7dbc8c44d5-fxwrl                                             │
+│ 60m         Normal   Killing            pod/inventory-7dbc8c44d5-fxwrl   Stopping container inventory                                                        │
+│ 60m         Normal   Killing            pod/inventory-7dbc8c44d5-fxwrl   Stopping container outbox-relay                                                     │
+│ 60m         Normal   SuccessfulCreate   replicaset/inventory-7bdc8fc86   Created pod: inventory-7bdc8fc86-d6kv8                                              │
+│ 60m         Warning  Unhealthy          pod/inventory-7bdc8fc86-d6kv8    Startup probe failed: Get "http://10.244.1.19:8080/health/live": dial tcp 10.244.1. │
+│ 60m         Normal   Started            pod/inventory-7bdc8fc86-d6kv8    Container started                                                                   │
+│ 60m         Normal   Created            pod/inventory-7bdc8fc86-d6kv8    Container created                                                                   │
+│ 60m         Normal   Pulled             pod/inventory-7bdc8fc86-d6kv8    Container image "lab/inventory:g13" already present on machine and can be accessed  │
+│ 60m         Normal   Created            pod/inventory-7bdc8fc86-d6kv8    Container created                                                                   │
+│ 60m         Normal   Started            pod/inventory-7bdc8fc86-d6kv8    Container started                                                                   │
+│ 60m         Normal   Pulled             pod/inventory-7bdc8fc86-d6kv8    Container image "lab/inventory:g13" already present on machine and can be accessed  │
+│ 60m         Normal   ScalingReplicaSet  deployment/chaos                 Scaled up replica set chaos-7984cdff94 from 0 to 1                                  │
+│ 60m         Normal   SuccessfulCreate   replicaset/chaos-7984cdff94      Created pod: chaos-7984cdff94-bcctj                                                 │
+│ 60m         Warning  Unhealthy          pod/chaos-7984cdff94-bcctj       Readiness probe failed: Get "http://10.244.1.18:8080/health/ready": dial tcp 10.244 │
+│ 60m         Normal   Created            pod/chaos-7984cdff94-bcctj       Container created                                                                   │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  <event>
+                                                      😎 Viewing events.k8s.io/v1/events in namespace apps
+===== :pods (':pods\\r')
+ Context: kind-lab [R]                             <0> all       <d>       Describe        <o> Show Node
+ Cluster: kind-lab                                 <1> apps      <?>       Help            <f> Show PortForward
+ User:    kind-lab                                 <2> default   <shift-j> Jump Owner      <w> Warp To Namespace
+ K9s Rev: v0.51.0                                                <l>       Logs            <y> YAML
+ K8s Rev: v1.36.4                                                <p>       Logs Previous
+ CPU:     1%↑                                                    <shift-f> Port-Forward
+ MEM:     13%↑
+┌─────────────────────────────────────────────────────────────────────── pods(apps)[9] ────────────────────────────────────────────────────────────────────────┐
+│ NAME↑                          PF   READY   STATUS         RESTARTS   CPU   %CPU/R   %CPU/L   MEM   %MEM/R   %MEM/L IP             NODE           AGE        │
+│ catalog-9b8c4ccf9-4rwnx        ●    2/2     Running               0     5        4      n/a    41       52       26 10.244.2.13    lab-worker     66m        │
+│ catalog-migrate-wqckv          ●    0/1     Completed             0     0        0      n/a     0        0        0 10.244.1.21    lab-worker2    59m        │
+│ inventory-7dbc8c44d5-k2m6f     ●    2/2     Running               0     7        2      n/a   351       87       61 10.244.1.23    lab-worker2    58m        │
+│ inventory-migrate-g6cdk        ●    0/1     Completed             0     0        0      n/a     0        0        0 10.244.2.19    lab-worker     59m        │
+│ pricing-f9d6cf87-dzh9k         ●    1/1     Running               2     1        2      n/a     9       31        7 10.244.2.2     lab-worker     3h37m      │
+│ pricing-migrate-mkxmv          ●    0/1     Completed             0     0        0      n/a     0        0        0 10.244.1.22    lab-worker2    58m        │
+│ replenish-77cf474d7d-g8ttb     ●    1/1     Running               5     6       12      n/a    71      111       55 10.244.1.5     lab-worker2    3h15m      │
+│ replenish-migrate-69msn        ●    0/1     Completed             0     0        0      n/a     0        0        0 10.244.2.20    lab-worker     58m        │
+│ storefront-7475c55d7f-jq8l6    ●    1/1     Running              11     1        5      n/a     7       48       24 10.244.2.5     lab-worker     11h        │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  <pod>
+                                                              😎 Viewing v1/pods in namespace apps
+===== 0: todos los namespaces ('0')
+ Context: kind-lab [R]                             <0> all       <d>       Describe        <o> Show Node
+ Cluster: kind-lab                                 <1> apps      <?>       Help            <f> Show PortForward
+ User:    kind-lab                                 <2> default   <shift-j> Jump Owner      <w> Warp To Namespace
+ K9s Rev: v0.51.0                                                <l>       Logs            <y> YAML
+ K8s Rev: v1.36.4                                                <p>       Logs Previous
+ CPU:     1%                                                     <shift-f> Port-Forward
+ MEM:     13%
+┌─────────────────────────────────────────────────────────────────────── pods(all)[31] ────────────────────────────────────────────────────────────────────────┐
+│ NAMESPACE           NAME↑                                        PF READY STATUS     RESTARTS CPU %CPU/R %CPU/L MEM %MEM/R %MEM/L IP           NODE          │
+│ apps                catalog-9b8c4ccf9-4rwnx                      ●  2/2   Running           0   5      4    n/a  41     52     26 10.244.2.13  lab-worker    │
+│ apps                catalog-migrate-wqckv                        ●  0/1   Completed         0   0      0    n/a   0      0      0 10.244.1.21  lab-worker2   │
+│ cert-manager        cert-manager-57d865bb4-whx4g                 ●  1/1   Running          15   1    n/a    n/a  47    n/a    n/a 10.244.2.3   lab-worker    │
+│ cert-manager        cert-manager-cainjector-6f945cfc67-w4crv     ●  1/1   Running          23   1    n/a    n/a  49    n/a    n/a 10.244.1.4   lab-worker2   │
+│ cert-manager        cert-manager-webhook-58c846d9d9-6prph        ●  1/1   Running          24   1    n/a    n/a  39    n/a    n/a 10.244.1.8   lab-worker2   │
+│ kube-system         coredns-589f44dc88-gxf68                     ●  1/1   Running           3   3      3    n/a  35     51     21 10.244.0.4   lab-control-p │
+│ kube-system         coredns-589f44dc88-z8jnt                     ●  1/1   Running           4   2      2    n/a  35     50     20 10.244.0.3   lab-control-p │
+│ gateway             envoy-gateway-8656bcc8b4-v8ljv               ●  1/1   Running          69   2      2    n/a  68     26      6 10.244.2.4   lab-worker    │
+│ gateway             envoy-gateway-lab-2c82546a-84487c975b-ln6qg  ●  2/2   Running           0   5      4    n/a  56     10    n/a 10.244.2.28  lab-worker    │
+│ kube-system         etcd-lab-control-plane                       ●  1/1   Running           2  25     25    n/a  73     73    n/a 192.168.0.2  lab-control-p │
+│ apps                inventory-7dbc8c44d5-k2m6f                   ●  2/2   Running           0   7      2    n/a 351     87     61 10.244.1.23  lab-worker2   │
+│ apps                inventory-migrate-g6cdk                      ●  0/1   Completed         0   0      0    n/a   0      0      0 10.244.2.19  lab-worker    │
+│ kube-system         kindnet-77hnl                                ●  1/1   Running           3   2      2    n/a  24     48    n/a 192.168.0.3  lab-worker    │
+│ kube-system         kindnet-c6lwg                                ●  1/1   Running           3   2      2    n/a  30     60    n/a 192.168.0.2  lab-control-p │
+│ kube-system         kindnet-s9stl                                ●  1/1   Running           3   1      1    n/a  26     53    n/a 192.168.0.4  lab-worker2   │
+│ kube-system         kube-apiserver-lab-control-plane             ●  1/1   Running           2  45     18    n/a 986    n/a    n/a 192.168.0.2  lab-control-p │
+│ kube-system         kube-controller-manager-lab-control-plane    ●  1/1   Running          56  14      7    n/a  91    n/a    n/a 192.168.0.2  lab-control-p │
+│ kube-system         kube-proxy-2x9kv                             ●  1/1   Running           3   1    n/a    n/a  31    n/a    n/a 192.168.0.4  lab-worker2   │
+│ kube-system         kube-proxy-f525f                             ●  1/1   Running           3   1    n/a    n/a  46    n/a    n/a 192.168.0.2  lab-control-p │
+│ kube-system         kube-proxy-hlhpm                             ●  1/1   Running           3   1    n/a    n/a  49    n/a    n/a 192.168.0.3  lab-worker    │
+│ kube-system         kube-scheduler-lab-control-plane             ●  1/1   Running          58   7      7    n/a  49    n/a    n/a 192.168.0.2  lab-control-p │
+│ local-path-storage  local-path-provisioner-56c4685b7c-zsf7n      ●  1/1   Running          11   1    n/a    n/a  19    n/a    n/a 10.244.0.2   lab-control-p │
+│ kube-system         metrics-server-666d699fc6-nj6zw              ●  1/1   Running          73   4      4    n/a  39     19    n/a 10.244.1.3   lab-worker2   │
+│ data                nats-0                                       ●  1/1   Running           2   3      6    n/a  15     24      6 10.244.1.9   lab-worker2   │
+│ data                postgres-0                                   ●  1/1   Running           3  10     10    n/a 128    100     25 10.244.2.7   lab-worker    │
+│ apps                pricing-f9d6cf87-dzh9k                       ●  1/1   Running           2   1      2    n/a  10     31      7 10.244.2.2   lab-worker    │
+│ apps                pricing-migrate-mkxmv                        ●  0/1   Completed         0   0      0    n/a   0      0      0 10.244.1.22  lab-worker2   │
+│ apps                replenish-77cf474d7d-g8ttb                   ●  1/1   Running           5   6     12    n/a  71    111     55 10.244.1.5   lab-worker2   │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  <pod>
+===== ctrl-d: borrar, en solo lectura ('\\x04')
+ Context: kind-lab [R]                             <0> all       <d>       Describe        <o> Show Node
+ Cluster: kind-lab                                 <1> apps      <?>       Help            <f> Show PortForward
+ User:    kind-lab                                 <2> default   <shift-j> Jump Owner      <w> Warp To Namespace
+ K9s Rev: v0.51.0                                                <l>       Logs            <y> YAML
+ K8s Rev: v1.36.4                                                <p>       Logs Previous
+ CPU:     1%                                                     <shift-f> Port-Forward
+ MEM:     13%
+┌─────────────────────────────────────────────────────────────────────── pods(all)[31] ────────────────────────────────────────────────────────────────────────┐
+│ NAMESPACE           NAME↑                                        PF READY STATUS     RESTARTS CPU %CPU/R %CPU/L MEM %MEM/R %MEM/L IP           NODE          │
+│ apps                catalog-9b8c4ccf9-4rwnx                      ●  2/2   Running           0   5      4    n/a  41     52     26 10.244.2.13  lab-worker    │
+│ apps                catalog-migrate-wqckv                        ●  0/1   Completed         0   0      0    n/a   0      0      0 10.244.1.21  lab-worker2   │
+│ cert-manager        cert-manager-57d865bb4-whx4g                 ●  1/1   Running          15   1    n/a    n/a  47    n/a    n/a 10.244.2.3   lab-worker    │
+│ cert-manager        cert-manager-cainjector-6f945cfc67-w4crv     ●  1/1   Running          23   1    n/a    n/a  49    n/a    n/a 10.244.1.4   lab-worker2   │
+│ cert-manager        cert-manager-webhook-58c846d9d9-6prph        ●  1/1   Running          24   1    n/a    n/a  39    n/a    n/a 10.244.1.8   lab-worker2   │
+│ kube-system         coredns-589f44dc88-gxf68                     ●  1/1   Running           3   3      3    n/a  35     51     21 10.244.0.4   lab-control-p │
+│ kube-system         coredns-589f44dc88-z8jnt                     ●  1/1   Running           4   2      2    n/a  35     50     20 10.244.0.3   lab-control-p │
+│ gateway             envoy-gateway-8656bcc8b4-v8ljv               ●  1/1   Running          69   2      2    n/a  68     26      6 10.244.2.4   lab-worker    │
+│ gateway             envoy-gateway-lab-2c82546a-84487c975b-ln6qg  ●  2/2   Running           0   5      4    n/a  56     10    n/a 10.244.2.28  lab-worker    │
+│ kube-system         etcd-lab-control-plane                       ●  1/1   Running           2  25     25    n/a  73     73    n/a 192.168.0.2  lab-control-p │
+│ apps                inventory-7dbc8c44d5-k2m6f                   ●  2/2   Running           0   7      2    n/a 351     87     61 10.244.1.23  lab-worker2   │
+│ apps                inventory-migrate-g6cdk                      ●  0/1   Completed         0   0      0    n/a   0      0      0 10.244.2.19  lab-worker    │
+│ kube-system         kindnet-77hnl                                ●  1/1   Running           3   2      2    n/a  24     48    n/a 192.168.0.3  lab-worker    │
+│ kube-system         kindnet-c6lwg                                ●  1/1   Running           3   2      2    n/a  30     60    n/a 192.168.0.2  lab-control-p │
+│ kube-system         kindnet-s9stl                                ●  1/1   Running           3   1      1    n/a  26     53    n/a 192.168.0.4  lab-worker2   │
+│ kube-system         kube-apiserver-lab-control-plane             ●  1/1   Running           2  45     18    n/a 986    n/a    n/a 192.168.0.2  lab-control-p │
+│ kube-system         kube-controller-manager-lab-control-plane    ●  1/1   Running          56  14      7    n/a  91    n/a    n/a 192.168.0.2  lab-control-p │
+│ kube-system         kube-proxy-2x9kv                             ●  1/1   Running           3   1    n/a    n/a  31    n/a    n/a 192.168.0.4  lab-worker2   │
+│ kube-system         kube-proxy-f525f                             ●  1/1   Running           3   1    n/a    n/a  46    n/a    n/a 192.168.0.2  lab-control-p │
+│ kube-system         kube-proxy-hlhpm                             ●  1/1   Running           3   1    n/a    n/a  49    n/a    n/a 192.168.0.3  lab-worker    │
+│ kube-system         kube-scheduler-lab-control-plane             ●  1/1   Running          58   7      7    n/a  49    n/a    n/a 192.168.0.2  lab-control-p │
+│ local-path-storage  local-path-provisioner-56c4685b7c-zsf7n      ●  1/1   Running          11   1    n/a    n/a  19    n/a    n/a 10.244.0.2   lab-control-p │
+│ kube-system         metrics-server-666d699fc6-nj6zw              ●  1/1   Running          73   4      4    n/a  39     19    n/a 10.244.1.3   lab-worker2   │
+│ data                nats-0                                       ●  1/1   Running           2   3      6    n/a  15     24      6 10.244.1.9   lab-worker2   │
+│ data                postgres-0                                   ●  1/1   Running           3  10     10    n/a 128    100     25 10.244.2.7   lab-worker    │
+│ apps                pricing-f9d6cf87-dzh9k                       ●  1/1   Running           2   1      2    n/a  10     31      7 10.244.2.2   lab-worker    │
+│ apps                pricing-migrate-mkxmv                        ●  0/1   Completed         0   0      0    n/a   0      0      0 10.244.1.22  lab-worker2   │
+│ apps                replenish-77cf474d7d-g8ttb                   ●  1/1   Running           5   6     12    n/a  71    111     55 10.244.1.5   lab-worker2   │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  <pod>
+===== :ctx (':ctx\\r')
+ Context: kind-lab [R]                             <?> Help
+ Cluster: kind-lab
+ User:    kind-lab
+ K9s Rev: v0.51.0
+ K8s Rev: v1.36.4
+ CPU:     1%
+ MEM:     13%
+┌────────────────────────────────────────────────────────────────────── contexts(all)[2] ──────────────────────────────────────────────────────────────────────┐
+│ NAME↑                                   CLUSTER                                 AUTHINFO                                 NAMESPACE                           │
+│ docker-desktop                          docker-desktop                          docker-desktop                                                               │
+│ kind-lab(*)                             kind-lab                                kind-lab                                                                     │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  <contexts>
+                                                                     😎 Viewing contexts...
+===== ?: la ayuda ('?')
+ Context: kind-lab [R]                             <esc> Back
+ Cluster: kind-lab
+ User:    kind-lab
+ K9s Rev: v0.51.0
+ K8s Rev: v1.36.4
+ CPU:     1%
+ MEM:     13%
+┌──────────────────────────────────────────────────────────────────────────── Help ────────────────────────────────────────────────────────────────────────────┐
+│ RESOURCE                                   GENERAL                                          NAVIGATION                               HOTKEYS                 │
+│ <c>             Copy                       <ctrl-a>            Aliases                      <j>              Down                                            │
+│ <?>             Help                       <q>                 Back                         <shift-g>        Goto Bottom                                     │
+│ <ctrl-r>        Refresh                    <esc>               Back/Clear                   <g>              Goto Top                                        │
+│ <shift-n>       Sort Name                  <ctrl-u>            Command Clear                <[>              History Back                                    │
+│ <shift-o>       Sort Selected Column       <:cmd>              Command mode                 <]>              History Forward                                 │
+│ <shift-s>       Sort Status                <tab>               Field Next                   <->              Last Used Command                               │
+│ <ctrl-z>        Toggle Faults              <backtab>           Field Previous               <h>              Left                                            │
+│ <ctrl-w>        Toggle Wide                </term>             Filter mode                  <ctrl-f>         Page Down                                       │
+│ <enter>         View                       <?>                 Help                         <ctrl-b>         Page Up                                         │
+│                                            <space>             Mark                         <l>              Right                                           │
+│                                            <ctrl-\>            Mark Clear                   <k>              Up                                              │
+│                                            <ctrl-space>        Mark Range                                                                                    │
+│                                            <:q>                Quit                                                                                          │
+│                                            <ctrl-r>            Reload                                                                                        │
+│                                            <ctrl-s>            Save                                                                                          │
+│                                            <shift-right>       Select Next Column                                                                            │
+│                                            <shift-left>        Select Previous Column                                                                        │
+│                                            <ctrl-g>            Toggle Crumbs                                                                                 │
+│                                            <ctrl-e>            Toggle Header                                                                                 │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+│                                                                                                                                                              │
+└──────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+  <contexts>   <help>

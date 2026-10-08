@@ -1,0 +1,8 @@
+# Taller 05: las pruebas corren contra PostgreSQL en Testcontainers, la misma base que en ejecución.
+# La URL la pone @ServiceConnection (PostgresTestConfig); aquí solo se dice que el esquema nace y
+# muere con cada contexto de prueba. Hasta el taller 04 esto era SQLite "porque no hace falta levantar
+# nada".
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop

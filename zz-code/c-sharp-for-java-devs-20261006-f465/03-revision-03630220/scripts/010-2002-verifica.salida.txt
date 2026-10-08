@@ -1,0 +1,9 @@
+════ 1. REFERENCIAS A OTROS CURSOS / REPO ════
+  ✅ cero
+
+════ 2. ENLACES ════
+  ✅ todos resuelven
+
+════ 3. ESTRUCTURA ════
+  archivos publicados: 31 · fases: 25
+  ✅ cadena 00→24 sin huecos, cabeceras correctas

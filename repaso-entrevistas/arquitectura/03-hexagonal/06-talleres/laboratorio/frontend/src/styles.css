@@ -1,0 +1,14 @@
+/* Lo mínimo para que se lea; el taller no enseña CSS. */
+:root { font-family: system-ui, sans-serif; color-scheme: light dark; }
+main { max-width: 900px; margin: 0 auto; padding: 1rem; }
+header small { display: block; opacity: 0.7; }
+section { margin-top: 1.5rem; }
+label { display: block; margin: 0.4rem 0; }
+input { margin-left: 0.5rem; }
+button { margin: 0.2rem 0.3rem 0.2rem 0; }
+button.link { background: none; border: none; color: inherit; text-decoration: underline; cursor: pointer; padding: 0; }
+table { border-collapse: collapse; }
+td, th { padding: 0.25rem 0.6rem; text-align: left; border-bottom: 1px solid rgba(127, 127, 127, 0.3); }
+.banner { padding: 0.6rem; margin-top: 1rem; border: 1px solid rgba(127, 127, 127, 0.5); border-radius: 4px; }
+.banner.error { border-color: #c0392b; }
+.card { border: 1px solid rgba(127, 127, 127, 0.4); padding: 0.8rem; margin-top: 0.8rem; border-radius: 4px; }

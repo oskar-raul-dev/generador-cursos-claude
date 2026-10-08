@@ -1,0 +1,143 @@
+=== grep Tanda ===
+(eval):2: no matches found: --include=*.md
+
+=== ds blocks ===
+## # ds01 — NumPy y el modelo vectorizado
+
+**Qué se decide en este chat.** El modelo mental que ordena el track: **el bucle es el enemigo, y
+tiene un tamaño a partir del cual lo es**. Arreglos, dtypes, broadcasting, vistas contra copias.
+
+**Cuidado con.** El reflejo de este perfil no es escribir un bucle malo: es escribir un bucle
+**correcto y legible**, que en Java habría sido lo adecuado. La sección tiene que honrar eso y
+mostrar el umbral exacto donde deja de serlo, no ridiculizarlo. Y con las vistas: `a[1:3] = 0`
+modifica el original, que es la primera sorpresa de quien viene de copias defensivas.
+
+**Su medición.** El mismo cálculo —el costo por paciente adquirido, sobre el histórico de pauta—
+en bucle de Python, en `list comprehension` y vectorizado, a 1.000, 100.000 y 5.000.000 de filas.
+El veredicto es el umbral.
+
+## # ds02 — pandas y el modelo de DataFrame
+
+**Qué se decide en este chat.** El índice, la alineación automática, los tipos que cambian solos,
+y por qué `SettingWithCopyWarning` no es un capricho. El puente honesto: **un DataFrame no es una
+tabla y no es una lista de objetos**; es lo más parecido a una hoja de cálculo con álgebra
+relacional encima, y ahí es donde se rompe la analogía con SQL.
+
+**Cuidado con.** Es la sección con más superficie para explicar de más. Solo entra lo que produce
+un error o una factura: el `join` que multiplica filas, el `apply` que recorre fila por fila, el
+`object` dtype que se come la memoria, y la mutación encadenada.
+
+**Su medición.** Memoria pico y tiempo de un `merge` sobre las citas de la red, hecho mal y hecho
+bien, con `tracemalloc` y el arnés de la Fase 02.
+
+## # ds03 — Polars, DuckDB y el modelo lazy
+
+**Qué se decide en este chat.** El modelo perezoso —plan, optimización, ejecución— y la
+comparación de cuatro esquinas que da el veredicto más útil del track.
+
+**Cuidado con.** La conclusión incómoda está anunciada en la propuesta y hay que sostenerla si
+sale: **a cinco mil filas, el bucle a mano gana y la diferencia es irrelevante**. Áurea tiene
+3.900 citas al mes; el track completo se puede correr en un portátil, y decirlo es parte de la
+honestidad del curso.
+
+**Su medición.** La consolidación mensual de las diez sedes en pandas, Polars (lazy), DuckDB sobre
+Parquet y bucle de Python puro, a cuatro tamaños. Tiempo, memoria pico y líneas de código.
+
+## # ds04 — Proyecto · Embudo
+
+**Qué se decide en este chat.** El primero de los dos proyectos de datos: limpieza, `join` entre
+fuentes que no comparten llave, series temporales y estacionalidad. Y la segunda pregunta de
+plata: **cuánto vale de verdad la red de aliados**.
+
+**Cuidado con.** El veredicto está escrito en la historia y hay que llegar hasta él: **la
+atribución de marketing es, en buena medida, una mentira que se cuenta con gráficos bonitos**.
+La sección lo demuestra con el mismo conjunto de datos y dos modelos de atribución que dan
+respuestas distintas, no lo afirma. Y con el ingreso: llega en cuotas durante veinticuatro meses,
+así que *"ventas del mes"* no significa lo que parece — eso es contenido, no nota al pie.
+
+**Su medición.** Costo por paciente adquirido por canal y por sede, con su intervalo, y la
+comparación de las dos atribuciones sobre los mismos datos.
+
+## # ds05 — Visualización, y cuándo una tabla gana
+
+**Qué se decide en este chat.** matplotlib, plotly y altair sobre el mismo tablero, con el
+criterio de cuál sirve para qué: figura para un informe, interactivo para explorar, declarativo
+para una gramática que se sostiene.
+
+**Cuidado con.** Marcela va a rechazar un tablero por el color de una barra y **no le falta
+razón**: es la marca. La sección tiene que tratar la legibilidad como requisito, no como adorno.
+Y el veredicto: para las siete cifras del comité de franquicia, una tabla bien hecha gana.
+
+**Su medición.** Tiempo hasta la primera decisión correcta con cinco personas del entorno del
+lector, sobre la misma información presentada como tabla, como barras y como interactivo. Se
+declara que es una muestra de cinco y que eso es anecdótico salvo por el orden de magnitud.
+
+## # ds06 — Cuadernos y reproducibilidad
+
+**Qué se decide en este chat.** Jupyter, marimo y papermill, y el veredicto sobre cuadernos en
+producción. El estado oculto —celdas ejecutadas fuera de orden— es el problema real, y marimo
+existe para resolverlo.
+
+**Cuidado con.** Este lector tiene un prejuicio contra los cuadernos que es **medio correcto**, y
+la sección tiene que separar la mitad buena de la mala en vez de darle la razón o quitársela
+entera.
+
+**Su medición.** De los cuadernos que produjo `ds04`, cuántos reejecutan limpio de arriba abajo en
+una máquina nueva. Es la medición más barata del curso y la más reveladora.
+
+## # ds07 — scikit-learn y la línea base honesta
+
+**Qué se decide en este chat.** El flujo completo —`Pipeline`, división temporal, validación,
+métricas— y la disciplina que lo sostiene: **primero la línea base, siempre**. Fuga de datos con
+su ejemplo concreto: usar la asistencia futura para predecir la asistencia.
+
+**Cuidado con.** La división no es aleatoria, es **temporal**: predecir el pasado con datos del
+futuro infla cualquier métrica y es el error que más se comete en este dominio.
+
+**Su medición.** Una regla de tres variables —historial de inasistencia, día y hora— contra una
+regresión logística de cinco, sobre el mismo corte temporal. AUC, precisión y recall, y **cuánto
+cuesta mantener cada una**.
+
+## # ds08 — Proyecto · Ausentismo
+
+**Qué se decide en este chat.** El segundo proyecto de datos, y la tesis del track: **la red
+neuronal probablemente pierde, y hay que aceptarlo con la medición delante**. PyTorch en CPU,
+minutos de entrenamiento, y la comparación contra la línea base de `ds07`.
+
+**Cuidado con.** La discusión ética no es un párrafo de cierre, es una sección del cuerpo:
+recordarle más al paciente señalado es legítimo, llamarlo el día anterior también, **darle peor
+horario porque el modelo lo señaló no lo es**, y esa línea se dibuja antes de que alguien la
+cruce. Y el sobreagendamiento del jueves a las cuatro tiene un costo cuando el modelo se
+equivoca: dos pacientes en la misma silla es peor que una silla vacía.
+
+**Su medición.** Red neuronal contra la línea base: AUC, calibración, tiempo de entrenamiento,
+tamaño del artefacto y **horas-persona anuales de mantenimiento estimadas**. El veredicto de la
+historia de Áurea está disponible y es probable: *puede que no valga su mantenimiento*.
+
+## # ds09 — Servir el modelo, y el ⚖️ veredicto del track
+
+**Qué se decide en este chat.** Cómo llega el modelo a producción: `pickle` y su superficie de
+ataque, ONNX como formato de intercambio, el endpoint en AgendaAPI, y el reentrenamiento como
+proceso del cierre nocturno de la Fase 15.
+
+**Cuidado con.** `pickle` ejecuta código al cargar. Ya se dijo en la Fase 16 del camino base y
+aquí se cobra en un caso real: un artefacto de modelo es un ejecutable disfrazado de dato.
+
+**Su medición.** Latencia p95 del endpoint de predicción con el modelo en `pickle` y en
+`onnxruntime`, más tamaño en disco y tiempo de arranque en frío. Y el cierre del track: qué
+proyecto de datos de Áurea valía la pena y cuál no.
+
+---
+
+## 📌 Lo que este documento deja abierto
+
+1. **Las mediciones van con `⏳` hasta que alguien las corra.** Es la misma decisión que tomó el
+   curso hermano de C#, y aquí pesa más porque tres de estas mediciones cuestan dinero real. Cada
+   sección deja la spec completa y el comando; el número entra después, y `BENCHMARKS.md` marca
+   cuáles están pendientes.
+2. **`src/` en las diecisiete.** Casi todo en estos tracks es código ejecutable, y una sección de
+   IA sin su script no se puede reproducir. Lo que no lleva `src/` propio se dice en su 📌.
+3. **El conjunto de datos seudonimizado de `ds` hay que generarlo**, como se generaron los del
+   camino base: un script con semilla fija en `src/ds01-…/`, con la estacionalidad real de Áurea
+   —enero y febrero de ortodoncia, noviembre y diciembre de estética, el agujero de Semana
+   Santa— y sin un solo dato clínico.

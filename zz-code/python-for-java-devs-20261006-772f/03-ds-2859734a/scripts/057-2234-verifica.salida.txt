@@ -1,0 +1,39 @@
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> test_embudo.py:89:17
+   |
+88 | def test_con_un_solo_toque_los_cuatro_modelos_coinciden():
+89 |     touches = [(datetime(2026, 1, 5, 10), "tiktok")]
+   |                 ^^^^^^^^^^^^^^^^^^^^^^^^
+90 |     for model in MODELS.values():
+91 |         assert model(touches) == {"tiktok": 1.0}
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> test_embudo.py:97:17
+   |
+95 |     """Con meses de separación, el peso del primero se hace despreciable. Es la propiedad
+96 |     que hay que entender antes de elegir la vida media: el parámetro decide el modelo."""
+97 |     touches = [(datetime(2026, 1, 1), "tiktok"), (datetime(2026, 6, 1), "google")]
+   |                 ^^^^^^^^^^^^^^^^^^^^
+98 |     credits = credit_time_decay(touches, half_life_days=14.0)
+99 |     assert credits["google"] > 0.999
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+DTZ001 `datetime.datetime()` called without a `tzinfo` argument
+  --> test_embudo.py:97:51
+   |
+95 |     """Con meses de separación, el peso del primero se hace despreciable. Es la propiedad
+96 |     que hay que entender antes de elegir la vida media: el parámetro decide el modelo."""
+97 |     touches = [(datetime(2026, 1, 1), "tiktok"), (datetime(2026, 6, 1), "google")]
+   |                                                   ^^^^^^^^^^^^^^^^^^^^
+98 |     credits = credit_time_decay(touches, half_life_days=14.0)
+99 |     assert credits["google"] > 0.999
+   |
+help: Pass a `datetime.timezone` object to the `tzinfo` parameter
+
+Found 3 errors.
+.......................                                                  [100%]
+23 passed in 2.21s
+[This command modified 2 files you've previously read: attribution.py, test_embudo.py. Call Read before editing.]

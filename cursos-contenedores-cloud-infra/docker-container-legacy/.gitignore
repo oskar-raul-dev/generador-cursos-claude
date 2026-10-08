@@ -1,0 +1,30 @@
+# .gitignore único del curso, en su raíz porque hay código en src/ de varias fases.
+# Se sostiene solo: el curso se publica como repositorio propio y el .gitignore de la
+# raíz del repositorio de cursos no viaja con él.
+
+# El .vscode/ de la Fase 10 es material del curso —las tasks y el launch.json que
+# el estudiante escribe—, no configuración local del editor. Se versiona a propósito.
+!src/10-vscode-y-debugging/.vscode/
+
+# Fixtures de src/11-validar-tu-proyecto/ y cualquier proyecto que el lector monte:
+# dependencias, builds, cobertura y logs que regenera npm dentro del contenedor.
+node_modules/
+dist/
+build/
+coverage/
+npm-debug.log*
+*.log
+
+# Evidencia de validación (F11, F20) y reportes generados al seguir el curso.
+evidencia/
+validacion/
+
+# Secretos y credenciales de registry (F28): nunca entran al repositorio.
+.env
+.env.*
+.docker/config.json
+
+# Sistema operativo y editores.
+.DS_Store
+Thumbs.db
+.idea/

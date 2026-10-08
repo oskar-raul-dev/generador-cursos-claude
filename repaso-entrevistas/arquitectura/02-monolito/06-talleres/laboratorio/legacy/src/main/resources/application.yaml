@@ -1,0 +1,47 @@
+# mono-legacy. No tocar sin preguntar a Julián (ya no está en la empresa).
+server:
+  port: 38081
+
+spring:
+  application:
+    name: mono-legacy
+  web:
+    error:
+      include-stacktrace: never     # taller 04: la traza se queda en el log, nunca en el cuerpo
+      include-message: never
+  datasource:
+    url: jdbc:postgresql://localhost:35432/mono_legacy
+    username: mono_legacy
+    password: mono-lab-pass
+    hikari:
+      maximum-pool-size: 5
+      connection-timeout: 2000
+  jpa:
+    # taller 07: sin Open Session in View. Con él, la conexión que abre la primera consulta se queda
+    # retenida hasta el final de la petición, también mientras se espera al proveedor de pago.
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate            # taller 09: el esquema lo cambia Flyway; Hibernate solo comprueba
+  flyway:
+    # taller 09: una base que ya existía (creada con ddl-auto) se marca en V1 y sigue desde V2
+    baseline-on-migrate: true
+    baseline-version: 1
+    # cada paso de la migración products → inventory añade su carpeta (lab.py legacy --inventory-step)
+    locations: classpath:db/migration,classpath:db/switch,classpath:db/contract
+
+legacy:
+  jwt:
+    secret: mono-legacy-jwt-secret-do-not-share-2021
+    ttl-seconds: 900
+  psp:
+    url: http://localhost:38185     # a través de Toxiproxy
+    timeout-ms: 2000
+  daily-close:
+    every-ms: 30000
+  inventory:
+    step: contract                  # taller 09: expand → switch → contract (lab.py legacy --inventory-step)
+    # taller 10: local (el monolito) · remote-naive · remote (lab.py legacy --inventory-mode)
+    mode: local
+    url: http://localhost:38182     # mono-inventory, a través de Toxiproxy
+    timeout-ms: 2000
+    stock-column: stock

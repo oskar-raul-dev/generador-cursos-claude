@@ -1,0 +1,7 @@
+=== construyendo imagen de Python ===
+sha256:6aa402a849d31c95777403ff4460910678a8b2085ef31aa36af69d9deac35ebe
+=== construyendo imagen de Java ===
+sha256:32453e4d7943bb65438c38477a9751cc5b70de3802b4b60140e8c727075d1059
+aurea-spring	329MB
+aurea-fastapi	297MB
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

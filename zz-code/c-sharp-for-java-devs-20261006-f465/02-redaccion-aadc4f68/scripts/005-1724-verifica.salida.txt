@@ -1,0 +1,32 @@
+Fases encontradas: 26
+
+archivo                                    secs  ejerc  mini  med  tag  señal  líneas
+--------------------------------------------------------------------------------------
+00-ambiente-visual-studio-y-ecosistema.md     ✅     31     ✅    ✅    ✅      ✅    1026
+00-convencion-de-git-y-tags.md                ❌      0     ❌    ❌    ✅      ❌     140
+01-tipos-valor-y-referencia.md                ✅     30     ✅    ✅    ✅      ✅    1151
+02-nullable-y-pattern-matching.md             ✅     31     ✅    ✅    ✅      ✅     983
+03-linq-y-evaluacion-diferida.md              ✅     31     ✅    ✅    ✅      ✅     867
+04-ceremonia-delegados-y-recursos.md          ✅     31     ✅    ✅    ✅      ✅    1123
+05-async-await-y-cancelacion.md               ✅     31     ✅    ✅    ✅      ✅     963
+06-memoria-span-y-flujo.md                    ✅     31     ✅    ✅    ✅      ✅     951
+07-el-sistema-que-heredas.md                  ✅     31     ✅    ✅    ✅      ✅     890
+08-caracterizar-y-probar.md                   ✅     34     ✅    ✅    ✅      ✅     985
+09-acceso-a-datos-esquema-hostil.md           ✅     35     ✅    ✅    ✅      ✅     981
+10-strangler-fig.md                           ✅     31     ✅    ✅    ✅      ✅     968
+11-migrar-el-runtime.md                       ✅     31     ✅    ✅    ✅      ✅     895
+12-winforms-en-net-10.md                      ✅     35     ✅    ✅    ✅      ✅     865
+13-wpf-y-mvvm.md                              ✅     32     ✅    ✅    ✅      ✅    1026
+14-veredicto-del-escritorio.md                ✅     31     ✅    ✅    ✅      ✅     804
+15-aspnet-core-minimal-apis.md                ✅     36     ✅    ✅    ✅      ✅    1035
+16-identidad-secretos-y-configuracion.md      ✅     40     ✅    ✅    ✅      ✅     924
+17-trabajo-de-fondo.md                        ✅     32     ✅    ✅    ✅      ✅    1026
+18-blazor-server-wasm-mvc.md                  ✅     33     ✅    ✅    ✅      ✅     900
+19-observabilidad-y-operacion.md              ✅     33     ✅    ✅    ✅      ✅     958
+20-contenedor-y-la-factura.md                 ✅     35     ✅    ✅    ✅      ✅     914
+21-datos-y-onnx.md                            ✅     34     ✅    ✅    ✅      ✅     965
+22-ia-aplicada.md                             ✅     35     ✅    ✅    ✅      ✅    1058
+23-el-duelo.md                                ✅     34     ✅    ✅    ✅      ✅     876
+24-veredicto-y-defensa.md                     ✅     32     ✅    ✅    ✅      ❌     790
+
+Incompletas: ['00-convencion-de-git-y-tags.md', '24-veredicto-y-defensa.md']

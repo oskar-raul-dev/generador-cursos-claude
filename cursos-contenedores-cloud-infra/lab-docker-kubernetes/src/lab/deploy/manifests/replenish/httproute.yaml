@@ -1,0 +1,26 @@
+# La ruta de replenish, escrita por su equipo (Fase 10): api.localhost/replenish/… llega a replenish sin el prefijo.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: replenish
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: replenish
+    app.kubernetes.io/part-of: lab
+spec:
+  # De qué puerta cuelga: el Gateway compartido, en otro namespace.
+  parentRefs:
+    - name: lab
+      namespace: gateway
+  hostnames: ["api.localhost"]
+  rules:
+    - matches:
+        - path: {type: PathPrefix, value: /replenish}
+      filters:
+        # El servicio no sabe de prefijos: /replenish/health/live le llega como /health/live.
+        - type: URLRewrite
+          urlRewrite:
+            path: {type: ReplacePrefixMatch, replacePrefixMatch: /}
+      backendRefs:
+        - name: replenish
+          port: 8080

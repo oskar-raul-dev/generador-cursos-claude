@@ -1,0 +1,29 @@
+// El contrato gRPC de pricing (G10, Fase 23). Es la misma pregunta que GET /prices/{sku}?store= del OpenAPI,
+// en binario y por HTTP/2: la usa inventory en la venta. El OpenAPI sigue siendo el contrato de lo demás.
+syntax = "proto3";
+
+package lab.pricing.v1;
+
+option go_package = "lab/pricing/pricingv1";
+option java_package = "co.coodrosan.lab.pricing.v1";
+option java_multiple_files = true;
+
+service Pricing {
+  // El precio vigente de un producto en una droguería, con el tope regulado ya aplicado.
+  // Sin precio: NOT_FOUND. Con sku o store mal formados: INVALID_ARGUMENT.
+  rpc GetPrice(GetPriceRequest) returns (Price);
+}
+
+message GetPriceRequest {
+  string sku = 1;    // SKU-0000
+  string store = 2;  // DRO-000
+}
+
+message Price {
+  string sku = 1;
+  string store = 2;
+  int64 price = 3;            // en pesos, sin decimales
+  string currency = 4;        // COP
+  optional int64 regulated_cap = 5;
+  bool capped = 6;
+}

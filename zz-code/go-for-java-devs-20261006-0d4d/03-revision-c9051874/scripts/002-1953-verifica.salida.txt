@@ -1,0 +1,8 @@
+05-http-rest-stdlib.md:470 -> h
+08-migracion-a-go-moderno.md:369 -> in []T, f func(T
+08-migracion-a-go-moderno.md:391 -> items ...T
+08-migracion-a-go-moderno.md:414 -> w http.ResponseWriter, r *http.Request
+08-migracion-a-go-moderno.md:436 -> w, r
+08-migracion-a-go-moderno.md:456 -> items []T, key func(T
+14-observabilidad-y-hardening.md:437 -> w, r
+prompts/plantillas-de-capitulo.md:287 -> 00-convencion-de-git-y-tags.md

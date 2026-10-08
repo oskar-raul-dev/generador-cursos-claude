@@ -1,0 +1,87 @@
+{
+  "consumer": {
+    "name": "inventory"
+  },
+  "messages": [
+    {
+      "contents": {
+        "eventId": "8c1f4a52-2d0e-4c55-9d3a-6a0f3f0b9e11",
+        "lines": [
+          {
+            "quantity": 2,
+            "sku": "SKU-002"
+          }
+        ],
+        "orderId": "5f1c2a4e-0000-4000-8000-000000000001",
+        "type": "OrderPaid"
+      },
+      "description": "an OrderPaid event",
+      "matchingRules": {
+        "body": {
+          "$.eventId": {
+            "matchers": [
+              {
+                "match": "regex",
+                "regex": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+              }
+            ]
+          },
+          "$.lines": {
+            "matchers": [
+              {
+                "match": "type",
+                "min": 1
+              }
+            ]
+          },
+          "$.lines[*].quantity": {
+            "matchers": [
+              {
+                "match": "integer"
+              }
+            ]
+          },
+          "$.lines[*].sku": {
+            "matchers": [
+              {
+                "match": "type"
+              }
+            ]
+          },
+          "$.orderId": {
+            "matchers": [
+              {
+                "match": "regex",
+                "regex": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"
+              }
+            ]
+          },
+          "$.type": {
+            "matchers": [
+              {
+                "match": "regex",
+                "regex": "^OrderPaid$"
+              }
+            ]
+          }
+        }
+      },
+      "metaData": {
+        "contentType": "application/json"
+      },
+      "providerStates": [
+        {
+          "name": "an order has been paid"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  },
+  "provider": {
+    "name": "orders"
+  }
+}

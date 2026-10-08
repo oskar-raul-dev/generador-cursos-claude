@@ -1,0 +1,28 @@
+# Lo que es de replenish y no cambia por perfil ni por cadena (Fase 13).
+component: backend
+replicaCount: 1
+image:
+  repository: lab/replenish
+  tag: ""                       # lo pone task deploy desde STEP_TAGS
+migrate:
+  command: ["node", "dist/migrate.js"]
+route: {}
+
+# Las sondas (Fase 15): la readiness pregunta por la base (G4); la liveness, solo por el proceso.
+probes:
+  readiness: {path: /health/ready, periodSeconds: 5, timeoutSeconds: 2, failureThreshold: 2}
+  liveness: {path: /health/live, periodSeconds: 10, timeoutSeconds: 2, failureThreshold: 3}
+# Recursos (Fase 15), medidos: 31 MiB en reposo y 63 MiB con carga. Sin límite de CPU.
+resources:
+  requests: {cpu: 50m, memory: 64Mi}
+  limits: {memory: 128Mi}
+
+# El ciclo de vida (Fase 16): el rollout sin bajar capacidad, el plazo para declararlo atascado, la pausa
+# antes de SIGTERM, y el autoescalado, apagado por defecto (el HPA es dueño de las réplicas cuando existe).
+rollout: {maxSurge: 1, maxUnavailable: 0, progressDeadlineSeconds: 120}
+shutdown: {preStopSeconds: 5}
+autoscaling: {enabled: false, minReplicas: 1, maxReplicas: 4, cpuPercent: 70}
+
+# El usuario con que corre (Fase 20): el número, no el nombre que dice la imagen. Es el mismo usuario.
+securityContext:
+  runAsUser: 1000

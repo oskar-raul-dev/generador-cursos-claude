@@ -1,0 +1,20 @@
+=== ejercicios que exijan un servicio externo o datos de fuera ===
+ds01-numpy-y-el-modelo-vectorizado.md:646:21. Reproduce la tabla de la sección 6 en tu máquina y compárala con la del curso. Si tu relación
+ds03-polars-y-el-modelo-lazy.md:39:      en tu máquina, y entiendes por qué son dos y no una.
+ds03-polars-y-el-modelo-lazy.md:560:6. Mide el arranque en frío de tu máquina: `python -c pass`, `python -c "import pandas"`,
+ds03-polars-y-el-modelo-lazy.md:573:10. Reproduce el experimento de la sección 5.5 en tu máquina: mide DuckDB con y sin pandas
+ds03-polars-y-el-modelo-lazy.md:593:17. Mide el consolidado sobre `e16` con el archivo en un disco externo o en un volumen de red.
+ds03-polars-y-el-modelo-lazy.md:602:    sede y un solo mes. ¿Mismo código? Decide entre reutilizar, duplicar o mover a Postgres, y
+ds03-polars-y-el-modelo-lazy.md:604:21. Reproduce las dos tablas completas en tu máquina y publica las diferencias con las del
+ds03-polars-y-el-modelo-lazy.md:609:22. Escribe el consolidado en SQL contra el Postgres de la Fase 11, con los datos ya cargados,
+ds02-pandas.md:571:24. La misma pregunta contra Postgres, que ya tiene estos datos desde la Fase 11: escribe el SQL,
+ds05-visualizacion.md:525:9. Reproduce la tabla de la sección 6.1 en tu máquina, con cada opción en su entorno. Si
+ds05-visualizacion.md:559:22. **Corre la medición 6.2.** Cinco personas, el protocolo está escrito. Publica los
+ds09-servir-el-modelo.md:535:3. Mide el arranque de `import sklearn.linear_model` y de `import onnxruntime` en tu máquina.
+
+=== ¿algún ejercicio pide instalar algo no fijado en alcance §9? ===
+  26 marimo
+   3 nbstripout
+   2 netron
+   2 jupytext
+   1 pyarrow

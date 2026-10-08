@@ -1,0 +1,39 @@
+=== ia03 agent_runner.py 20-40 ===
+
+    Solo consulta la agenda: no reserva nada. Devuelve lista vacía si no hay espacios, y
+    también si la sede no tiene agenda digital (Zipaquirá).
+
+    Args:
+        branch: Código de tres letras de la sede (CEN, CHA, SUB, KEN, USA, ENG, FON,
+            RES, SOA, ZIP).
+        day: Fecha en formato AAAA-MM-DD, zona horaria de Bogotá.
+        minutes: Duración necesaria; un control de ortodoncia son 20 minutos.
+    """
+    return _find_availability(agenda, branch, day, minutes)
+
+
+def run_with_runner(client: anthropic.Anthropic, user_message: str) -> str:
+    runner = client.beta.messages.tool_runner(
+        model="claude-opus-5",
+        max_tokens=4096,
+        tools=[find_availability],
+        messages=[{"role": "user", "content": user_message}],
+    )
+
+=== ia08 test_produccion.py 165-180 ===
+    daily.record("CEN", Decimal("1.00"))
+    daily.record("SUB", Decimal("3.00"))
+    assert daily.report().splitlines()[1].strip().startswith("SUB")
+
+
+# --- La frontera de lo que se registra ------------------------------------------------
+
+
+def evento(**overrides: object) -> "Event":
+    from datetime import datetime
+
+    from telemetry import BOGOTA, Event, fingerprint
+
+    base = dict(
+        thread_id="t1",
+        branch="CEN",

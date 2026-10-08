@@ -1,0 +1,26 @@
+{
+  "name": "phase11-react16-min",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "react-scripts": "3.4.4"
+  },
+  "scripts": {
+    "start": "HOST=0.0.0.0 PORT=3000 react-scripts start",
+    "build": "react-scripts build",
+    "test": "CI=true react-scripts test --watchAll=false"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version"
+    ]
+  }
+}

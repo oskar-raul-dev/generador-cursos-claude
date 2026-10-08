@@ -1,0 +1,31 @@
+=== la regla propia del curso ===
+  `propuestas-fases-base-ia-datos.md` y `propuestas-temas-opcionales.md` son **material
+  exploratorio**: alimentan la discusión de fases, y pierden contra (2) y (3) en cualquier
+  contradicción.
+
+- **Autocontención.** El curso **no nombra ningún otro curso**, ni como material necesario ni como
+  profundización opcional. Cuando un tema queda fuera, se declara la exclusión y se para ahí:
+  decir dónde vive ese material es una promesa que esta carpeta no puede cumplir
+  (`alcance-del-proyecto.md` §0).
+
+---
+
+...
+      mostrar, y ningún ejercicio que exija un sistema externo.
+- [ ] Incluye "La señal de que quedó bien" en el cierre.
+- [ ] Lleva el bloque 🏷️ del tag al final, con el número correcto (§8.1).
+- [ ] **No hay ningún apéndice** ni ninguna promesa de uno.
+- [ ] **No se nombra ningún otro curso ni ningún archivo de fuera de esta carpeta.** El curso es
+      autocontenido (`alcance-del-proyecto.md` §0), y una exclusión se declara sin decir dónde
+      estaría el material excluido.
+
+=== y la del alcance §0 ===
+el idioma, el estilo de código, los marcadores, las convenciones de archivo, la disciplina de
+medición, el flujo de git— vive en `prompts/` y está escrito aquí dentro. Un documento de este
+curso **nunca** empieza su lista de fuentes de verdad con un archivo de fuera.
+
+**No se cita ningún otro curso.** Ni como material complementario, ni como "eso vive en otro
+sitio", ni para justificar una decisión de forma. Cuando el curso excluye un tema —teoría de
+aprendizaje automático, cómputo en GPU, orquestación de contenedores— **declara la exclusión y se
+detiene ahí**: nombrar dónde estaría ese material convierte una exclusión limpia en una promesa
+que esta carpeta no puede cumplir.

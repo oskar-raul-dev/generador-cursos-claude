@@ -1,0 +1,9 @@
+version: '3'
+tasks:
+  t:
+    cmds:
+      - echo "CLI_ARGS=[{{.CLI_ARGS}}]"
+      - cmd: echo "condición verdadera"
+        if: '[ "{{.CLI_ARGS}}" = "-v" ]'
+      - cmd: echo "con contains"
+        if: '{{if contains "-v" .CLI_ARGS}}true{{else}}false{{end}}'

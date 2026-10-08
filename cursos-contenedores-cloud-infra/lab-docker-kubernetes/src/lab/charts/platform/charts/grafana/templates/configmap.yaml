@@ -1,0 +1,58 @@
+# Grafana como código (Fase 17): la fuente de datos y los tableros se provisionan desde archivos al
+# arrancar. Lo que se cambie a mano en la interfaz se pierde con el pod; lo que vale, va aquí.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-provisioning
+  namespace: observability
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+data:
+  datasources.yaml: |
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        uid: prometheus
+        type: prometheus
+        access: proxy
+        url: http://prometheus.observability:9090
+        isDefault: true
+        editable: false
+      {{- if .Values.datasources.tempo }}
+      - name: Tempo
+        uid: tempo
+        type: tempo
+        access: proxy
+        url: http://tempo.observability:3200
+        editable: false
+        jsonData:
+          # Desde una traza, a los logs de ese trace_id en Loki (si los logs están encendidos).
+          tracesToLogsV2: {datasourceUid: loki, filterByTraceID: true, customQuery: true,
+                           query: '{namespace="apps"} | json | trace_id="$${__span.traceId}"'}
+      {{- end }}
+      {{- if .Values.datasources.loki }}
+      - name: Loki
+        uid: loki
+        type: loki
+        access: proxy
+        url: http://loki.observability:3100
+        editable: false
+      {{- end }}
+  dashboards.yaml: |
+    apiVersion: 1
+    providers:
+      - name: lab
+        folder: La Vecina
+        type: file
+        allowUiUpdates: false
+        options: {path: /var/lib/grafana/dashboards}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: grafana-dashboards
+  namespace: observability
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+data:
+  {{- (.Files.Glob "dashboards/*.json").AsConfig | nindent 2 }}

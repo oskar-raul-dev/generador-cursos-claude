@@ -1,0 +1,8 @@
+  ia01-el-modelo-de-acceso-de-un-llm            2 failed, 1 warning in 2.39s
+  ia02-salida-estructurada                      10 passed in 0.42s
+  ia03-tool-calling-y-el-bucle-de-agente        9 passed in 0.03s
+  ia04-embeddings-y-busqueda-semantica          1 error in 0.08s
+  ia05-normarag                                 1 error in 0.52s
+  ia06-evaluacion                               19 passed in 0.03s
+  ia07-recepcion-asistida                       56 passed in 0.04s
+  ia08-produccion-y-el-veredicto                20 passed in 0.04s

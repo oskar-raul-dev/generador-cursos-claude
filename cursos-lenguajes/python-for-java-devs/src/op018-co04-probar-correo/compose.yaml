@@ -1,0 +1,6 @@
+services:
+  mailpit:
+    image: axllent/mailpit:v1.31.4
+    ports:
+      - "8025:8025"   # interfaz web y API
+      - "1025:1025"   # SMTP

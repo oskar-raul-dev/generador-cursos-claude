@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: observability
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+spec:
+  selector:
+    app.kubernetes.io/name: grafana
+  ports:
+    - name: http
+      port: 3000
+      targetPort: http
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: grafana
+  namespace: observability
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+spec:
+  parentRefs:
+    - name: {{ .Values.global.gateway.name }}
+      namespace: {{ .Values.global.gateway.namespace }}
+  hostnames: [{{ .Values.host | quote }}]
+  rules:
+    - backendRefs:
+        - name: grafana
+          port: 3000

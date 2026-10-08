@@ -1,0 +1,3 @@
+probado: op015-co01-correo-saliente.md
+gmail.com → v=spf1 redirect=_spf.google.com
+_dmarc.gmail.com → v=DMARC1; p=none; sp=quarantine; rua=mailto:mailauth-reports@google.com

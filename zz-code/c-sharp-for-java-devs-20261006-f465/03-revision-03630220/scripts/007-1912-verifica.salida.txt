@@ -1,0 +1,29 @@
+=== VERIFICACIÓN FINAL ===
+-- referencias externas --
+   ✅ cero
+-- enlaces --
+   ✅ todos resuelven
+-- rutas de src citadas en las fases --
+   ⚠️  no existe aún: src/fases/01-tipos-valor-y-referencia/mini
+   ⚠️  no existe aún: src/fases/02-nullable-y-pattern-matching
+   ⚠️  no existe aún: src/fases/02-nullable-y-pattern-matching/mini
+   ⚠️  no existe aún: src/fases/03-linq-y-evaluacion-diferida/mini
+   ⚠️  no existe aún: src/fases/04-ceremonia-delegados-y-recursos/mini
+   ⚠️  no existe aún: src/fases/05-async-await-y-cancelacion/mini
+   ⚠️  no existe aún: src/fases/06-memoria-span-y-flujo/mini
+   ⚠️  no existe aún: src/fases/09-acceso-a-datos-esquema-hostil
+   ⚠️  no existe aún: src/legacy/Sige.Forms/App.config
+   ⚠️  no existe aún: src/legacy/Sige.Reports/Dockerfile
+   ⚠️  no existe aún: src/main/java/media/cordillera/catalog
+   ⚠️  no existe aún: src/modern/Cordillera.Acervo
+   ⚠️  no existe aún: src/modern/Cordillera.Acervo/CachedEmbeddingGenerator.cs
+   ⚠️  no existe aún: src/modern/Cordillera.Acervo/CitationVerifier.cs
+   ⚠️  no existe aún: src/modern/Cordillera.Bench/MemoryProbe.cs
+   ⚠️  no existe aún: src/modern/Cordillera.Catalog.Api
+   ⚠️  no existe aún: src/modern/Cordillera.Catalog.Api/Configuration/SigeOptions.cs
+   ⚠️  no existe aún: src/modern/Cordillera.Catalog.Api/Contracts/V1/EditionMapping.cs
+   ⚠️  no existe aún: src/modern/Cordillera.Catalog.Api/Contracts/V1/EditionQuery.cs
+   ⚠️  no existe aún: src/modern/Cordillera.Catalog.Api/Contracts/V1/EditionResponse.cs
+-- estructura --
+   documentos numerados: 27
+   ✅ 25 fases + convención de git

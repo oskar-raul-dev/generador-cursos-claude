@@ -1,0 +1,41 @@
+# 🧪 propuestas-cursos
+
+Este directorio es el **taller de borradores** del repositorio. Aquí vive todo lo que
+todavía no es un curso: propuestas, esqueletos a medio escribir, ideas sueltas y
+material que se acumuló en alguna conversación y vale la pena no perder.
+
+## 🧭 Qué significa que algo esté aquí
+
+Estar en `propuestas-cursos/` es una etiqueta de estado, no de calidad. Significa
+exactamente esto:
+
+- **Nada de lo que hay aquí está terminado.** Puede faltar la mitad, puede existir
+  solo el índice, puede ser un documento único sin estructura de curso.
+- **Nada de lo que hay aquí está garantizado.** Una propuesta puede quedarse dormida
+  por tiempo indefinido, absorberse dentro de otro curso, partirse en dos, o
+  descartarse por completo. Ninguna de esas salidas es un fracaso: para eso existe
+  el directorio.
+- **Nada de lo que hay aquí es una promesa de contenido.** No se debe citar, enlazar
+  ni referenciar desde los cursos publicados como si fuera material disponible.
+- **Las convenciones editoriales del repositorio se aplican con flexibilidad.** Un
+  borrador puede tener numeración provisional, tono irregular, claims sin benchmark
+  y secciones que se contradicen entre sí. Todo eso se ordena *si* la propuesta
+  llega a promoverse.
+
+## ♻️ Ciclo de vida
+
+Una propuesta nace como un directorio suelto y termina en uno de tres destinos:
+
+1. **Se promueve** → se le crea su guía de estilo, su `0-ESTRUCTURA-CURSO.md` y se
+   muda a la raíz del repositorio como curso propio.
+2. **Se absorbe** → su contenido se reparte en fases o apéndices de un curso que ya
+   existe, y el borrador se elimina o se deja como registro de la decisión.
+3. **Se archiva** → la idea no procede y se queda aquí como referencia histórica.
+
+⚠️ Mientras una propuesta siga en este directorio, asume que **está en discusión**.
+Antes de construir algo encima, conviene confirmar cuál de los tres destinos se
+tiene en mente.
+=== hermanos ===
+propuesta-complemento-docker
+propuesta-lab-docker
+README.md

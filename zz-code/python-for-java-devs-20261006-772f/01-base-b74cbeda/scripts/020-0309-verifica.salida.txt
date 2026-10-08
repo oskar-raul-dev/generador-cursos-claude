@@ -1,0 +1,4 @@
+=== el socio lento (tarda entre 2 y 6 s) ===
+sin timeout:   39.3 s para 10 notificaciones · llegaron 10
+con timeout de 1 s:   10.0 s · el emisor dio por perdidas 10 · pero al socio LLEGARON 10
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

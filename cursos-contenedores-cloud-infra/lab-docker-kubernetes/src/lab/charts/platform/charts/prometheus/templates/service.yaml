@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  namespace: observability
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+spec:
+  selector:
+    app.kubernetes.io/name: prometheus
+  ports:
+    - name: http
+      port: 9090
+      targetPort: http
+---
+# prometheus.localhost, por la puerta compartida: para mirar las series y las consultas a mano.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: prometheus
+  namespace: observability
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+spec:
+  parentRefs:
+    - name: {{ .Values.global.gateway.name }}
+      namespace: {{ .Values.global.gateway.namespace }}
+  hostnames: [{{ .Values.host | quote }}]
+  rules:
+    - backendRefs:
+        - name: prometheus
+          port: 9090

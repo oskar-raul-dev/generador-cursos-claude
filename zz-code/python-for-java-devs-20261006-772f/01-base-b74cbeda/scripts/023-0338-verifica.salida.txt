@@ -1,0 +1,5 @@
+474:> ⚖️ **Veredicto. El registro estructurado cuesta un 7% más de tiempo que el de texto y **2.8
+13-integraciones.md · líneas con ** impar: [87, 88, 132, 133, 239, 240]
+14-concurrencia-y-gil.md · líneas con ** impar: [57, 58, 82, 83, 116, 117]
+15-el-proceso-nocturno.md · líneas con ** impar: [12, 13, 21, 22, 82, 83]
+16-operacion-y-rendimiento.md · líneas con ** impar: [15, 16, 52, 53, 104, 105]

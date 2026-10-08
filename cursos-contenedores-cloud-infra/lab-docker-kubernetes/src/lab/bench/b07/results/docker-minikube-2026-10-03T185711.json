@@ -1,0 +1,27 @@
+{
+  "engine": "docker",
+  "tool": "minikube",
+  "date": "2026-10-03T18:57:11",
+  "runs": [
+    {
+      "ready_s": 38.8,
+      "vm_before_mib": 661,
+      "vm_after_mib": 1155,
+      "cluster_mib": 494
+    },
+    {
+      "ready_s": 38.4,
+      "vm_before_mib": 679,
+      "vm_after_mib": 1177,
+      "cluster_mib": 498
+    },
+    {
+      "ready_s": 40.4,
+      "vm_before_mib": 659,
+      "vm_after_mib": 1195,
+      "cluster_mib": 536
+    }
+  ],
+  "server_version": "v1.37.0",
+  "three_nodes_s": 60.7
+}

@@ -1,0 +1,22 @@
+=== ¿el README y la ESTRUCTURA conocen los tracks? ===
+README.md:0
+0-ESTRUCTURA-CURSO.md:3
+=== números más citados ===
+## 🧮 Los números que más se citan
+
+Si solo te llevas diez de este documento, que sean estos:
+
+| Número | Qué dice | Fase |
+|---|---|---|
+| **291 MB → 0.15 MB** | Materializar contra recorrer perezoso | 02 |
+| **534×** | `set` contra `list` para preguntar "¿está?" | 01 |
+| **8%** | La tasa de fallos donde EAFP deja de ganarle a comprobar | 04 |
+| **2 pasos contra 6** | Lo que `uv` le ahorra a quien no es ingeniero | 07 |
+| **3 de 43** | Errores reales al encender el verificador sobre código sin tipar | 08 |
+| **1.1 µs** | Lo que cuesta validar en la frontera | 10 |
+| **56×** | Abrir una conexión contra usar una del *pool* | 11 |
+| **29 duplicados de 60** | Reintentar sin clave de idempotencia | 13 |
+| **1.02× / 3.95×** | Hilos para CPU contra hilos para E/S | 14 |
+| **87%** | Cuánto del cierre nocturno es esperar a la base de datos | 16 |
+
+---

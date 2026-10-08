@@ -1,0 +1,15 @@
+# El perfil lab con Kustomize (Fase 14, sección corta): la otra escuela. No hay plantillas: el YAML
+# plano de la Fase 12 tal cual, y un parche que dice solo lo que cambia.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../manifests/pricing/deployment.yaml
+  - ../../manifests/pricing/service.yaml
+  - ../../manifests/pricing/configmap.yaml
+patches:
+  # Un parche JSON sobre un objeto que ya existe: dos réplicas, como values-lab.yaml.
+  - target: {kind: Deployment, name: pricing}
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2

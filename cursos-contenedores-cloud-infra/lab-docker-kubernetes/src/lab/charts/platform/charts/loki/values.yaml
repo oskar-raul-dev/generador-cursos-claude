@@ -1,0 +1,9 @@
+# Loki en el namespace observability (Fase 18). Lo enciende observability.logs.enabled, junto con Fluent Bit.
+component: observability
+# grafana/loki:3.7.8
+image: grafana/loki@sha256:1107dd5274e0ada47e42472b7a7e71f3b2a2fe878878108f3e2f9e51528f0193
+# Cuánto guarda. Como Prometheus, en un emptyDir: si el pod se va, los logs se van con él.
+retention: 48h
+resources:
+  requests: {cpu: 50m, memory: 96Mi}
+  limits: {memory: 384Mi}

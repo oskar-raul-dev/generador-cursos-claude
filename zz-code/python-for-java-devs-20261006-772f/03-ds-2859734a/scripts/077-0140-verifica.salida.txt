@@ -1,0 +1,11 @@
+=== partición temporal contra partición al azar ===
+  temporal   AUC 0.799
+  al azar    AUC 0.799
+
+=== costo de mantener cada una ===
+  entrenamiento logística: 127 ms
+  predicción 33k filas:    47.3 ms
+  regla 33k filas:         7.3 ms
+  artefacto pickle:        1.2 KB
+  arranque + import sklearn: 873 ms
+  arranque solo:             28 ms

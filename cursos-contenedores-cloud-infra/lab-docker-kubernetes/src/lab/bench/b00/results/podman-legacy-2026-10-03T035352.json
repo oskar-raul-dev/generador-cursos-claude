@@ -1,0 +1,21 @@
+{
+  "engine": "podman",
+  "profile": "legacy",
+  "date": "2026-10-03T03:53:52",
+  "before": {
+    "total_mib": 3886,
+    "used_mib": 623
+  },
+  "ready_seconds": 37.9,
+  "after": {
+    "total_mib": 3886,
+    "used_mib": 1384
+  },
+  "containers_mib": {
+    "lab-contingencia-db-1": 45.6,
+    "lab-braqui-traslados-1": 0.9,
+    "lab-braqui-1": 16.1,
+    "lab-contingencia-1": 644.7,
+    "lab-portal-1": 39.2
+  }
+}

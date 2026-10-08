@@ -1,0 +1,7 @@
+services:
+  db:
+    image: postgis/postgis:18-3.6     # solo se publica para amd64: en Mac con Apple Silicon corre emulada
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"

@@ -1,0 +1,7 @@
+=== ds01: cifras del capítulo ===
+tiktok          11,098,164  (adq 182)
+instagram        3,819,254  (adq 529)
+google           1,583,564  (adq 1275)
+total int64: 6,059,295,284 · int32: 1,764,327,988
+desborda int32 en fila: 18205 de 49260
+planes 6,065 · cuotas 81,274 · valor 83,377,980,000 · pauta/valor 7.3% · CAC global 999,059 · plan medio 13,747,400

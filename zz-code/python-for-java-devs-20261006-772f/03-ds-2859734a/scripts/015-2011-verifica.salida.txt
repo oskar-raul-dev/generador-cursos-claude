@@ -1,0 +1,7 @@
+filas reales: 49260
+int64: 6,059,295,284
+int32: 1,764,327,988
+primera fila donde int32 desborda: 18205 · acumulado: 2,147,492,769
+vista antes: [160649 197975 476711 270210  81687]
+original después de tocar la vista: [0 0 0 0 0]
+restaurado: [160649 197975 476711 270210  81687]

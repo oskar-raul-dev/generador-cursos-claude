@@ -1,0 +1,9 @@
+ M README.md
+?? PLAN-REFRESCAMIENTO.md
+?? claude-remote.md
+?? go-for-java-devs/
+?? nuevas-ideas.md
+?? propuestas-cursos/propuesta-java-arquitectura/
+--- ¿es público? remoto: ---
+origin	git@oskar.raul.dev.github:oskar-raul-dev/courses-ai-generated.git (fetch)
+origin	git@oskar.raul.dev.github:oskar-raul-dev/courses-ai-generated.git (push)

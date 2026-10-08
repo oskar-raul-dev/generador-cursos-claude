@@ -1,0 +1,34 @@
+services:
+  toolchain:
+    image: legacy-node-toolchain:phase15
+    platform: linux/amd64
+    working_dir: /workspace
+    environment:
+      NODE_VERSION: "10.24.1"
+      SELENIUM_REMOTE_URL: "http://selenium:4444/wd/hub"   # ← por nombre, F18 §7
+    volumes:
+      - type: bind
+        source: .
+        target: /workspace
+      - type: volume
+        source: node-modules
+        target: /workspace/node_modules
+    depends_on:
+      selenium:
+        condition: service_healthy                          # espera a que esté LISTO
+    command: npm run test:e2e
+
+  selenium:
+    image: selenium/standalone-chrome:4.1.4                 # versión fijada, a09 §4
+    shm_size: "2gb"                                         # --shm-size, a09 §4
+    ports:
+      - "127.0.0.1:4444:4444"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:4444/wd/hub/status"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  node-modules:
+    name: legacy-e2e-node10-amd64-modules

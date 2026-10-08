@@ -1,0 +1,14 @@
+# Lo mismo, pero esperando a que inventory esté sano.
+name: f06
+services:
+  inventory:
+    image: lab/inventory
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/health/ready"]
+      interval: 2s
+      retries: 10
+  caja:
+    image: lab/replenish
+    command: ["wget", "-qO-", "http://inventory:8080/stock/DRO-007/SKU-0003"]
+    depends_on:
+      inventory: {condition: service_healthy}

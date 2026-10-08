@@ -1,0 +1,31 @@
+=== estructura de las 18 fases ===
+ ✓ 00-ambiente-editores-y-ecosistema.md       secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✗ 00-convencion-de-git-y-tags.md             secciones=7 tag=2 ej=— 📏=False 🧱=False 📌=False
+ ✓ 01-modelo-de-datos.md                      secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✓ 02-secuencias-perezosas.md                 secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✓ 03-python-sin-ceremonia.md                 secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✓ 04-errores-y-recursos.md                   secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✓ 05-shell-con-esteroides.md                 secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✓ 06-formatos-en-la-caja.md                  secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✓ 07-cuando-deja-de-ser-un-script.md         secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✓ 08-el-contrato-del-codigo.md               secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✓ 09-distribucion.md                         secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✓ 10-fastapi.md                              secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✓ 11-persistencia.md                         secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✓ 12-django-y-el-veredicto-web.md            secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✓ 13-integraciones.md                        secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✓ 14-concurrencia-y-gil.md                   secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✓ 15-el-proceso-nocturno.md                  secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✓ 16-operacion-y-rendimiento.md              secciones=11 tag=1 ej=25 📏=True 🧱=True 📌=True
+ ✗ 17-el-duelo-y-el-veredicto.md              secciones=17 tag=1 ej=25 📏=True 🧱=True 📌=True
+
+HAY FASES NO CONFORMES
+
+=== enlaces internos rotos ===
+  ninguno
+
+=== inventario ===
+documentos: 23
+ls: -d: No such file or directory
+directorios en src/: 25
+tamaño: 1.3M

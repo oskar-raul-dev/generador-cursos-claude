@@ -1,0 +1,4 @@
+ejecutable: /Users/oskar/.cache/uv/builds-v0/.tmpNlgSrP/bin/python
+solo pass          26.4 ms
+import duckdb      79.3 ms
+import pandas     395.4 ms

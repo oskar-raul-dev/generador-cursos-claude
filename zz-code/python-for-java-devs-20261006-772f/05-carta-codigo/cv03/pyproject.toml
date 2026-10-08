@@ -1,0 +1,14 @@
+[project]
+name = "puntos"
+version = "0.1.0"
+requires-python = ">=3.14"
+dependencies = [
+    "mediapipe==1.1.0",
+    "numpy==2.5.3",
+    "opencv-contrib-python-headless==5.0.0.93",
+    "scikit-image==0.26.0",
+]
+
+[tool.uv]
+# mediapipe pide opencv-contrib-python (con interfaz gráfica y libGL); se reemplaza por la variante headless
+override-dependencies = ["opencv-contrib-python; sys_platform == 'never'"]

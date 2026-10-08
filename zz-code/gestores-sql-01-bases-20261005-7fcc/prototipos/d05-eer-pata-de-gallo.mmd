@@ -1,0 +1,17 @@
+erDiagram
+    staff_member ||--o| teacher : "is a (d, total)"
+    staff_member ||--o| administrative : "is a (d, total)"
+    teacher }o--o{ subject : teaches
+    staff_member {
+        int staff_id PK
+        text name
+        text staff_type "discriminador"
+    }
+    teacher {
+        int staff_id PK, FK
+        text specialty
+    }
+    administrative {
+        int staff_id PK, FK
+        text office
+    }

@@ -1,0 +1,13 @@
+=== ia04 ===
+ImportError while importing test module '/Users/oskar/Developer/Learning/courses-ia-generated/cursos-algoritmos-lenguajes/python-for-java-devs/src/ia04-embeddings-y-busqueda-semantica/test_fusion.py'.
+E   ModuleNotFoundError: No module named 'psycopg'
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+=== ia05 ===
+ImportError while importing test module '/Users/oskar/Developer/Learning/courses-ia-generated/cursos-algoritmos-lenguajes/python-for-java-devs/src/ia05-normarag/test_normarag.py'.
+E   ModuleNotFoundError: No module named 'extract'
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+=== ia01 ===
+        with pytest.raises(anthropic.BadRequestError):
+>       raise TypeError(
+E       TypeError: "Could not resolve authentication method. Expected one of api_key, auth_token, or credentials to be set. Or for one of the `X-Api-Key` or `Authorization` headers to be explicitly omitted"
+/Users/oskar/.cache/uv/archive-v0/qkBj9xLsgGfH71dA/lib/python3.14/site-packages/anthropic/_client.py:409: TypeError

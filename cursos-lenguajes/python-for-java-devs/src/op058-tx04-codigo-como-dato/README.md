@@ -1,0 +1,22 @@
+# tx04 — Colorear y entender código
+
+Código de la sección [`op058-tx04-codigo-como-dato.md`](../../op058-tx04-codigo-como-dato.md), extraído tal como se publica en ella. La sección
+es la fuente: si este directorio y la sección difieren, manda la sección.
+
+| Archivo | Qué es |
+|---|---|
+| `plata.py` | Tres formas de leer el mismo código: fichas, árbol tolerante y árbol exacto |
+
+## Cómo se corre
+
+Los comandos de la sección, en orden (los que levantan servicios o instalan paquetes del sistema
+están explicados allí):
+
+```bash
+uv add pygments tree-sitter tree-sitter-python
+
+python3 plata.py
+```
+
+La salida esperada es la que la sección muestra en su §3, rotulada con la fecha de su corrida en
+contenedor con Python 3.14.7.

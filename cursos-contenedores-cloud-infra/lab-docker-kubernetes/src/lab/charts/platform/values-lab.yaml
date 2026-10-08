@@ -1,0 +1,6 @@
+# Perfil lab (contrato §5): control-plane y dos workers. Dos réplicas de cada backend, para que el
+# reparto entre nodos se vea. Lo demás (observabilidad, bus) lo enciende cada fase.
+pricing:   { replicaCount: 2 }
+inventory: { replicaCount: 2 }
+catalog:   { replicaCount: 2 }
+replenish: { replicaCount: 2 }

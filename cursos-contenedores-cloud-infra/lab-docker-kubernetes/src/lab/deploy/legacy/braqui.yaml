@@ -1,0 +1,34 @@
+# La Braqui en el cluster (Fase 12): el despachador de a16, sin base propia. Cada 30 segundos lee las
+# tablas de despachos de Contingencia, que son las del Siga. Las credenciales, literales como en a16.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: braqui
+  namespace: legacy
+  labels:
+    app.kubernetes.io/name: braqui
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: braqui
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: braqui
+        app.kubernetes.io/part-of: lab
+        app.kubernetes.io/component: backend
+    spec:
+      containers:
+        - name: braqui
+          image: lab/legacy-braqui:a16
+          # Recursos (Fase 15): 16 MiB medidos.
+          resources:
+            requests: {cpu: 20m, memory: 32Mi}
+            limits: {memory: 64Mi}
+          imagePullPolicy: IfNotPresent
+          env:
+            - {name: TZ, value: America/Bogota}
+            - {name: DATABASE_URL, value: "postgres://contingencia:contingencia-lab@contingencia-db:5432/contingencia"}

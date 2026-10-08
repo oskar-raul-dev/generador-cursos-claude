@@ -1,0 +1,21 @@
+{
+  "observability": {
+    "metrics": {
+      "enabled": true
+    },
+    "dashboards": {
+      "enabled": true
+    },
+    "logs": {
+      "enabled": true
+    },
+    "traces": {
+      "enabled": false
+    }
+  },
+  "grafana": {
+    "datasources": {
+      "loki": true
+    }
+  }
+}

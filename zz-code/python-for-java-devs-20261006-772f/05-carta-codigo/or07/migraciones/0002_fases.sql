@@ -1,0 +1,2 @@
+-- depends: 0001_planes
+CREATE TABLE fase (id INTEGER PRIMARY KEY, plan_id INTEGER NOT NULL REFERENCES plan(id), valor INTEGER NOT NULL);

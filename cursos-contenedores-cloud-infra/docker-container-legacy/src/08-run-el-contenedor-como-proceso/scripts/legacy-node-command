@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+command_name="$(basename "$0")"
+version="${NODE_VERSION:-10.24.1}"
+node_home="/opt/node/${version}"
+target="${node_home}/bin/${command_name}"
+
+if [[ ! -x "${target}" ]]; then
+    echo "ERROR: ${command_name} no está disponible para Node ${version}." >&2
+    echo "Ruta esperada: ${target}" >&2
+    echo "Versiones instaladas:" >&2
+    find /opt/node -mindepth 1 -maxdepth 1 -type d -printf '  - %f\n' | sort >&2
+    exit 64
+fi
+
+exec "${target}" "$@"

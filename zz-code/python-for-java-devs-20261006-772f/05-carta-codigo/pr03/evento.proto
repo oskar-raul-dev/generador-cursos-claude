@@ -1,0 +1,4 @@
+syntax = "proto3";
+package aurea.eventos;
+message Evento { int64 cita = 1; string sede = 2; string tipo = 3; int64 momento_ms = 4; int64 valor = 5; }
+message Lote { repeated Evento eventos = 1; }

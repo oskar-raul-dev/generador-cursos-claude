@@ -1,0 +1,21 @@
+[Unit]
+Description=Revisión diaria de circulares de las prepagadas
+Wants=network-online.target
+After=network-online.target
+OnFailure=aurea-aviso@%n.service
+
+[Service]
+Type=oneshot
+User=aurea
+WorkingDirectory=/opt/aurea
+ExecStart=/usr/local/bin/uv run --script /opt/aurea/revisar_circulares.py
+Environment=HEARTBEAT_URL=https://monitor.aurea.example/ping/circulares
+# El token llega como archivo, solo para este servicio; no aparece en el entorno del proceso.
+LoadCredential=portal-token:/etc/aurea/credenciales/portal-token
+TimeoutStartSec=15min
+# Endurecimiento básico: la tarea no necesita escribir fuera de su directorio.
+ProtectSystem=strict
+ReadWritePaths=/opt/aurea /var/cache/aurea
+PrivateTmp=true
+NoNewPrivileges=true
+Environment=UV_CACHE_DIR=/var/cache/aurea/uv

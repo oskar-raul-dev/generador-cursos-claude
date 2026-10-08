@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <!-- xUnit v3 trae su propio ejecutor dentro del proyecto de pruebas: el .csproj sale
+         ejecutable. `dotnet test` sigue funcionando igual. -->
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Sin Version: las versiones viven en ../Directory.Packages.props (Central Package
+         Management). Si escribes una versión aquí, la compilación falla, y eso es
+         deliberado. -->
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Cordillera.Bench\Cordillera.Bench.csproj" />
+  </ItemGroup>
+
+</Project>

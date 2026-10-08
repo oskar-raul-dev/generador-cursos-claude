@@ -1,0 +1,32 @@
+[
+  {
+    "date": "2026-10-03T20:24:47",
+    "vm_cluster_mib": 1960,
+    "vm_with_services_mib": 2255,
+    "pods_by_ns": {
+      "apps": 319.1,
+      "kube-system": 422.6,
+      "local-path-storage": 34.5
+    }
+  },
+  {
+    "date": "2026-10-03T20:27:41",
+    "vm_cluster_mib": 1933,
+    "vm_with_services_mib": 2212,
+    "pods_by_ns": {
+      "apps": 303.5,
+      "kube-system": 463.4,
+      "local-path-storage": 44.1
+    }
+  },
+  {
+    "date": "2026-10-03T20:30:34",
+    "vm_cluster_mib": 1904,
+    "vm_with_services_mib": 2241,
+    "pods_by_ns": {
+      "apps": 373.2,
+      "kube-system": 395.7,
+      "local-path-storage": 29.7
+    }
+  }
+]

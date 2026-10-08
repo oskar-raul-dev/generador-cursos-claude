@@ -1,0 +1,25 @@
+# mono-inventory (taller 10). La MISMA base que mono-legacy: es la forma habitual de "sacar un servicio"
+# sin tocar los datos, y es la que el taller mide. Nombres y puertos: §12 de la guía.
+server:
+  port: 38082
+
+spring:
+  application:
+    name: mono-inventory
+  datasource:
+    url: jdbc:postgresql://localhost:35432/mono_legacy
+    username: mono_legacy
+    password: mono-lab-pass
+    hikari:
+      maximum-pool-size: 5
+  flyway:
+    # su propia historia, al lado de la de mono-legacy: la tabla inventory pasa a ser suya
+    table: flyway_inventory_history
+    baseline-on-migrate: true
+    baseline-version: 0
+    locations: classpath:db/inventory
+
+mono:
+  inventory:
+    # la columna del stock; la versión siguiente de este proceso la renombra (db/inventory-rename)
+    stock-column: stock

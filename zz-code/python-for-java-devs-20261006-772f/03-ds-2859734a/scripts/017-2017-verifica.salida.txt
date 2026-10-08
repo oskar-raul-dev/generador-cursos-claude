@@ -1,0 +1,3 @@
+sum() por defecto: 4000000000 int64
+sum(dtype=int32): -294967296
+a+a: [-294967296 -294967296] int32 · avisos: []

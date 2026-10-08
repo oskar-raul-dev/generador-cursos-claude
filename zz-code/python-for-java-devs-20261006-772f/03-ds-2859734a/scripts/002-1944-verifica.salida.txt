@@ -1,0 +1,62 @@
+=== head historia ===
+# 🦷 Áurea · Escultores de Sonrisas
+
+> La empresa del curso *Python para desarrolladores Java senior*. Ficticia, y la única:
+> todo lo narrativo del curso sale de aquí.
+>
+> **Estado:** **la empresa del curso**, decisión cerrada. Durante la discusión de fases se evaluó
+> una alternativa —una casa editorial— y se descartó: el dominio odontológico gana por la frontera
+> legal de la historia clínica, que obliga a decisiones de diseño reales en vez de a un CRUD de
+> juguete. Este es el único documento narrativo del curso.
+>
+> **Sobre el nombre.** La marca es **Áurea** y el claim es **Escultores de Sonrisas**. La
+> proporción áurea es literalmente el principio técnico del diseño de sonrisa —los
+> rehabilitadores estéticos la invocan a diario para las proporciones dentales—, así que el
+> nombre queda fundado en la especialidad sin ser literal. Se evaluaron *Sonrisa Áurea*
+> (redundante al lado del claim) y *Arquitectos de Sonrisas*; se prefirió **escultores**
+> porque el arquitecto diseña y el escultor mete las manos en la materia, que es exactamente
+> lo que hace alguien tallando una carilla de resina. La palabra descartada no se perdió:
+> quedó como nombre del producto insignia de la casa, **Arquitectura de Sonrisa** (§1.1), que
+> es el protocolo que se franquicia y el objeto de negocio contra el que chocan casi todos los
+> proyectos del curso.
+
+---
+
+## 1. Cómo llegó a existir
+
+**Julián Camacho** y **Marcela Ocampo** se graduaron de odontología en la Javeriana en 2011,
+novios desde tercer semestre. Él se especializó en ortodoncia; ella, en rehabilitación oral y
+estética. Trabajaron dos años como empleados de clínicas ajenas —él en una cadena que le
+pagaba por paciente atendido y le medía el tiempo de silla, ella en un consultorio de la 93
+donde aprendió cómo se le habla a un paciente que va a gastarse quince millones en su
+=== refs internos historia ===
+=== head prompts/README ===
+# 🧰 `prompts/` — la maquinaria del curso
+## Python para desarrolladores Java senior
+
+Este directorio no es material del curso: es **lo que se usa para escribirlo**. El lector nunca
+lo abre. Quien escribe una fase lo lee entero antes de teclear la primera línea.
+
+> ✅ **Estado: el camino base está escrito.** Las **18 fases** —numeradas 00 a 17—,
+> `BENCHMARKS.md` e `INSTINTOS.md` están publicados. Para el camino base, este directorio pasa de
+> ser el **encargo** a ser el **registro de lo que se decidió y por qué**.
+>
+> ✅ **Track `ia` cerrado el 13/09/2026** — ocho secciones, su `src/`, sus generadores de datos y
+> 134 pruebas. 🚧 **Track `ds` pendiente.**
+>
+> 🚧 **Los complementos `ia` y `ds`.** Diecisiete secciones que
+> construyen los cuatro proyectos de IA y de datos de Áurea —NormaRAG, Recepción asistida, Embudo
+> y Ausentismo— sobre el código que dejó el camino base. **No son material a la carta:** llevan la
+> plantilla de 10 secciones, su medición y su miniproyecto, igual que una fase. Su encargo está en
+> [`prompts-de-tracks-ia-ds.md`](prompts-de-tracks-ia-ds.md) y la decisión de forma en
+> [`propuestas-fases-base-ia-datos.md`](propuestas-fases-base-ia-datos.md) §0.
+>
+> **Y después** viene el material **a la carta**: secciones opcionales, sueltas, que se leen cuando
+> alguien necesita un tutorial concreto de una herramienta. Su inventario y su orden de escritura
+> están en [`propuestas-temas-opcionales.md`](propuestas-temas-opcionales.md), y **no se rigen por
+> las mismas reglas que el camino base** — no se les exige miniproyecto ni medición, y no tienen
+> que pasar por el dominio de Áurea.
+=== prompts/README cuenta docs ===
+62:**Primero los tres documentos de la raíz del curso**, en este orden, cada uno en su chat, con el
+64:**[`prompts-documentos-raiz.md`](prompts-documentos-raiz.md)**:
+97:| `prompts-documentos-raiz.md` | Los 3 prompts de la raíz | — |

@@ -1,0 +1,39 @@
+# Loki en modo de un solo binario (Fase 18): recibe, indexa y responde en el mismo proceso. Indexa solo
+# las etiquetas de cada flujo (namespace, servicio, contenedor); el contenido de la línea se busca al
+# consultar. Eso es lo que lo hace barato, y lo que la autopsia de la fase pone a prueba.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: loki
+  namespace: observability
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+data:
+  loki.yaml: |
+    auth_enabled: false
+    server:
+      http_listen_port: 3100
+      grpc_listen_port: 9096
+      log_level: warn
+    common:
+      instance_addr: 127.0.0.1
+      path_prefix: /loki
+      replication_factor: 1
+      ring: {kvstore: {store: inmemory}}
+      storage:
+        filesystem: {chunks_directory: /loki/chunks, rules_directory: /loki/rules}
+    schema_config:
+      configs:
+        - from: "2026-01-01"
+          store: tsdb
+          object_store: filesystem
+          schema: v13
+          index: {prefix: index_, period: 24h}
+    limits_config:
+      retention_period: {{ .Values.retention }}
+    compactor:
+      working_directory: /loki/compactor
+      retention_enabled: true
+      delete_request_store: filesystem
+    analytics:
+      reporting_enabled: false

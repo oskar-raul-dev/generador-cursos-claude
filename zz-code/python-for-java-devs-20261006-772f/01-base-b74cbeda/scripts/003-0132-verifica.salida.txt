@@ -1,0 +1,6 @@
+.venv-pip: pyc=1781  pip presente=sí   74M
+.venv-uv: pyc=0  pip presente=no   27M
+--- primer import de fastapi (proceso nuevo, tras crear el entorno) ---
+.venv-pip: mediana 354 ms
+.venv-uv: mediana 330 ms
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

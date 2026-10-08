@@ -1,0 +1,26 @@
+# Configuración de ruff para todo el curso.
+# Es la misma que imprime la Fase 00 y que el lector crea en su propio proyecto; vive aquí
+# para que el código de `src/` se revise con la regla que el curso enseña y no con los
+# valores por defecto de la herramienta, que son más estrictos.
+# Todavía no existe pyproject.toml (llega en la Fase 07); cuando exista,
+# esto se muda ahí bajo [tool.ruff] y este archivo desaparece.
+
+# Cada carpeta de `src/` es un proyecto independiente: sus módulos se importan por nombre
+# desde su propio directorio, como los ejecuta el lector. Sin esta lista, `ruff` los trata
+# como dependencias de terceros y reordena los imports al revés.
+src = ["src/*"]
+
+# Lo que generan los scripts del curso no se revisa ni se versiona. Los cuadernos de `ds06`
+# son el caso divertido: `ruff` les encuentra los defectos sembrados —`F821 Undefined name
+# 'adquiridos'`— y tiene toda la razón, pero son la entrada de una medición, no código.
+exclude = ["**/data", "**/salida", "**/cuadernos", "**/parquet"]
+
+target-version = "py314"
+line-length = 100
+
+[lint]
+# El conjunto por defecto (E, F) más tres familias que este perfil agradece:
+#   I  → ordena los imports, que es lo que hacía tu IDE en Java
+#   UP → avisa cuando escribes una forma antigua que 3.14 ya no necesita
+#   B  → bugbear: trampas reales, incluido el argumento por defecto mutable de la Fase 01
+select = ["E", "F", "I", "UP", "B"]

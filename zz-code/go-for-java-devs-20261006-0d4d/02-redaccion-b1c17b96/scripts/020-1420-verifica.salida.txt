@@ -1,0 +1,39 @@
+=== Lo que precede a la sección 9 en cada fase ===
+00-ambiente-y-tooling.md                 y `jq`.
+01-sintaxis-y-valores.md                 diseño más elegantes de la stdlib.
+02-structs-interfaces-composicion.md     se le permite.)
+03-errores-paquetes-io.md                (https://go.dev/doc/faq#exceptions) explican el porqué mejor que ningún artículo.
+04-testing-dobles-cobertura.md           compara su resultado con tu ejercicio 24 hecho a mano.
+05-http-rest-stdlib.md                   stdlib que casi nadie conoce y resuelve un problema real.
+06-concurrencia.md                       y responde con precisión qué garantías te da cada primitiva.
+07-context-y-ciclo-de-vida.md            ayuda y la respuesta es interesante.
+08-migracion-a-go-moderno.md             saber mirarla te da un año de ventaja.
+09-sql-postgres-sqlite.md                recuperarse con distintos valores.
+10-clientes-http-y-apis-externas.md      igual. Es una tarde bien invertida si tus socios lo usan.
+11-mongodb-y-modelado-documental.md      parecido a una consulta recursiva (`WITH RECURSIVE`) que Mongo tiene.
+12-cache-con-valkey.md                   datos.
+13-lotes-scheduling-y-asincronia.md      `Range`. Un reporte de 2 GB con descarga reanudable es un requisito real.
+14-observabilidad-y-hardening.md         algo que no sabías.
+15-rendimiento-y-profiling.md            direcciones.
+16-go-frente-a-spring-boot.md            (Linux). Es un eje que empieza a importar y casi nadie lo mide.
+17-capstone.md                           Compara el resultado con el original y mide cuánto has aprendido de verdad.
+
+=== ¿Todas tienen 'Orden de lectura sugerido' en §9? ===
+OK   00-ambiente-y-tooling.md
+OK   01-sintaxis-y-valores.md
+OK   02-structs-interfaces-composicion.md
+OK   03-errores-paquetes-io.md
+OK   04-testing-dobles-cobertura.md
+OK   05-http-rest-stdlib.md
+OK   06-concurrencia.md
+OK   07-context-y-ciclo-de-vida.md
+OK   08-migracion-a-go-moderno.md
+OK   09-sql-postgres-sqlite.md
+OK   10-clientes-http-y-apis-externas.md
+OK   11-mongodb-y-modelado-documental.md
+OK   12-cache-con-valkey.md
+OK   13-lotes-scheduling-y-asincronia.md
+OK   14-observabilidad-y-hardening.md
+OK   15-rendimiento-y-profiling.md
+OK   16-go-frente-a-spring-boot.md
+OK   17-capstone.md

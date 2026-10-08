@@ -1,0 +1,153 @@
+{
+  "engine": "docker",
+  "date": "2026-10-03T22:22:28",
+  "sqlite": [
+    {
+      "wall_s": 6.01,
+      "go_test_s": 0.105,
+      "passed": [
+        "TestLargePrice",
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": []
+    },
+    {
+      "wall_s": 4.27,
+      "go_test_s": 0.065,
+      "passed": [
+        "TestLargePrice",
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": []
+    },
+    {
+      "wall_s": 5.45,
+      "go_test_s": 0.105,
+      "passed": [
+        "TestLargePrice",
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": []
+    },
+    {
+      "wall_s": 6.81,
+      "go_test_s": 0.082,
+      "passed": [
+        "TestLargePrice",
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": []
+    },
+    {
+      "wall_s": 4.71,
+      "go_test_s": 0.191,
+      "passed": [
+        "TestLargePrice",
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": []
+    }
+  ],
+  "postgres": [
+    {
+      "wall_s": 13.93,
+      "go_test_s": 6.615,
+      "passed": [
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": [
+        "TestLargePrice"
+      ]
+    },
+    {
+      "wall_s": 10.75,
+      "go_test_s": 5.448,
+      "passed": [
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": [
+        "TestLargePrice"
+      ]
+    },
+    {
+      "wall_s": 12.7,
+      "go_test_s": 6.235,
+      "passed": [
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": [
+        "TestLargePrice"
+      ]
+    },
+    {
+      "wall_s": 13.88,
+      "go_test_s": 6.601,
+      "passed": [
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": [
+        "TestLargePrice"
+      ]
+    },
+    {
+      "wall_s": 9.48,
+      "go_test_s": 4.489,
+      "passed": [
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": [
+        "TestLargePrice"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+# El strangler (Fase 10, D27): la ruta de precios repartida entre Contingencia y pricing.
+# Se aplica encima de deploy/manifests/pricing/httproute.yaml y se mueve con los pesos hasta 0/100.
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: pricing
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: pricing
+    app.kubernetes.io/part-of: lab
+spec:
+  parentRefs:
+    - name: lab
+      namespace: gateway
+  hostnames: ["api.localhost"]
+  rules:
+    - matches:
+        - path: {type: PathPrefix, value: /pricing}
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path: {type: ReplacePrefixMatch, replacePrefixMatch: /}
+      backendRefs:
+        - name: pricing
+          port: 8080
+          weight: 20
+        # Contingencia, por su fachada (8081): la misma pregunta, /prices/…, que le llega a pricing.
+        - name: contingencia
+          namespace: legacy
+          port: 8081
+          weight: 80

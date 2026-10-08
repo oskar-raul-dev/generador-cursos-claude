@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ plan.patient_name }}</h1>
+<form method="post" action="/plans/{{ plan.id }}">
+  <label>Paciente <input name="patient_name" value="{{ plan.patient_name }}" required></label>
+  <label>Documento <input name="patient_document" value="{{ plan.patient_document }}" required></label>
+  <label>Sede <select name="branch_id">
+    {% for b in branches %}<option value="{{ b.id }}" {% if b.id == plan.branch_id %}selected{% endif %}>{{ b.name }}</option>{% endfor %}
+  </select></label>
+  <label>Apertura <input name="opened_on" type="date" value="{{ plan.opened_on }}"></label>
+  <label>Valor <input name="total_amount" value="{{ plan.total_amount }}"></label>
+  <label>Estado <select name="status">
+    <option value="open" {% if plan.status=='open' %}selected{% endif %}>Abierto</option>
+    <option value="done" {% if plan.status=='done' %}selected{% endif %}>Terminado</option>
+    <option value="cancelled" {% if plan.status=='cancelled' %}selected{% endif %}>Cancelado</option>
+  </select></label>
+  {% if show_note %}<label>Nota clínica <textarea name="clinical_note">{{ plan.clinical_note }}</textarea></label>{% endif %}
+  <button type="submit">Guardar</button>
+</form>
+<form method="post" action="/plans/{{ plan.id }}/delete"><button>Eliminar</button></form>
+{% endblock %}

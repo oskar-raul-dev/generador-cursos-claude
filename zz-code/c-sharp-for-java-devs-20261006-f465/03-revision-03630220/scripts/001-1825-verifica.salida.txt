@@ -1,0 +1,40 @@
+--- SDK ---
+   5 10.0.12
+   1 10.0.4
+  52 10.0.401
+--- EF Core / libs ---
+   3 Dapper 2.1.66
+   3 EF Core 10.0.12
+   1 NSubstitute 6.2.0
+   3 Testcontainers 4.15.0
+--- C#/Java/VS ---
+ 134 .NET 10
+  35 .NET Framework 4.8
+  30 SQL Server 2025
+  24 C# 14
+  11 .NET 8
+   8 .NET 6
+   7 Java 25 LTS
+   7 .NET 5
+   4 Java 8
+   4 C# 2
+   3 C# 9
+   2 Visual Studio 2026
+   2 C# 8
+   2 C# 3
+   2 C# 1
+   2 .NET 9
+   1 Visual Studio Community 2026, 18.10.0
+   1 Visual Studio 2015
+   1 Java 7
+   1 Java 21
+   1 Java 16
+   1 C# 8.
+   1 C# 5
+   1 C# 14.
+   1 C# 13
+   1 C# 11
+   1 C# 10
+   1 .NET Framework 4.8.
+   1 .NET Framework 4.5
+   1 .NET 7

@@ -1,0 +1,5 @@
+apiVersion: v2
+name: grafana
+description: Grafana del laboratorio (Fase 17), con la fuente de datos y los tableros como código
+type: application
+version: 0.17.0

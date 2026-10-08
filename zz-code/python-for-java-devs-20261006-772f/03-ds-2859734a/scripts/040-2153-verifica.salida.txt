@@ -1,0 +1,24 @@
+motor                      mes   trimestre         ano          e1
+bucle                    43 ms       51 ms      121 ms      313 ms
+pandas                  443 ms      412 ms      456 ms      475 ms
+polars (lazy)           143 ms      136 ms      141 ms      149 ms
+duckdb (parquet)        431 ms      446 ms      431 ms      458 ms
+=== y la tabla principal, con los seis tamaños en su sitio ===
+motor               líneas   importar         mes          e1          e4         e16
+bucle                   28      23 MB      6.3 ms    276.2 ms    847.8 ms   3148.3 ms
+pandas                  25     105 MB     12.2 ms     85.4 ms    259.4 ms    916.2 ms
+polars (lazy)           27      57 MB      3.6 ms     11.1 ms     28.8 ms    122.6 ms
+duckdb (csv)            33      45 MB    146.6 ms    196.2 ms    258.0 ms    346.8 ms
+duckdb (parquet)        32      45 MB      8.4 ms     12.3 ms     16.0 ms     25.1 ms
+
+motor                  RSS mes      RSS e1      RSS e4     RSS e16
+bucle                    23 MB       24 MB       29 MB       45 MB
+pandas                  118 MB      165 MB      355 MB      721 MB
+polars (lazy)            93 MB      168 MB      314 MB      601 MB
+duckdb (csv)            164 MB      187 MB      224 MB      363 MB
+duckdb (parquet)        155 MB      161 MB      169 MB      205 MB
+
+mes: 10 filas de salida
+e1: 270 filas de salida
+e4: 270 filas de salida
+e16: 270 filas de salida

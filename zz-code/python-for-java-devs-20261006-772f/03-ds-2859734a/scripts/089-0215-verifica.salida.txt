@@ -1,0 +1,4 @@
+All checks passed!
+lint OK desde la raíz
+lint OK desde dentro
+[This command modified 1 file you've previously read: src/ds08-ausentismo/test_red.py. Call Read before editing.]

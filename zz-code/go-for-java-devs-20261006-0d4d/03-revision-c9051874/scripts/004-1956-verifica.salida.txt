@@ -1,0 +1,32 @@
+=== 1. refs a otros cursos / proyecto raiz ===
+06-concurrencia.md:580:      /Users/tu/dev/meridian/labs/race-counter/counter.go:9 +0x3c
+06-concurrencia.md:584:      /Users/tu/dev/meridian/labs/race-counter/counter.go:9 +0x50
+06-concurrencia.md:588:      /Users/tu/dev/meridian/labs/race-counter/counter_test.go:12 +0xd8
+06-concurrencia.md:728:	/Users/tu/dev/meridian/labs/deadlock-lab/main.go:8 +0x3c
+06-concurrencia.md:751:	/Users/tu/dev/meridian/labs/deadlock-lab/deadlock.go:31
+06-concurrencia.md:756:	/Users/tu/dev/meridian/labs/deadlock-lab/deadlock.go:31
+14-observabilidad-y-hardening.md:1113:> `/Users/oskar/dev/meridian/...` en cada volcado de pila y en los metadatos:
+00-instalacion-ambiente-y-tooling.md:1098:	/Users/tu/sdk/go1.13/src/slices (from $GOROOT)
+00-instalacion-ambiente-y-tooling.md:1099:	/Users/tu/go/src/slices (from $GOPATH)
+
+=== 2. conteo de ejercicios declarado por fase (§8) ===
+00-convencion-de-git-y-tags.md  lineas-numeradas:0
+00-historia-de-la-empresa-meridian.md  lineas-numeradas:0
+00-instalacion-ambiente-y-tooling.md  lineas-numeradas:20
+01-sintaxis-y-valores.md  lineas-numeradas:24
+02-structs-interfaces-composicion.md  lineas-numeradas:26
+03-errores-paquetes-io.md  lineas-numeradas:28
+04-testing-dobles-cobertura.md  lineas-numeradas:30
+05-http-rest-stdlib.md  lineas-numeradas:26
+06-concurrencia.md  lineas-numeradas:36
+07-context-y-ciclo-de-vida.md  lineas-numeradas:31
+08-migracion-a-go-moderno.md  lineas-numeradas:33
+09-sql-postgres-sqlite.md  lineas-numeradas:30
+10-clientes-http-y-apis-externas.md  lineas-numeradas:32
+11-mongodb-y-modelado-documental.md  lineas-numeradas:27
+12-cache-con-valkey.md  lineas-numeradas:38
+13-lotes-scheduling-y-asincronia.md  lineas-numeradas:41
+14-observabilidad-y-hardening.md  lineas-numeradas:34
+15-rendimiento-y-profiling.md  lineas-numeradas:49
+16-go-frente-a-spring-boot.md  lineas-numeradas:38
+17-capstone.md  lineas-numeradas:27

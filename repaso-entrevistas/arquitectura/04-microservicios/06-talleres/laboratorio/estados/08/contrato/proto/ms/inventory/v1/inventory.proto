@@ -1,0 +1,69 @@
+// El contrato de inventory por gRPC (taller 04). Este archivo es el que se versiona: los stubs de
+// Go, Java y Python se GENERAN a partir de él en cada build, y `buf breaking` lo compara contra el
+// estado congelado del taller para cazar cambios incompatibles antes del despliegue.
+//
+// Mismo vocabulario que la API HTTP del taller 02: stock en mano y retenciones bajo una referencia
+// (el id del pedido). La traducción al idioma de quien llama sigue siendo trabajo del cliente.
+syntax = "proto3";
+
+package ms.inventory.v1;
+
+option go_package = "ms.dev/inventory/gen/ms/inventory/v1;inventoryv1";
+option java_multiple_files = true;
+option java_package = "dev.ms.inventory.v1";
+
+service InventoryService {
+  // Unidades disponibles de los SKU pedidos; los desconocidos no aparecen.
+  rpc GetStock(GetStockRequest) returns (GetStockResponse);
+  // Retiene todas las líneas o ninguna. Idempotente por referencia.
+  // Sin stock: FAILED_PRECONDITION con google.rpc.PreconditionFailure (una violación por SKU).
+  rpc Hold(HoldRequest) returns (HoldResponse);
+  // Devuelve al stock lo retenido bajo la referencia. Idempotente.
+  rpc Release(ReleaseRequest) returns (ReleaseResponse);
+  // Marca lo retenido como vendido. Idempotente.
+  rpc Commit(CommitRequest) returns (CommitResponse);
+}
+
+message GetStockRequest {
+  repeated string skus = 1;
+}
+
+message StockLevel {
+  string sku = 1;
+  int32 on_hand = 2;
+}
+
+message GetStockResponse {
+  repeated StockLevel levels = 1;
+}
+
+message HoldItem {
+  string sku = 1;
+  int32 qty = 2;
+}
+
+message HoldRequest {
+  string reference = 1;              // el id del pedido: la clave de idempotencia natural
+  repeated HoldItem items = 2;
+}
+
+message HoldResponse {
+  string reference = 1;
+  bool replay = 2;                   // true si la retención ya existía (repetición)
+}
+
+message ReleaseRequest {
+  string reference = 1;
+}
+
+message ReleaseResponse {
+  int32 released = 1;
+}
+
+message CommitRequest {
+  string reference = 1;
+}
+
+message CommitResponse {
+  int32 committed = 1;
+}

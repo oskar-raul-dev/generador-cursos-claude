@@ -1,0 +1,27 @@
+=== 0-ESTRUCTURA: ¿describe el estado final de los complementos? ===
+Los **complementos `ia` y `ds`** son la continuación del curso: diecisiete secciones que
+construyen los cuatro proyectos de IA y de datos que Áurea ya tiene planteados —NormaRAG y
+Recepción asistida, Embudo y Ausentismo— sobre el código que tú dejaste escrito en el camino
+base. Traen la misma plantilla de diez secciones, la misma medición obligatoria y el mismo
+miniproyecto, y sus archivos son `ia01-…` y `ds01-…`. Se toman después de la Fase 17 porque
+necesitan la API, el CLI y la base de datos funcionando.
+
+Los **tracks a la carta** son otra cosa: secciones sueltas y opcionales —interfaces de usuario,
+automatización, otros motores de datos, el panorama de gestores de paquetes, la interoperación
+con la JVM— que se leen cuando necesitas un tutorial concreto de una herramienta, sin orden y sin
+compromiso. Sus archivos empiezan por `op` (`op014-ui02-gradio.md`), de modo que todo lo opcional
+queda en un solo bloque al final y el camino base se lista limpio.
+
+---
+
+
+=== ¿el README del curso y ESTRUCTURA se contradicen en conteos? ===
+0-ESTRUCTURA-CURSO.md:79:## 🪜 Las 18 fases
+0-ESTRUCTURA-CURSO.md:221:Lo que hay **después** de las dieciocho fases son dos cosas distintas, y conviene no
+0-ESTRUCTURA-CURSO.md:224:Los **complementos `ia` y `ds`** son la continuación del curso: diecisiete secciones que
+README.md:56:Tres bloques y dieciocho fases. El **Bloque A** es un archivo, biblioteca estándar pura y cero
+README.md:61:La tabla completa de las 18 fases, los cuatro proyectos y cómo se recorre están en
+prompts/README.md:7:> ✅ **Estado: el camino base está escrito.** Las **18 fases** —numeradas 00 a 17—,
+prompts/README.md:42:   numeración oficial de las 18 fases; **§5 tiene el encargo detallado de cada una**; §9 tiene las
+prompts/README.md:133:| `prompts-de-tracks-ia-ds.md` | El marco común + los 17 prompts de `ia` y `ds` | Las 17 secciones complementarias |
+prompts/README.md:143:  son el alcance temático de esas diecisiete secciones. Su §4, las 21 fases del camino base, está

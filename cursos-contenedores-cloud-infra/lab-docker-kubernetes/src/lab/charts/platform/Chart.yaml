@@ -1,0 +1,49 @@
+# El sistema entero como un paquete (Fase 13): un chart paraguas con un subchart por servicio.
+# Instalarlo dos veces con otros valores es tener dos cadenas (Fase 14).
+apiVersion: v2
+name: platform
+description: Paracelso en La Rebotica — los cinco servicios del laboratorio, con sus rutas y sus migraciones
+# chart de aplicación: se instala; el de librería (lab-common) solo presta plantillas.
+type: application
+# La versión del paquete, no la de los servicios: sube cuando cambia una plantilla o un valor por defecto.
+version: 0.26.0
+dependencies:
+  # Las plantillas compartidas. Una librería no crea ningún objeto por sí sola.
+  - name: lab-common
+    version: 0.13.0
+  # Los subcharts viven en charts/ (no se descargan de ningún repositorio). La condición es el
+  # interruptor de cada servicio: <svc>.enabled en los valores.
+  - name: pricing
+    version: 0.13.0
+    condition: pricing.enabled
+  - name: inventory
+    version: 0.13.0
+    condition: inventory.enabled
+  - name: catalog
+    version: 0.13.0
+    condition: catalog.enabled
+  - name: replenish
+    version: 0.13.0
+    condition: replenish.enabled
+  - name: storefront
+    version: 0.13.0
+    condition: storefront.enabled
+  # La observabilidad (Fase 17): en el namespace observability, con los interruptores del contrato (§5).
+  - name: prometheus
+    version: 0.17.0
+    condition: observability.metrics.enabled
+  - name: grafana
+    version: 0.17.0
+    condition: observability.dashboards.enabled
+  - name: loki
+    version: 0.18.0
+    condition: observability.logs.enabled
+  - name: fluent-bit
+    version: 0.18.0
+    condition: observability.logs.enabled
+  # El generador de caos (Fase 22): siempre en el paquete; se enciende con global.chaos.enabled.
+  - name: chaos
+    version: 0.22.0
+  - name: tempo
+    version: 0.23.0
+    condition: observability.traces.enabled

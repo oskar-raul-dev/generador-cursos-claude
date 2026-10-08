@@ -1,0 +1,14 @@
+[
+  {
+    "name": "psp",
+    "listen": "0.0.0.0:38185",
+    "upstream": "host.docker.internal:38085",
+    "enabled": true
+  },
+  {
+    "name": "inventory",
+    "listen": "0.0.0.0:38182",
+    "upstream": "host.docker.internal:38082",
+    "enabled": true
+  }
+]

@@ -1,0 +1,20 @@
+=== DISCIPLINA DE ÉPOCA: APIs post-1.13 en fases 00-07 ===
+── 00-ambiente-y-tooling.md
+54:  con cuatro módulos independientes es justo el caso que `go.work` resuelve, pero
+91:Sin genéricos no hay dónde esconder un diseño perezoso; sin `log/slog` se ve qué
+1084:	slices.Sort(priorities)
+1103:dejado escribir `slices.Sort` en la Fase 01 sin decir nada, y habrías roto la
+1371:- **`go.work`** — anunciado en §3 y en el layout como `go.work.example`. Se crea
+
+── 01-sintaxis-y-valores.md
+1513:| `Arrays.copyOf` | `copy(dst, src)` | `copy` no reserva: copia `min(len(dst), len(src))` y devuelve cuántos elementos copió. Hay que hacer el `make` antes |
+
+── 04-testing-dobles-cobertura.md
+59:  mano con `os.Setenv` y `t.Cleanup`, que además enseña por qué `t.Setenv`
+1631:  cubre `t.Cleanup`, `t.Setenv`, fuzzing y el paquete `_test` externo.
+
+── 07-context-y-ciclo-de-vida.md
+1628:tests como red. `embed`, `go.work`, genéricos —enseñados en serio y restringidos en
+1629:serio—, fuzzing, `log/slog`, `slices`, `errors.Join`, `context.WithoutCancel`, y el
+
+(revisar manualmente los que salgan)

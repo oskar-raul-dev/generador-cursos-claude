@@ -1,0 +1,7 @@
+# El patrimonio dentro del cluster (Fase 10): Contingencia, su base y el portal, detrás del mismo Gateway.
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: legacy
+  labels:
+    app.kubernetes.io/part-of: lab

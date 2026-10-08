@@ -1,0 +1,11 @@
+=== líneas de código (sin blancos ni comentarios) ===
+FastAPI (app.py completo, incluye el POST de reservas): 61 líneas
+  AgendaApplication.java: 9
+  Availability.java: 20
+  AvailabilityController.java: 16
+  BranchConverter.java: 12
+Spring Boot: 57 líneas de Java + 36 de pom.xml + 3 de properties = 96
+
+=== docker ===
+daemon activo
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

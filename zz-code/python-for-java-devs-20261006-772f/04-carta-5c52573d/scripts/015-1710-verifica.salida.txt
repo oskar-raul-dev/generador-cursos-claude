@@ -1,0 +1,10 @@
+Process 11: python -c import time
+def hot():
+    s=0
+    for i in range(10**9): s+=i*i
+hot()
+Python v3.14.7 (/usr/local/bin/python3.14)
+
+Thread 11 (active+gil)
+py-spy 0.4.2
+1.20.0

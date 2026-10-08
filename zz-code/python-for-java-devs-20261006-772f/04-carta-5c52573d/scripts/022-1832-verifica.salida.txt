@@ -1,0 +1,11 @@
+  Qdrant   vectores en el índice HNSW: 50000 segmentos: 4
+  Qdrant   exacto                     4.03 ms por consulta · recall@10 1.00
+  Qdrant   HNSW, hnsw_ef=10           3.52 ms por consulta · recall@10 1.00
+  Qdrant   HNSW, hnsw_ef=40           3.51 ms por consulta · recall@10 1.00
+  Qdrant   HNSW, hnsw_ef=200          3.52 ms por consulta · recall@10 1.00
+---
+  Qdrant   vectores en el índice HNSW: 50000 segmentos: 2
+  Qdrant   exacto                     5.56 ms por consulta · recall@10 1.00
+  Qdrant   HNSW, hnsw_ef=10           0.89 ms por consulta · recall@10 0.33
+  Qdrant   HNSW, hnsw_ef=40           0.93 ms por consulta · recall@10 0.60
+  Qdrant   HNSW, hnsw_ef=200          1.42 ms por consulta · recall@10 0.90

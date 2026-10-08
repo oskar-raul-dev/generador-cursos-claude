@@ -1,0 +1,127 @@
+# El ambiente de QA de la Fase 11: la MISMA imagen del storefront, con otra configuración, y un catalog
+# propio con otros datos. Sirve para ver qué pasa cuando la configuración se hornea al compilar (G1) y
+# cuando se lee al arrancar (G2). No es parte del sistema: task deploy no lo aplica.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: storefront-qa-config
+  namespace: apps
+  labels: {app.kubernetes.io/name: storefront-qa, app.kubernetes.io/part-of: lab}
+data:
+  API_BASE_URL: http://api-qa.localhost:8080
+  BRAND_NAME: Droguerías La Vecina · QA
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: storefront-qa
+  namespace: apps
+  labels: {app.kubernetes.io/name: storefront-qa, app.kubernetes.io/part-of: lab, app.kubernetes.io/component: frontend}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app.kubernetes.io/name: storefront-qa}
+  template:
+    metadata:
+      labels: {app.kubernetes.io/name: storefront-qa, app.kubernetes.io/part-of: lab, app.kubernetes.io/component: frontend}
+    spec:
+      containers:
+        - name: storefront
+          image: lab/storefront:g2
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef: {name: storefront-qa-config}
+          ports:
+            - {name: http, containerPort: 8080}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: storefront-qa
+  namespace: apps
+  labels: {app.kubernetes.io/name: storefront-qa, app.kubernetes.io/part-of: lab}
+spec:
+  selector: {app.kubernetes.io/name: storefront-qa}
+  ports:
+    - {name: http, port: 8080, targetPort: http}
+---
+# catalog de QA: el mismo pod de dos contenedores que catalog, con su propio SQLite.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-qa
+  namespace: apps
+  labels: {app.kubernetes.io/name: catalog-qa, app.kubernetes.io/part-of: lab, app.kubernetes.io/component: backend}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: {app.kubernetes.io/name: catalog-qa}
+  template:
+    metadata:
+      labels: {app.kubernetes.io/name: catalog-qa, app.kubernetes.io/part-of: lab, app.kubernetes.io/component: backend}
+    spec:
+      containers:
+        - name: php-fpm
+          image: lab/catalog:g1
+          imagePullPolicy: IfNotPresent
+          volumeMounts:
+            - {name: data, mountPath: /var/lib/catalog}
+        - name: nginx
+          # nginxinc/nginx-unprivileged:1.30.5-alpine
+          image: nginxinc/nginx-unprivileged@sha256:ed04ec1ff34502c339ee5c3ae3f855442398edc1d05591e2b98981dcbbd20b1e
+          imagePullPolicy: IfNotPresent
+          ports:
+            - {name: http, containerPort: 8080}
+          volumeMounts:
+            - {name: nginx-conf, mountPath: /etc/nginx/conf.d}
+      volumes:
+        - {name: data, emptyDir: {}}
+        - {name: nginx-conf, configMap: {name: catalog-nginx}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: catalog-qa
+  namespace: apps
+  labels: {app.kubernetes.io/name: catalog-qa, app.kubernetes.io/part-of: lab}
+spec:
+  selector: {app.kubernetes.io/name: catalog-qa}
+  ports:
+    - {name: http, port: 8080, targetPort: http}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: storefront-qa
+  namespace: apps
+spec:
+  parentRefs:
+    - {name: lab, namespace: gateway}
+  hostnames: ["storefront-qa.localhost"]
+  rules:
+    - backendRefs:
+        - {name: storefront-qa, port: 8080}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: catalog-qa
+  namespace: apps
+spec:
+  parentRefs:
+    - {name: lab, namespace: gateway}
+  hostnames: ["api-qa.localhost"]
+  rules:
+    - matches:
+        - path: {type: PathPrefix, value: /catalog}
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path: {type: ReplacePrefixMatch, replacePrefixMatch: /}
+        # El API de QA le abre CORS solo a la página de QA.
+        - type: CORS
+          cors:
+            allowOrigins: ["http://storefront-qa.localhost:8080"]
+            allowMethods: [GET]
+      backendRefs:
+        - {name: catalog-qa, port: 8080}

@@ -1,0 +1,90 @@
+# a09: el storefront con renderizado en servidor, dos veces con la misma imagen: La Vecina y la de QA.
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: storefront-ssr-brand, namespace: apps, labels: {app.kubernetes.io/part-of: lab}}
+data: {brand: "Droguerías La Vecina"}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata: {name: storefront-ssr-qa-brand, namespace: apps, labels: {app.kubernetes.io/part-of: lab}}
+data: {brand: "La Vecina · QA"}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: storefront-ssr, namespace: apps, labels: {app.kubernetes.io/name: storefront-ssr, app.kubernetes.io/part-of: lab, app.kubernetes.io/component: frontend}}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app.kubernetes.io/name: storefront-ssr}}
+  template:
+    metadata: {labels: {app.kubernetes.io/name: storefront-ssr, app.kubernetes.io/part-of: lab, app.kubernetes.io/component: frontend}}
+    spec:
+      securityContext: {runAsNonRoot: true, runAsUser: 1000, seccompProfile: {type: RuntimeDefault}}
+      containers:
+        - name: storefront-ssr
+          image: lab/storefront-ssr:a09
+          imagePullPolicy: IfNotPresent
+          securityContext: {allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: {drop: [ALL]}}
+          ports: [{name: http, containerPort: 8080}]
+          env:
+            - {name: CATALOG_URL, value: "http://catalog.apps.svc.cluster.local:8080"}
+            - {name: PRICING_URL, value: "http://pricing.apps.svc.cluster.local:8080"}
+            - {name: BRAND_FILE, value: /etc/storefront/brand}
+          # Ahora es un servicio: sondas, memoria y CPU, como los backends.
+          readinessProbe: {httpGet: {path: /health/ready, port: http}, periodSeconds: 5}
+          livenessProbe: {httpGet: {path: /health/live, port: http}, periodSeconds: 10}
+          resources: {requests: {cpu: 50m, memory: 64Mi}, limits: {memory: 128Mi}}
+          volumeMounts: [{name: brand, mountPath: /etc/storefront, readOnly: true}]
+      volumes: [{name: brand, configMap: {name: storefront-ssr-brand}}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: storefront-ssr, namespace: apps, labels: {app.kubernetes.io/part-of: lab}}
+spec: {selector: {app.kubernetes.io/name: storefront-ssr}, ports: [{name: http, port: 8080, targetPort: http}]}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata: {name: storefront-ssr, namespace: apps, labels: {app.kubernetes.io/part-of: lab}}
+spec:
+  parentRefs: [{name: lab, namespace: gateway}]
+  hostnames: ["ssr.localhost"]
+  rules: [{backendRefs: [{name: storefront-ssr, port: 8080}]}]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: {name: storefront-ssr-qa, namespace: apps, labels: {app.kubernetes.io/name: storefront-ssr-qa, app.kubernetes.io/part-of: lab, app.kubernetes.io/component: frontend}}
+spec:
+  replicas: 1
+  selector: {matchLabels: {app.kubernetes.io/name: storefront-ssr-qa}}
+  template:
+    metadata: {labels: {app.kubernetes.io/name: storefront-ssr-qa, app.kubernetes.io/part-of: lab, app.kubernetes.io/component: frontend}}
+    spec:
+      securityContext: {runAsNonRoot: true, runAsUser: 1000, seccompProfile: {type: RuntimeDefault}}
+      containers:
+        - name: storefront-ssr
+          image: lab/storefront-ssr:a09
+          imagePullPolicy: IfNotPresent
+          securityContext: {allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: {drop: [ALL]}}
+          ports: [{name: http, containerPort: 8080}]
+          env:
+            - {name: CATALOG_URL, value: "http://catalog.apps.svc.cluster.local:8080"}
+            - {name: PRICING_URL, value: "http://pricing.apps.svc.cluster.local:8080"}
+            - {name: BRAND_FILE, value: /etc/storefront/brand}
+          # Ahora es un servicio: sondas, memoria y CPU, como los backends.
+          readinessProbe: {httpGet: {path: /health/ready, port: http}, periodSeconds: 5}
+          livenessProbe: {httpGet: {path: /health/live, port: http}, periodSeconds: 10}
+          resources: {requests: {cpu: 50m, memory: 64Mi}, limits: {memory: 128Mi}}
+          volumeMounts: [{name: brand, mountPath: /etc/storefront, readOnly: true}]
+      volumes: [{name: brand, configMap: {name: storefront-ssr-qa-brand}}]
+---
+apiVersion: v1
+kind: Service
+metadata: {name: storefront-ssr-qa, namespace: apps, labels: {app.kubernetes.io/part-of: lab}}
+spec: {selector: {app.kubernetes.io/name: storefront-ssr-qa}, ports: [{name: http, port: 8080, targetPort: http}]}
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata: {name: storefront-ssr-qa, namespace: apps, labels: {app.kubernetes.io/part-of: lab}}
+spec:
+  parentRefs: [{name: lab, namespace: gateway}]
+  hostnames: ["ssr-qa.localhost"]
+  rules: [{backendRefs: [{name: storefront-ssr-qa, port: 8080}]}]

@@ -1,0 +1,18 @@
+# payments: el segundo servicio extraído (taller 03). Python + FastAPI, asíncrono de punta a punta.
+# Versiones fijadas y verificadas en PyPI el 2026-09-29; nunca rangos.
+[project]
+name = "ms-payments"
+version = "1.0.0"
+requires-python = ">=3.14"
+dependencies = [
+    "fastapi==0.141.1",
+    "uvicorn==0.54.0",
+    "httpx==0.28.1",
+    "psycopg[binary]==3.3.6",
+    "psycopg-pool==3.3.3",
+    "purgatory==3.0.1",
+    "aiokafka==0.14.0",          # consumidor asíncrono de orders.events (taller 06)          # circuit breaker nativo de asyncio (taller 05); última versión: 2024-11
+]
+
+[tool.uv]
+package = false

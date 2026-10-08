@@ -1,0 +1,41 @@
+(sin ruff.toml en la raíz del curso)
+I001 [*] Import block is un-sorted or un-formatted
+  --> src/ds01-numpy-y-el-modelo-vectorizado/test_generar_embudo.py:11:1
+   |
+ 9 |   """
+10 |
+11 | / from __future__ import annotations
+12 | |
+13 | | import json
+14 | | import random
+15 | | import subprocess
+16 | | import sys
+17 | | from collections import Counter
+18 | | from datetime import date, datetime
+19 | | from pathlib import Path
+20 | |
+21 | | import pytest
+22 | |
+23 | | import generar_embudo as gen
+   | |____________________________^
+24 |
+25 |   HERE = Path(__file__).parent
+   |
+help: Organize imports
+   |
+20 |
+   - import pytest
+   -
+21 | import generar_embudo as gen
+22 + import pytest
+23 |
+   |
+
+F401 [*] `datetime.datetime` imported but unused
+  --> src/ds07-scikit-learn/generar_ausentismo.py:35:28
+   |
+33 | import math
+34 | import random
+35 | from datetime import date, datetime, timedelta
+   |                            ^^^^^^^^
+36 | from pathlib import Path

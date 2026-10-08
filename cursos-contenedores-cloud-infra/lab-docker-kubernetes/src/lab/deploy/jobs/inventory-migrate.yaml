@@ -1,0 +1,33 @@
+# Las migraciones de inventory (G3, Fase 12): una sola vez, ANTES del rollout, con la misma imagen del
+# servicio. task migrate lo borra y lo vuelve a crear: un Job terminado no se puede volver a aplicar.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: inventory-migrate
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: inventory
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/component: migration
+spec:
+  # Dos reintentos: el primero suele ser Postgres que todavía no acepta conexiones.
+  backoffLimit: 2
+  # El Job terminado se borra solo a los diez minutos; su log se lee antes.
+  ttlSecondsAfterFinished: 600
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: inventory
+        app.kubernetes.io/part-of: lab
+        app.kubernetes.io/component: migration
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrate
+          image: lab/inventory:g3
+          imagePullPolicy: IfNotPresent
+          command: ["java", "-jar", "inventory-0.0.1-SNAPSHOT.jar", "migrate"]
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                secretKeyRef: {name: inventory-db, key: DATABASE_URL}

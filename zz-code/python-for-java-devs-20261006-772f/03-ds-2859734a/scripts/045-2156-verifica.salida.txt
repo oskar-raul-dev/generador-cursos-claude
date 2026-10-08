@@ -1,0 +1,4 @@
+--- entorno con solo duckdb ---
+pandas cargado: False · polars: False
+--- entorno con duckdb + pandas + polars ---
+pandas cargado: False · polars: False

@@ -1,0 +1,3 @@
+Archive:  z.zip
+   skipping: a.txt                   need PK compat. v6.3 (can do v4.6)
+salida: 0

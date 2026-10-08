@@ -1,0 +1,73 @@
+=== prompts/README 56-86 ===
+  de los complementos `ia` y `ds`, con la tabla de secciones y su orden de escritura.
+
+---
+
+## 🚀 Cómo abrir una sesión de escritura
+
+**Primero los tres documentos de la raíz del curso**, en este orden, cada uno en su chat, con el
+prompt que le corresponde en
+**[`prompts-documentos-raiz.md`](prompts-documentos-raiz.md)**:
+
+1. `0-ESTRUCTURA-CURSO.md`
+2. `00-convencion-de-git-y-tags.md`
+3. `README.md` del curso
+
+**Después las fases**, una por chat. El prompt se arma copiando dos cosas de
+**[`prompts-de-fase.md`](prompts-de-fase.md)**: el **§ Marco común** y el bloque de esa fase.
+
+El orden de escritura recomendado, y no es el orden de los números:
+
+| Turno | Qué | Por qué |
+|---|---|---|
+| 1 | Fases **00** y **01** | Fijan el ambiente, la voz, el registro y la forma del CLI que seis fases arrastran |
+| 2 | Fases **07** y **09** | Las ⭐ de la tesis. Son las que más pueden obligar a reescribir el Bloque A, y descubrirlo tarde sale caro |
+| 3 | Resto del **Bloque A** (02-06) | Con la frontera ya escrita, se sabe hacia dónde tienen que apuntar |
+| 4 | **08**, y luego el **Bloque C** (10-16) | En orden, porque cada proyecto crece sobre el anterior |
+| 5 | Fase **17**, y después `BENCHMARKS.md` e `INSTINTOS.md` | El cierre necesita todas las mediciones hechas |
+| 6 | Los complementos **`ia01`–`ia08`** y **`ds01`–`ds09`**, en ese orden | Construyen los cuatro proyectos de IA y datos sobre el código del camino base. El prompt sale de `prompts-de-tracks-ia-ds.md` |
+
+---
+
+## 🗂️ Qué es cada archivo
+=== prompts-documentos-raiz head ===
+# 📍 Prompts de los documentos de la raíz del curso
+## Python para desarrolladores Java senior
+
+> ✅ **Estado: el camino base está escrito.** Las 18 fases (00–17), `BENCHMARKS.md` e
+> `INSTINTOS.md` están publicados en la raíz del curso. Este documento pasa de ser **encargo** a
+> ser **registro de lo que se decidió**: sigue mandando sobre cualquier revisión del camino base y
+> sobre el material a la carta, pero ya no describe trabajo pendiente.
+>
+> Los tres documentos que este archivo encarga —`0-ESTRUCTURA-CURSO.md`,
+> `00-convencion-de-git-y-tags.md` y el `README.md`— **existen y están publicados**, y a ellos se
+> sumaron después `BENCHMARKS.md` e `INSTINTOS.md`, que la Fase 17 consolidó.
+
+Tres documentos viven en la **raíz del curso**, no en `prompts/`, y **se escribieron antes que
+cualquier fase** porque las 18 fases los enlazan. Cada uno se redactó en su propio chat.
+
+Orden obligatorio: primero `0-ESTRUCTURA-CURSO.md`, después `00-convencion-de-git-y-tags.md`,
+después el `README.md`. El tercero resume a los dos primeros, así que escribirlo antes garantiza
+que se contradigan.
+
+---
+
+## # 0-ESTRUCTURA-CURSO.md
+
+````markdown
+Este chat produce un único archivo: `0-ESTRUCTURA-CURSO.md`, en la **raíz** del curso *Python
+para desarrolladores Java senior* (no en `prompts/`).
+
+## Marco
+
+Fuentes de verdad, en este orden: `prompts/alcance-del-proyecto.md` —el techo; su §0 fija que el
+curso es autocontenido y no hereda reglas de fuera de esta carpeta—,
+`prompts/propuesta-fases-y-alcance.md`, `prompts/guia-de-estilo-y-convenciones.md`.
+
+Este documento es **el mapa que el lector usa para orientarse**, y la fuente de verdad de la
+estructura para quien escriba una fase. No repite el contenido de las fases: las sitúa.
+
+## Qué tiene que contener
+
+- **Qué es el curso en una frase** y cuál es su eje: *¿esto es un script, una herramienta o una
+  aplicación?*

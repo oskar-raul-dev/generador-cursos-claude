@@ -1,0 +1,26 @@
+# El servidor del storefront (G2, Fase 11). La imagen de nginx convierte esta plantilla en
+# conf.d/default.conf al arrancar, reemplazando ${API_BASE_URL} y ${BRAND_NAME} con las variables del
+# contenedor: la misma imagen sirve otra configuración en cada despliegue, sin compilar de nuevo.
+server {
+    listen 8080;
+    server_name _;
+    root /usr/share/nginx/html;
+
+    # La configuración de la página, leída en el navegador antes de pedir nada al API.
+    location = /config.json {
+        default_type application/json;
+        # Sin caché: un cambio de configuración tiene que verse en la siguiente carga, no mañana.
+        add_header Cache-Control "no-store" always;
+        return 200 '{"apiBaseUrl":"${API_BASE_URL}","brandName":"${BRAND_NAME}"}';
+    }
+
+    # La página misma, sin caché que la congele: el navegador pregunta cada vez (con su ETag) y se
+    # entera de un despliegue nuevo. Los archivos de assets/ llevan un hash en el nombre y sí se guardan.
+    location = /index.html {
+        add_header Cache-Control "no-cache" always;
+    }
+
+    location / {
+        index index.html;
+    }
+}

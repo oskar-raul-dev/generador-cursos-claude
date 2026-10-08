@@ -1,0 +1,5 @@
+apiVersion: v2
+name: inventory
+description: inventory en el laboratorio (Fase 13)
+type: application
+version: 0.13.0

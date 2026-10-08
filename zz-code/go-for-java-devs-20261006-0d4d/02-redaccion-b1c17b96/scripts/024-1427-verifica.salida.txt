@@ -1,0 +1,67 @@
+## 9. Plantilla obligatoria de cada fase (10 secciones)
+
+Toda fase produce un `.md` con exactamente estas diez secciones, en orden. El
+esqueleto rellenable está en `plantillas-de-capitulo.md`.
+
+1. **🎯 Propósito** — qué resuelve la fase, anclado al estado en que la dejó la
+   anterior.
+2. **✅ Qué queda listo al terminar** — checklist verificable, no promesas.
+3. **🚫 Qué NO entra todavía** — qué se difiere y a qué fase exacta.
+4. **🧠 Concepto mínimo** — la teoría justa. Aquí viven 🪞, 🩻 y 📝.
+5. **🛠️ CLI de la fase** — los comandos nuevos, con sus banderas explicadas.
+6. **💻 Construcción guiada** — el grueso, en ciclos de "diciendo y haciendo":
+   mini proyectos primero, luego el avance del proyecto o proyectos de la fase.
+   Aquí viven las 🧪 Pruebas de fuego y los 💸.
+7. **⚰️ Autopsia y errores comunes** — el ☕ de la fase con su costo medido, más
+   dos a cuatro errores típicos en formato síntoma → causa → fix mínimo, y al
+   menos un 🧨.
+8. **🧪 Ejercicios** — ver §10.
+9. **📚 Referencias** — ver §11.
+10. **⚖️ Veredicto y cierre** — cuándo no usar esto, el 📖 diccionario de la
+    fase, qué sigue, La señal de que quedó bien, y el bloque 🏷️ del tag.
+
+Después de la décima, y **fuera de lo que lee el estudiante**, cada fase cierra
+con **📌 Pendientes sugeridos**: lo que apareció al escribirla y no cabía dentro,
+con destino explícito. Es material de autoría.
+
+### 9.1 El recordatorio del tag, en el cierre
+======== §10
+## 10. Ejercicios
+
+- **Cantidad: 20 mínimo, 24 ideal, hasta 30 en las densas.** Las Fases 06, 09 y
+  16 llegan a 30 y ese es el techo.
+- **Distribución equilibrada.** Para ~24: unos 6 🟢, 8 🟡, 6 🟠 y 4 🔴, más los 🔥
+  aparte.
+- **Numeración continua con encabezado de rango:**
+
+  ```markdown
+  ## 🧪 8. Ejercicios (24)
+
+  **🟢 Fácil (1–6)**
+  1. ...
+
+  **🟡 Intermedio (7–14)**
+  **🟠 Difícil (15–20)**
+  **🔴 Muy difícil (21–24)**
+  **🔥 Opcionales**
+  ```
+
+- **Accionables y verificables**, con criterio de éxito medible: *"tu worker pool
+  procesa 10.000 jobs sin que `-race` reporte nada y el proceso termina en menos
+  de dos segundos tras la señal"*, no *"reflexiona sobre la concurrencia"*.
+- **Al menos un tercio son de diagnóstico**: se entrega algo roto y se pide
+  reproducir, localizar y explicar. Un deadlock, una fuga de goroutines, un
+  `nil map`, un `defer` dentro de un bucle, un `context` que nadie cancela.
+- **Al menos dos por fase, desde la Fase 02, son de detección de ☕**: se da un
+  fragmento con olor a Java y se pide reescribirlo en Go idiomático y justificar
+  qué se perdió y qué se ganó.
+- **Al menos uno por fase toca la línea de comandos**: una bandera de `go test`,
+  una consulta con `go list`, una compilación cruzada, un `go doc`.
+- **Enganchados al dominio.** Work items, entregas, tiendas, movimientos, tipos
+  de cambio. Nunca `foo` y `bar`.
+- **Con el identificador vigente**: si el ejercicio nombra código, usa el nombre
+  en inglés que ya existe en la fase.
+- **Cada ejercicio 🔴 lleva rúbrica o solución de referencia**; los 🟢 y 🟡 basta
+  con el criterio de éxito.
+
+---

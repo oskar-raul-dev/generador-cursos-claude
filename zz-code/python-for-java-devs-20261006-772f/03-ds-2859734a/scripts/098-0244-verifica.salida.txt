@@ -1,0 +1,7 @@
+=== 1. Otros cursos del proyecto ===
+(eval):3: no matches found: --include=*.md
+--- (vacío = bien) ---
+
+=== 2. CLAUDE.md y la raíz del proyecto ===
+(eval):7: no matches found: --include=*.md
+--- (vacío = bien) ---

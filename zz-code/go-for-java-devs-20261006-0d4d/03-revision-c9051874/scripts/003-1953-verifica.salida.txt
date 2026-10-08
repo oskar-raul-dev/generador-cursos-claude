@@ -1,0 +1,23 @@
+=== restos ===
+(vacío = ok)
+
+=== links rotos ===
+ninguno
+
+=== git ===
+ M 0-ESTRUCTURA-CURSO.md
+ D 00-ambiente-y-tooling.md
+ M 13-lotes-scheduling-y-asincronia.md
+ M 14-observabilidad-y-hardening.md
+ M 15-rendimiento-y-profiling.md
+ M 17-capstone.md
+ M BENCHMARKS.md
+ M README.md
+ M prompts/alcance-del-proyecto.md
+ M prompts/formato-de-benchmarks.md
+ D prompts/historia-de-la-empresa-meridian.md
+ M prompts/plantillas-de-capitulo.md
+ M prompts/prompts-extendidos-fases.md
+ M prompts/propuesta-fases-y-alcance.md
+?? 00-historia-de-la-empresa-meridian.md
+?? 00-instalacion-ambiente-y-tooling.md

@@ -1,0 +1,38 @@
+# La regla de dependencias, comprobada estáticamente: el dominio no importa nada; la aplicación solo
+# el dominio; el borde HTTP no toca los adaptadores de salida; Laravel y los drivers solo en app/.
+deptrac:
+  paths:
+    - ./src
+    - ./app
+  layers:
+    - name: Domain
+      collectors:
+        - type: classLike
+          value: ^Hex\\Domain\\
+    - name: Application
+      collectors:
+        - type: classLike
+          value: ^Hex\\Application\\
+    - name: Http
+      collectors:
+        - type: classLike
+          value: ^App\\Http\\
+    - name: Adapters
+      collectors:
+        - type: classLike
+          value: ^App\\(Persistence|Redis|Security|Payment|Support)\\
+    - name: Composition
+      collectors:
+        - type: classLike
+          value: ^App\\(Providers|Console)\\
+    - name: Framework
+      collectors:
+        - type: classLike
+          value: ^(Illuminate|Laravel|Symfony|Carbon|MongoDB|Predis|Firebase|PDO)\\?
+  ruleset:
+    Domain: ~
+    Application: [Domain]
+    Http: [Domain, Application, Framework]
+    Adapters: [Domain, Application, Http, Framework]      # un adaptador puede implementar una interfaz del borde (TokenVerifier)
+    Composition: [Domain, Application, Http, Adapters, Framework]
+    Framework: ~

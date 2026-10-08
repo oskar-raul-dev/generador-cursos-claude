@@ -1,0 +1,6 @@
+{"type": "record", "name": "Abono", "namespace": "co.aurea.cartera",
+ "fields": [
+   {"name": "sede", "type": "string"},
+   {"name": "valor", "type": {"type": "bytes", "logicalType": "decimal", "precision": 12, "scale": 2}},
+   {"name": "momento", "type": {"type": "long", "logicalType": "timestamp-millis"}}
+ ]}

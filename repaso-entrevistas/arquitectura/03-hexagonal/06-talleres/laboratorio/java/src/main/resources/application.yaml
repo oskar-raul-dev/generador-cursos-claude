@@ -1,0 +1,88 @@
+# Configuración del sabor Java. Los valores son los de §11 de la guía; se leen en el composition
+# root y en los adaptadores, nunca en dominio ni aplicación.
+server:
+  port: 8081
+
+spring:
+  application:
+    name: hex-orders-java
+  datasource:
+    url: jdbc:postgresql://localhost:15432/hex_orders
+    username: hex
+    password: hex-lab-pass
+  jpa:
+    open-in-view: false            # ninguna sesión JPA sobrevive al caso de uso: nada de lazy loading en el controller
+    hibernate:
+      ddl-auto: none               # el esquema es el de laboratorio/contrato/seed/schema.sql, compartido por los cinco sabores
+  # Spring Boot 4 renombró estas propiedades: spring.data.mongodb.* y spring.data.redis.* son los
+  # nombres viejos. El de Mongo se ignora en silencio y el cliente cae al puerto por defecto 27017.
+  mongodb:
+    uri: mongodb://localhost:17017/hex_catalog
+  redis:
+    host: localhost
+    port: 16379
+  # taller 08: el broker JMS. Si hex-artemis no está arriba, el listener reintenta conectar en
+  # segundo plano y el resto del backend funciona igual.
+  artemis:
+    mode: native
+    broker-url: tcp://localhost:61616
+    user: hex
+    password: hex-lab-pass
+
+  # taller 09: el tópico. Sin hex-kafka arriba y con hex.events.transport=table nada de esto se usa.
+  kafka:
+    bootstrap-servers: localhost:19092
+    consumer:
+      auto-offset-reset: earliest     # un grupo nuevo empieza por el principio: así se reconstruye una proyección
+      enable-auto-commit: false       # el offset se confirma a mano, después del efecto
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      acks: all                       # el broker confirma cuando el registro está en el log (un solo broker: el suyo)
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    listener:
+      ack-mode: manual_immediate      # ack() en el listener = commit del offset ahí mismo
+
+  # taller 11: Spring Batch. Las tablas BATCH_* del JobRepository se crean en hex_orders al arrancar;
+  # ningún job corre solo: lab.py batch pasa spring.batch.job.enabled=true y el nombre del job.
+  batch:
+    job:
+      enabled: false
+    jdbc:
+      initialize-schema: always
+  # taller 10: el canal al proveedor de pagos gRPC (solo se usa con hex.payment.provider=grpc)
+  grpc:
+    client:
+      channel:                    # singular en Boot 4 (`channels` era Spring gRPC 0.x y se ignora en silencio)
+        payments:
+          target: static://localhost:19090   # `target`, no `address`: la clave equivocada se ignora y el nombre del canal pasa a ser el host
+
+hex:
+  catalog: postgres                # postgres | mongo — la parte 3 de cada sabor lo cambia a mongo
+  jwt:
+    secret: hex-lab-dev-secret-change-me-0123456789   # HS256 exige al menos 32 bytes
+    ttl-seconds: 900
+  outbox:
+    poll-ms: 500
+  cors:
+    allowed-origin: http://localhost:5173
+  batch:                           # taller 11
+    chunk-size: 100                # filas por transacción: el checkpoint del lote
+    skip-limit: 10                 # líneas apartadas a cuarentena antes de dar el job por fallido
+    chaos: none                    # crash-on-marker: una línea con reason=CRASH mata la JVM a mitad de chunk
+    out-dir: ../batch/out          # informes del dailyClose y cuarentenas, relativo a laboratorio/java
+  payment:                         # taller 10
+    provider: deterministic        # deterministic: la regla de §11 en proceso · grpc: payments-grpc por la red
+    deadline-ms: 2000              # plazo por llamada; vencido → DEADLINE_EXCEEDED → resultado incierto (PENDING)
+  events:                          # taller 09
+    transport: table               # table: outbox → Notifier en la tabla (taller 03) · kafka: outbox → orders.events
+  kafka:
+    topic: orders.events
+    partitions: 3
+    keyed: true                    # false: productor sin clave (provocación del taller 09)
+    chaos: none                    # crash-before-offset-commit: el consumidor cae tras aplicar y antes del ack
+  jms:                             # taller 08
+    inbound: orders.inbound        # cola anycast de peticiones; los consumidores compiten
+    reply: orders.reply            # respuestas, correlacionadas por JMSCorrelationID
+    concurrency: 1                 # consumidores por instancia; el taller levanta dos instancias

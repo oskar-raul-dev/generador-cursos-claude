@@ -1,0 +1,14 @@
+ds01-numpy-y-el-modelo-vectorizado/test_acquisition.py     9
+ds01-numpy-y-el-modelo-vectorizado/test_generar_embudo.py  31
+ds02-pandas/test_collections_report.py                     10
+ds03-polars-y-el-modelo-lazy/test_consolidation.py         11
+ds04-embudo/test_embudo.py                                 23
+ds07-scikit-learn/test_generar_ausentismo.py               19
+--- lo que dicen los README y prompts ---
+   1 10 pruebas
+   2 11 pruebas
+   2 134 pruebas
+   1 19 pruebas
+   2 23 pruebas
+   1 39 pruebas
+   2 47 pruebas

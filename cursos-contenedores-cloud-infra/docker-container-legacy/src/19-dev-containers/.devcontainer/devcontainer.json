@@ -1,0 +1,41 @@
+{
+  "name": "Legacy Node 10 - Vue 2",
+
+  // reutilizamos el toolchain del curso: una sola definición del entorno
+  "image": "legacy-node-toolchain:phase15",
+
+  "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+  "workspaceFolder": "/workspace",
+
+  // node_modules en named volume, con la generación de Node en el nombre (F01, F14)
+  "mounts": [
+    "source=legacy-vue2-node10-modules,target=/workspace/node_modules,type=volume"
+  ],
+
+  "containerEnv": {
+    "NODE_VERSION": "10.24.1"
+  },
+
+  // --platform por el baseline de F01; --init por los zombies de F16
+  "runArgs": [
+    "--platform=linux/amd64",
+    "--init"
+  ],
+
+  "forwardPorts": [8080, 3000, 9229],
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "typescript.tsdk": "node_modules/typescript/lib",
+        "vetur.useWorkspaceDependencies": true
+      },
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "octref.vetur",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  }
+}

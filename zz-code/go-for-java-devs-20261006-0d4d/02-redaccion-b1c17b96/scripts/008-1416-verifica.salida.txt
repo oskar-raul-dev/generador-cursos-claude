@@ -1,0 +1,55 @@
+───── 02-structs-interfaces-composicion.md:62
+- HTTP → Fase 05. Los servicios de esta fase no tienen API; se ejercitan desde
+  `main`.
+- Concurrencia → Fase 06. El `memstore` de esta fase **no es seguro para uso
+  concurrente** y lo dice en su documentación. 💸
+
+
+───── 02-structs-interfaces-composicion.md:1318
+// —contra SSRF, resolviendo la IP y rechazando rangos privados— entra en la
+// Fase 14, y es un tema serio: un socio puede registrar
+// http://169.254.169.254/latest/meta-data/ y usar tu servicio como proxy hacia
+// los metadatos de tu propia nube.  💸
+func (e Endpoint) Validate() error {
+
+───── 02-structs-interfaces-composicion.md:1438
+// failing si quedan intentos, dead si se agotaron.
+//
+// El retroceso exponencial con jitter se escribe de verdad en la Fase 10; aquí
+// el cálculo es lineal y está marcado como provisional.  💸
+func (d *Delivery) RecordFailure(now time.Time, reason string) error {
+
+───── 03-errores-paquetes-io.md:62
+  solo se envuelve **uno**.
+- `errors.As` con tipos genéricos → no existe; los genéricos son de la Fase 08 🕰️.
+- Logging estructurado → Fase 14. Aquí el log es `log` de la stdlib con formato
+  libre, y **está declarado como provisional**. 💸
+- `embed` para las plantillas y archivos de configuración → Fase 08 🕰️ (Go 1.16).
+
+───── 05-http-rest-stdlib.md:485
+//
+// El identificador se guarda en el contexto de la petición, que es el mecanismo
+// correcto — pero el contexto es la Fase 07 y aquí lo usamos con lo mínimo
+// explicado. Que conste que r.Context() NO es un ThreadLocal.  💸
+func RequestID(next http.Handler) http.Handler {
+
+───── 05-http-rest-stdlib.md:541
+
+// Logging registra método, ruta, estado, tamaño y duración.
+// El formato es libre y provisional: en la Fase 14 esto se convierte en slog con
+// campos estructurados, y allí se comparan las dos salidas.  💸
+func Logging(next http.Handler) http.Handler {
+
+───── 06-concurrencia.md:69
+  patrones de acceso muy concretos y en el 95% de los casos un `map` con
+  `RWMutex` es más rápido y más claro. Se explica por qué en §7.
+- Persistencia de la cola → Fase 09. Hoy todo vive en memoria, y eso es una deuda
+  declarada. 💸
+
+
+───── 06-concurrencia.md:1012
+	//
+	// En la Fase 07 esto lo sustituye context.Context, que es exactamente este
+	// mecanismo empaquetado con plazos y propagación. Verlo a mano primero hace
+	// que context se entienda enseguida.  💸
+	quit     chan struct{}

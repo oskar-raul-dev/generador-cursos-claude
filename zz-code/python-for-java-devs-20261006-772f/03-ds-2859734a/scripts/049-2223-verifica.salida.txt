@@ -1,0 +1,21 @@
+recortados los auxiliares sin uso
+leads 32,550 · maduros 28,416 · adquiridos 6,065 · adquiridos maduros 5,451
+
+=== reparto del crédito (%) sobre leads maduros ===
+canal          primer toque   último toque         lineal    decaimiento
+aliado                11.4%          24.7%          18.0%          18.4%
+google                11.7%          20.8%          16.1%          17.0%
+instagram             28.4%           9.6%          18.6%          17.8%
+referido              11.1%          30.1%          20.3%          21.4%
+tiktok                30.4%           4.1%          16.7%          15.1%
+walk_in                6.9%          10.7%          10.3%          10.2%
+
+=== costo por paciente adquirido (COP) ===
+canal          primer toque   último toque         lineal    decaimiento
+google           3,159,693      1,777,328      2,299,376      2,172,737 
+instagram        1,304,316      3,841,037      1,995,442      2,077,301 
+tiktok           1,218,254      9,139,664      2,217,602      2,453,323 
+
+=== efecto de la madurez: último toque, con y sin filtro ===
+sin filtro  google=1,588,548  instagram=3,557,016  tiktok=8,706,318  
+maduros     google=1,777,328  instagram=3,841,037  tiktok=9,139,664

@@ -1,0 +1,26 @@
+00-historia-de-la-empresa-meridian.md:9:> **Relación con los otros documentos.** `prompts/alcance-del-proyecto.md` §5 define el dominio y su
+00-historia-de-la-empresa-meridian.md:392:`prompts/alcance-del-proyecto.md` §5.2, y **ninguno reemplaza a Nexo ni al ERP**. Lo que sigue es de
+04-testing-dobles-cobertura.md:1871:  de la Fase 10 (`prompts/formato-de-benchmarks.md` §1 la menciona). No tiene ID asignado;
+06-concurrencia.md:2239:  `prompts/formato-de-benchmarks.md` §3 prohíbe. El ejercicio 29 produce los datos.
+08-migracion-a-go-moderno.md:1743:  la memoria serán similares"*. Es la entrada donde `prompts/formato-de-benchmarks.md` §3
+07-context-y-ciclo-de-vida.md:1720:  `prompts/propuesta-fases-y-alcance.md` §4, que solo contemplaba `fase-NN` y los
+07-context-y-ciclo-de-vida.md:1764:  Según la regla de `prompts/formato-de-benchmarks.md`, o se mide o no se afirma.
+09-sql-postgres-sqlite.md:1181:> como manda `prompts/formato-de-benchmarks.md` §3 regla 1: si el curso menciona GORM, GORM
+10-clientes-http-y-apis-externas.md:2073:Esta fase **no tiene entradas asignadas** en `prompts/formato-de-benchmarks.md` §5, y
+10-clientes-http-y-apis-externas.md:2086:  `prompts/formato-de-benchmarks.md` §1 la menciona explícitamente como candidata y **sigue
+12-cache-con-valkey.md:1509:    igual** — es la regla 5 de honestidad de `prompts/formato-de-benchmarks.md`.
+12-cache-con-valkey.md:1801:  por el proyecto y no medida por el curso. **`prompts/formato-de-benchmarks.md` §3 exige
+11-mongodb-y-modelado-documental.md:1827:  conviene fijar en `prompts/alcance-del-proyecto.md` §6.3 que la versión es la v2, porque
+11-mongodb-y-modelado-documental.md:1864:Esta fase **no tiene entradas asignadas** en `prompts/formato-de-benchmarks.md` §5, y
+16-go-frente-a-spring-boot.md:68:Están en `prompts/formato-de-benchmarks.md` §3 y aquí es donde más filo tienen:
+16-go-frente-a-spring-boot.md:650:**2. Extrapolar.** `prompts/formato-de-benchmarks.md` §3 regla 8 lo prohíbe: que el cierre
+15-rendimiento-y-profiling.md:25:> `prompts/formato-de-benchmarks.md`, y en esta fase vas a escribir una de verdad: una
+15-rendimiento-y-profiling.md:1035:La regla 5 de `prompts/formato-de-benchmarks.md`: *"se publica el resultado incómodo. Si
+15-rendimiento-y-profiling.md:1335:*Fix mínimo:* medir. La regla 8 de `prompts/formato-de-benchmarks.md` lo prohíbe
+BENCHMARKS.md:11:El formato de cada entrada está en `prompts/formato-de-benchmarks.md`.
+17-capstone.md:1387:Las 24 entradas de `prompts/formato-de-benchmarks.md` §5 están asignadas a su fase. **Y hay
+17-capstone.md:1403:> asignarles ID (B-25 a B-31) y ampliar `prompts/formato-de-benchmarks.md` §5, o **suavizar
+17-capstone.md:1410:El curso amplía la convención original de `prompts/propuesta-fases-y-alcance.md`
+=== verificacion final: enlaces + refs externas ===
+enlaces rotos: ninguno ✅
+refs externas: ninguna ✅

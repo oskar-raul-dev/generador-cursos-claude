@@ -1,0 +1,18 @@
+import pandas as pd
+from pathlib import Path
+print("pandas", pd.__version__)
+d=Path("data")
+raw = pd.read_csv(d/"cuotas.csv")
+print(raw.dtypes.to_string())
+print("crudo deep:", raw.memory_usage(deep=True).to_string())
+print("total crudo:", raw.memory_usage(deep=True).sum()/1e6)
+cat = pd.read_csv(d/"cuotas.csv", dtype={"plan_id":"category","fecha_pago":"string"})
+print("con category plan_id:", cat.memory_usage(deep=True).sum()/1e6)
+obj = pd.read_csv(d/"cuotas.csv", dtype={"plan_id":"object","fecha_pago":"object"})
+print("forzando object:", obj.memory_usage(deep=True).sum()/1e6, obj.dtypes.to_string())
+pl = pd.read_csv(d/"planes_de_tratamiento.csv")
+print("\nplanes dtypes:"); print(pl.dtypes.to_string()); print("planes crudo:", pl.memory_usage(deep=True).sum()/1e6)
+plc = pd.read_csv(d/"planes_de_tratamiento.csv", dtype={"sede":"category","interes":"category"})
+print("planes category:", plc.memory_usage(deep=True).sum()/1e6)
+plo = pd.read_csv(d/"planes_de_tratamiento.csv", dtype={c:"object" for c in ["plan_id","lead_id","sede","interes","fecha_aceptacion"]})
+print("planes object:", plo.memory_usage(deep=True).sum()/1e6)

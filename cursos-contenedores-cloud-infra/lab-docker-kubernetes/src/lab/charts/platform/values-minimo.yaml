@@ -1,0 +1,4 @@
+# Perfil minimo (contrato §5): kind de un nodo, todo a una réplica, la observabilidad apagada.
+# Es exactamente lo que dicen los valores por defecto, y por eso este archivo no cambia nada: existe
+# para que `task deploy -- minimo` diga lo que hace.
+{}

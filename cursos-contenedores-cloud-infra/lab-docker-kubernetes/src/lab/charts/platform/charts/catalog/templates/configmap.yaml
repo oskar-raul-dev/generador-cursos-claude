@@ -1,0 +1,14 @@
+# El nginx.conf de catalog, desde files/ del chart. Es un enlace simbólico a services/catalog/nginx.conf:
+# una sola fuente, la misma que usa compose.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: catalog-nginx
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+data:
+  default.conf: |
+    {{- .Files.Get "files/nginx.conf" | nindent 4 }}
+  # G7 (Fase 18): el nginx.conf principal, con los errores en warn: sin los avisos de arranque en texto.
+  nginx.conf: |
+    {{- .Files.Get "files/nginx-main.conf" | nindent 4 }}

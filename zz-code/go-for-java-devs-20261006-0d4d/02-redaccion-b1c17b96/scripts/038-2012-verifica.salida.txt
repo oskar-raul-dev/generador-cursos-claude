@@ -1,0 +1,29 @@
+analisis-forense-tutoriales.md
+claude-remote.md
+CLAUDE.md
+nuevas-ideas.md
+PLAN-REFRESCAMIENTO.md
+README.md
+--- lineas ---
+     282 PLAN-REFRESCAMIENTO.md
+     833 nuevas-ideas.md
+     129 claude-remote.md
+    1244 total
+--- headings PLAN ---
+1:# 🎯 Plan de refrescamiento profesional
+15:## 1. El diagnóstico: qué tienes y qué falta
+37:### Lo que NO es prioridad, y por qué
+55:## 2. Lo que hay que construir: `repaso-arquitectura-entrevistas`
+98:## 3. La jornada de 6 horas
+145:## 4. El calendario
+150:### Semana 0 — Antes de empezar (1 día)
+159:### Semanas 1–2 — Arquitectura: el hueco (72 h)
+171:### Semana 3 — AWS: reactivación (36 h)
+180:### Semana 4 — GCP: reactivación (36 h)
+186:### Semana 5 — Integración y profundidad (36 h)
+192:### Semana 6 — La cola larga, con reloj (36 h)
+201:### Semana 7 en adelante — Mantenimiento dirigido
+213:## 5. El protocolo de interrupción
+230:## 6. Cómo saber si funciona
+252:## 7. Inventario del repositorio
+271:## 8. Lo que hay que decidir

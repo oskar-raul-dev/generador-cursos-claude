@@ -1,0 +1,12 @@
+docker.io/library/eclipse-temurin:21.0.12.1_1-jdk
+com.fasterxml.jackson.core jackson-core - compile 
+com.fasterxml.jackson.core jackson-databind - compile 
+org.apache.commons commons-compress - compile 
+org.xerial.snappy snappy-java - compile optional
+org.tukaani xz - compile optional
+com.github.luben zstd-jni - compile optional
+org.hamcrest hamcrest-library - test 
+org.mockito mockito-core - test 
+<commons-compress.version>1.28.0
+<jackson-bom.version>2.22.1
+<slf4j.version>2.0.18

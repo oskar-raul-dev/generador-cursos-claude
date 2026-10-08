@@ -1,0 +1,24 @@
+version: '3'
+
+vars:
+  # El intérprete del sistema y el del entorno virtual cambian de nombre en Windows.
+  PYTHON: '{{if eq OS "windows"}}python{{else}}python3{{end}}'
+  VENV_PY: '{{if eq OS "windows"}}.venv\Scripts\python.exe{{else}}.venv/bin/python{{end}}'
+
+tasks:
+  venv:
+    internal: true
+    desc: Crea el .venv de un directorio de scripts e instala su requirements.txt
+    dir: '{{.DIR}}'
+    cmds:
+      - '{{.PYTHON}} -m venv .venv'
+      - '{{.VENV_PY}} -m pip install --quiet --disable-pip-version-check -r requirements.txt'
+    sources: [requirements.txt]
+    generates: ['.venv/pyvenv.cfg']
+
+  seed:generate:
+    desc: Genera droguerías y productos sintéticos con Faker (es_CO)
+    deps: [{task: venv, vars: {DIR: scripts/seed}}]
+    dir: scripts/seed
+    cmds:
+      - '{{.VENV_PY}} generate.py {{.CLI_ARGS}}'

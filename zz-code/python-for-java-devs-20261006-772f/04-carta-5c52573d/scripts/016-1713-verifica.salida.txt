@@ -1,0 +1,2 @@
+mensaje: la cita del paciente 1023456789 no tiene sede
+vars del marco de book: [{'patient_document': "'1023456789'", 'branch': 'None'}]

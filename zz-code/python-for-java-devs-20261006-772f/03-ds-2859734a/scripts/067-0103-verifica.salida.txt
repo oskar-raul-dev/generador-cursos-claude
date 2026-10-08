@@ -1,0 +1,12 @@
+Matplotlib is building the font cache; this may take a moment.
+Costo por paciente adquirido · Áurea · corte 2026-03-31
+Punto: atribución lineal. Banda: el mínimo y el máximo entre los cuatro modelos.
+
+canal           mínimo    lineal    máximo     banda
+google           1.55M     2.01M     2.76M      1.8×
+tiktok           1.06M     1.93M     7.96M      7.5×
+instagram        1.14M     1.74M     3.35M      2.9×
+
+matplotlib  salida/matplotlib.png · 29.2 KB
+plotly      salida/plotly.html · 9.4 KB
+altair      salida/altair.html · 2.3 KB

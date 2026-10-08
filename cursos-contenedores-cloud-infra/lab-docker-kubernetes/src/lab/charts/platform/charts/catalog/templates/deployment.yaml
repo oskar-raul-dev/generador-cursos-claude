@@ -1,0 +1,84 @@
+# catalog en el cluster: un pod, dos contenedores (D34). No sigue la plantilla de los otros: es el
+# único con dos procesos, y la diferencia queda a la vista en vez de esconderse en un parámetro.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+spec:
+  {{- include "lab-common.deploymentSpec" . | nindent 2 }}
+  selector:
+    matchLabels:
+      {{- include "lab-common.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "lab-common.podLabels" . | nindent 8 }}
+      annotations:
+        # Si cambia el nginx.conf, cambia el pod (el mismo truco que los topes de pricing).
+        checksum/nginx: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+    spec:
+      # El plazo entre SIGTERM y SIGKILL: el preStop más el apagado del proceso caben de sobra (Fase 16).
+      terminationGracePeriodSeconds: 30
+      {{- include "lab-common.podSecurity" . | nindent 6 }}
+      containers:
+        # PHP-FPM con la aplicación: FastCGI en 127.0.0.1:9000, que en un pod es la misma red del nginx.
+        - name: php-fpm
+          image: {{ include "lab-common.image" . }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          {{- include "lab-common.containerSecurity" . | nindent 10 }}
+          envFrom:
+            - configMapRef:
+                name: neighbors
+          env:
+            {{- include "lab-common.databaseEnv" . | nindent 12 }}
+            {{- include "lab-common.otelEnv" . | nindent 12 }}
+            {{- if .Values.global.traces.enabled }}
+            # PHP necesita que el SDK se cargue solo en cada petición (la extensión y el paquete de Laravel hacen el resto).
+            - {name: OTEL_PHP_AUTOLOAD_ENABLED, value: "true"}
+            {{- end }}
+          {{- include "lab-common.resources" . | nindent 10 }}
+          # FPM también espera: si se fuera antes que nginx, las peticiones en vuelo se quedarían sin PHP.
+          {{- include "lab-common.shutdown" . | trim | nindent 10 }}
+          volumeMounts:
+            - {name: tmp, mountPath: /tmp}
+        # nginx delante, en el 8080: el que recibe el tráfico del Service.
+        - name: nginx
+          image: {{ .Values.nginx.image }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          {{- if .Values.global.podSecurity.enabled }}
+          # Fase 20: el mismo endurecimiento, con el usuario de la imagen de nginx (no el de PHP).
+          securityContext:
+            runAsUser: {{ .Values.nginxRunAsUser }}
+            runAsGroup: {{ .Values.nginxRunAsUser }}
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: 8080
+          # Las sondas van aquí: el único contenedor del pod con un puerto que el kubelet alcanza.
+          {{- include "lab-common.probes" . | trim | nindent 10 }}
+          {{- include "lab-common.shutdown" . | trim | nindent 10 }}
+          resources:
+            {{- toYaml .Values.nginx.resources | nindent 12 }}
+          env:
+            # G7: el entrypoint de la imagen anuncia en texto cada script que corre; esto lo calla.
+            - {name: NGINX_ENTRYPOINT_QUIET_LOGS, value: "1"}
+          volumeMounts:
+            - name: nginx-conf
+              mountPath: /etc/nginx/conf.d/default.conf   # el del ConfigMap reemplaza al de la imagen
+              subPath: default.conf
+            - name: nginx-conf
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+            - {name: tmp, mountPath: /tmp}     # el pid y las carpetas temporales de nginx-main.conf
+      volumes:
+        # Fase 20: lo único escribible del contenedor (la raíz es de solo lectura).
+        - name: tmp
+          emptyDir: {}
+        - name: nginx-conf
+          configMap:
+            name: catalog-nginx

@@ -1,0 +1,21 @@
+{
+  "name": "phase11-vue2-min",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve --host 0.0.0.0 --port 8080",
+    "build": "vue-cli-service build",
+    "test:unit": "vue-cli-service test:unit --runInBand"
+  },
+  "dependencies": {
+    "vue": "2.6.12"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "3.12.1",
+    "@vue/cli-plugin-unit-jest": "3.12.1",
+    "@vue/cli-service": "3.12.1",
+    "@vue/test-utils": "1.0.0-beta.29",
+    "babel-core": "7.0.0-bridge.0",
+    "vue-template-compiler": "2.6.12"
+  }
+}

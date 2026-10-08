@@ -1,0 +1,8 @@
+desde la raíz del curso:
+All checks passed!
+  OK
+desde dentro de cada dir:
+  src/ds01-numpy-y-el-modelo-vectorizado    FALLA
+  src/ds02-pandas                           FALLA
+  src/ds07-scikit-learn                     FALLA
+[This command modified 4 files you've previously read: src/ds02-pandas/test_collections_report.py, src/ds01-numpy-y-el-modelo-vectorizado/test_acquisition.py, src/ds01-numpy-y-el-modelo-vectorizado/ejercicio_16_lento.py, src/ds01-numpy-y-el-modelo-vectorizado/test_generar_embudo.py. Call Read before editing.]

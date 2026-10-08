@@ -1,0 +1,10 @@
+=== MINI PROYECTOS declarados en las cabeceras ===
+aggregation-lab backoff-lab benchstat-lab bson-lab build-info cache-aside-lab cancellable-worker checkpoint-lab chunked-stream client-timeouts config-loader crossbuild cursor-vs-offset deadlock-lab distroless-lab error-chain escape-lab fake-clock golden-report graceful-server hello-go httptest-lab json-codec leak-detector leak-lab log-grep metrics-lab middleware-chain movement-parser notifier outbox-lab pool-lab pool-vs-alloc race-counter ratelimit-lab recorded-responses shapes slog-lab stampede-lab store-registry text-toolkit timeout-client tiny-router tx-lab unbounded-queue validator-tests 
+TOTAL ÚNICOS:       46
+
+=== ¿coinciden con la tabla de 0-ESTRUCTURA §5? ===
+
+=== README: cifras ===
+25:Más veintiocho mini proyectos que aíslan un concepto antes de llevarlo al
+89:1. [`0-ESTRUCTURA-CURSO.md`](0-ESTRUCTURA-CURSO.md) — el mapa de las 18 fases
+98:**Duración:** 131 horas · unos treinta y tres días de media jornada.

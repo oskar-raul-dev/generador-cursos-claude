@@ -1,0 +1,133 @@
+# Entorno común del bloque 06 · Talleres.
+# Los nombres, puertos y credenciales son los de §11 de la guía; no se cambian aquí.
+# Versiones verificadas el 2026-09-27 contra Docker Hub.
+name: hex-lab
+
+services:
+  postgres:
+    image: postgres:17.11-alpine
+    container_name: hex-postgres
+    environment:
+      POSTGRES_DB: hex_orders
+      POSTGRES_USER: hex
+      POSTGRES_PASSWORD: hex-lab-pass
+    ports:
+      - "15432:5432"          # 15432 en el host: el laboratorio de bases de datos ya ocupa 5432
+    volumes:
+      - ./seed:/seed:ro       # esquema y semilla accesibles para `lab.py seed`
+      # el entrypoint de la imagen ejecuta estos dos archivos solo la primera vez que crea la base
+      - ./seed/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./seed/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
+      - ./seed/schema-batch.sql:/docker-entrypoint-initdb.d/03-schema-batch.sql:ro   # taller 11: JobRepository
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U hex -d hex_orders"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  mongo:
+    # 8.0.20 y no la última 8.0.x: las imágenes 8.0.21+ rechazan el núcleo 7.0.12 de Docker Desktop
+    image: mongo:8.0.20
+    container_name: hex-mongo
+    ports:
+      - "17017:27017"
+    volumes:
+      - ./seed:/seed:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh --quiet --eval 'db.runCommand({ ping: 1 }).ok' | grep -q 1"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  redis:
+    image: redis:7.4.11-alpine
+    container_name: hex-redis
+    ports:
+      - "16379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  swagger-ui:
+    # documentación navegable del contrato en http://localhost:18080
+    image: swaggerapi/swagger-ui:v5.33.0
+    container_name: hex-swagger
+    environment:
+      SWAGGER_JSON: /contract/openapi.yaml
+    ports:
+      - "18080:8080"
+    volumes:
+      - ./openapi.yaml:/contract/openapi.yaml:ro
+
+  artemis:
+    # broker JMS del taller 08 (colas). Solo arranca con `--profile jms` (lab.py up --jms).
+    # Protocolos: Core/JMS 61616, STOMP 61613 (lo usa lab.py, sin dependencias), consola 8161.
+    image: apache/artemis:2.57.0-alpine
+    container_name: hex-artemis
+    profiles: ["jms"]
+    environment:
+      ARTEMIS_USER: hex
+      ARTEMIS_PASSWORD: hex-lab-pass
+    ports:
+      - "61616:61616"
+      - "61613:61613"
+      - "8161:8161"
+    healthcheck:
+      # la consola responde cuando el broker ya acepta conexiones
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8161/ >/dev/null"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  kafka:
+    # tópicos del taller 09. Solo arranca con `--profile kafka` (lab.py up --kafka). KRaft, un solo
+    # nodo que es broker y controlador a la vez; sin ZooKeeper. La imagen JVM (no la nativa) trae
+    # los scripts kafka-*.sh que lab.py usa para describir el tópico, los grupos y reajustar offsets.
+    image: apache/kafka:4.3.1
+    container_name: hex-kafka
+    profiles: ["kafka"]
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      # Dos listeners porque un broker ANUNCIA una dirección y cada cliente tiene que poder alcanzarla:
+      # los scripts dentro del contenedor usan 9092 (anunciado como localhost:9092, dentro) y el
+      # backend en el host usa 19092 (anunciado como localhost:19092, fuera). Con uno solo, o los
+      # unos o los otros reciben una dirección que no existe para ellos.
+      KAFKA_LISTENERS: PLAINTEXT://:9092,HOST://:19092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,HOST://localhost:19092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1          # un solo broker: nada puede replicarse
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "false"           # el tópico lo crea el backend con sus particiones, a propósito
+      KAFKA_LOG_DIRS: /tmp/kraft-combined-logs
+    ports:
+      - "19092:19092"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 >/dev/null 2>&1"]
+      interval: 5s
+      timeout: 10s
+      retries: 30
+
+  mock:
+    # servidor de mock generado del contrato; solo arranca con `--profile mock` (lab.py mock).
+    # -m false: en un solo proceso; el modo multiproceso de 5.15.x cae al arrancar en Docker
+    image: stoplight/prism:5.15.10
+    container_name: hex-mock
+    profiles: ["mock"]
+    command: ["mock", "-h", "0.0.0.0", "-p", "4010", "-m", "false", "/contract/openapi.yaml"]
+    ports:
+      - "14010:4010"
+    volumes:
+      - ./openapi.yaml:/contract/openapi.yaml:ro
+    healthcheck:
+      # Prism tarda unos segundos en cargar el contrato; sin esto `--wait` devuelve antes de tiempo
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:4010/health >/dev/null"]
+      interval: 2s
+      timeout: 3s
+      retries: 30

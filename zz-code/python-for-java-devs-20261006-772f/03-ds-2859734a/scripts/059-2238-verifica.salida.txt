@@ -1,0 +1,8 @@
+links rotos: ninguno
+     768 ds01-numpy-y-el-modelo-vectorizado.md
+     674 ds02-pandas.md
+     718 ds03-polars-y-el-modelo-lazy.md
+     758 ds04-embudo.md
+    2918 total
+OK memoria
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

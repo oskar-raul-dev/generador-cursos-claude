@@ -1,0 +1,35 @@
+# pricing en el cluster. Escrito a mano en la Fase 08; desde la Fase 09 vive en `apps`, con G1.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pricing
+  # En la Fase 08 no tenía namespace y caía en `default`; desde la Fase 09, la frontera es `apps`.
+  labels:
+    app.kubernetes.io/name: pricing
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/component: backend
+spec:
+  # Una réplica: el perfil minimo. Las réplicas de verdad son de la Fase 16.
+  replicas: 1
+  # El selector usa solo el nombre: una label de más y el Deployment no encuentra sus pods (contrato §4).
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: pricing
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: pricing
+        app.kubernetes.io/part-of: lab
+        app.kubernetes.io/component: backend
+        app.kubernetes.io/version: "g0"
+    spec:
+      containers:
+        - name: pricing
+          # La imagen cargada en el nodo con task images:load; el tag nombra el paso de generación.
+          image: lab/pricing:g0
+          # IfNotPresent: usa la del nodo. Con :latest el valor por defecto sería Always, y el nodo
+          # intentaría bajarla de Docker Hub, donde no existe.
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8080   # el puerto del contrato (§3)

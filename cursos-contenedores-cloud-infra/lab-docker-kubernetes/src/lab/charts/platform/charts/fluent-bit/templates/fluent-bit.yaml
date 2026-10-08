@@ -1,0 +1,112 @@
+# Fluent Bit como DaemonSet (Fase 18): un pod por nodo, que lee los archivos donde el runtime de cada nodo
+# escribe la salida de los contenedores (/var/log/containers), les agrega lo que sabe la API de cada pod y
+# los manda a Loki. Ningún servicio sabe que existe: escriben a stdout y listo.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fluent-bit
+  namespace: observability
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+---
+# El filtro kubernetes le pregunta a la API por las labels de cada pod: necesita permiso para mirar.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ .Release.Name }}-fluent-bit
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+rules:
+  - apiGroups: [""]
+    resources: [pods, namespaces]
+    verbs: [get, list, watch]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ .Release.Name }}-fluent-bit
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ .Release.Name }}-fluent-bit
+subjects:
+  - kind: ServiceAccount
+    name: fluent-bit
+    namespace: observability
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fluent-bit
+  namespace: observability
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+data:
+  fluent-bit.yaml: |
+    service:
+      flush: 1
+      log_level: warn
+    pipeline:
+      inputs:
+        # Los archivos de log de los contenedores de las cadenas, en el formato del runtime (CRI): cada
+        # línea trae la hora, el flujo (stdout o stderr) y el texto. El parser cri los separa.
+        - name: tail
+          path: {{ range $i, $ns := .Values.namespaces }}{{ if $i }},{{ end }}/var/log/containers/*_{{ $ns }}_*.log{{ end }}
+          multiline.parser: cri
+          tag: kube.*
+          mem_buf_limit: 5MB
+          skip_long_lines: on
+      filters:
+        # Las labels del pod, desde la API; y si la línea es JSON, sus campos pasan a ser campos del registro
+        # (merge_log). Si no es JSON, queda como texto en el campo log.
+        - name: kubernetes
+          match: kube.*
+          merge_log: on
+          keep_log: off
+          labels: on
+          annotations: off
+      outputs:
+        - name: loki
+          match: kube.*
+          host: loki.observability.svc.cluster.local
+          port: 3100
+          labels: {{ .Values.labels }}
+          remove_keys: kubernetes, stream, _p
+          line_format: json
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluent-bit
+  namespace: observability
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: fluent-bit
+  template:
+    metadata:
+      labels:
+        {{- include "lab-common.labels" . | nindent 8 }}
+      annotations:
+        checksum/config: {{ .Values | toJson | sha256sum | trunc 16 }}
+    spec:
+      serviceAccountName: fluent-bit
+      containers:
+        - name: fluent-bit
+          image: {{ .Values.image }}
+          args: ["-c", "/fluent-bit/etc/lab/fluent-bit.yaml"]
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - {name: config, mountPath: /fluent-bit/etc/lab}
+            - {name: varlog, mountPath: /var/log, readOnly: true}
+      volumes:
+        - name: config
+          configMap: {name: fluent-bit}
+        # Los logs del nodo: un hostPath, que es exactamente lo que la Fase 20 mira con desconfianza.
+        - name: varlog
+          hostPath: {path: /var/log}

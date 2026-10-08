@@ -1,0 +1,29 @@
+archivo                                    declarados  reales      🟢🟡🟠🔴   🔥
+----------------------------------------------------------------------------
+00-ambiente-visual-studio-y-ecosistema.md          25      25         4   3
+01-tipos-valor-y-referencia.md                     25      25         4   3
+02-nullable-y-pattern-matching.md                  25      25         4   3
+03-linq-y-evaluacion-diferida.md                   25      25         4   3
+04-ceremonia-delegados-y-recursos.md               25      25         4   3
+05-async-await-y-cancelacion.md                    25      25         4   3
+06-memoria-span-y-flujo.md                         25      25         4   3
+07-el-sistema-que-heredas.md                       25      25         4   3
+08-caracterizar-y-probar.md                        25      25         4   3
+09-acceso-a-datos-esquema-hostil.md                25      25         4   3
+10-strangler-fig.md                                25      25         4   3
+11-migrar-el-runtime.md                            25      25         4   3
+12-winforms-en-net-10.md                           25      25         4   3
+13-wpf-y-mvvm.md                                   25      25         4   3
+14-veredicto-del-escritorio.md                     25      25         4   3
+15-aspnet-core-minimal-apis.md                     25      25         4   3
+16-identidad-secretos-y-configuracion.md           25      25         4   3
+17-trabajo-de-fondo.md                             25      25         4   3
+18-blazor-server-wasm-mvc.md                       25      25         4   3
+19-observabilidad-y-operacion.md                   24      24         4   3
+20-contenedor-y-la-factura.md                      25      25         4   3
+21-datos-y-onnx.md                                 24      24         4   3
+22-ia-aplicada.md                                  25      25         4   3
+23-el-duelo.md                                     24      24         4   3
+24-veredicto-y-defensa.md                          22      22         4   3
+
+Problemas: ninguno

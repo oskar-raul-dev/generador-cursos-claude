@@ -1,0 +1,86 @@
+# Lo que se regenera en el laboratorio no se versiona. Este es el único .gitignore del
+# laboratorio: los patrones sin "/" valen en cualquier subcarpeta.
+
+# ── Java (Maven): java/ y payments-grpc/ ─────────────────────────────────────
+target/
+
+# ── Node: nestjs/ y frontend/ ────────────────────────────────────────────────
+node_modules/
+dist/
+# Cliente de Prisma, regenerado con `prisma generate`
+nestjs/src/infrastructure/outbound/postgres/generated/
+# frontend/.env no lleva secretos y 06/02 lo documenta como la configuración por
+# defecto; el .gitignore raíz ignora .env, así que aquí se rescata
+!frontend/.env
+
+# ── Python: python/ ──────────────────────────────────────────────────────────
+.venv/
+__pycache__/
+*.egg-info/
+.pytest_cache/
+.import_linter_cache/
+
+# ── Batch: entradas y salidas de una corrida ─────────────────────────────────
+batch/out/
+batch/in/*.csv
+
+# ── PHP (Laravel): php/ ──────────────────────────────────────────────────────
+# Dependencias, secretos y cachés
+php/vendor/
+php/node_modules/
+php/.env
+php/**/.env.backup
+php/**/.env.production
+php/auth.json
+php/**/*.log
+php/.phpunit.cache/
+php/**/.phpunit.result.cache
+php/.deptrac.cache
+php/.phpactor.json
+php/**/_ide_helper.php
+php/Homestead.json
+php/Homestead.yaml
+# Editores dentro de php/ (el .gitignore raíz ya los cubre; se dejan por ser de Laravel)
+php/.codex
+php/.cursor/
+php/.idea
+php/.nova
+php/.vscode
+php/.zed
+# Assets publicados
+php/public/build/
+php/public/fonts-manifest.dev.json
+php/public/hot
+php/public/storage
+# Base de datos local
+php/database/*.sqlite*
+# bootstrap/cache y storage/: las carpetas se versionan vacías con un .gitkeep
+php/bootstrap/cache/*
+php/storage/*.key
+php/storage/pail/
+php/storage/app/*
+!php/storage/app/private/
+!php/storage/app/public/
+php/storage/app/private/*
+php/storage/app/public/*
+php/storage/framework/compiled.php
+php/storage/framework/config.php
+php/storage/framework/down
+php/storage/framework/events.scanned.php
+php/storage/framework/lsp-*.php
+php/storage/framework/maintenance.php
+php/storage/framework/routes.php
+php/storage/framework/routes.scanned.php
+php/storage/framework/schedule-*
+php/storage/framework/services.json
+php/storage/framework/cache/*
+!php/storage/framework/cache/data/
+php/storage/framework/cache/data/*
+php/storage/framework/sessions/*
+php/storage/framework/testing/*
+php/storage/framework/views/*
+# el .gitignore raíz ignora toda carpeta logs/; se rescata para versionar su .gitkeep
+!php/storage/logs/
+php/storage/logs/*
+!php/bootstrap/cache/.gitkeep
+!php/storage/**/.gitkeep

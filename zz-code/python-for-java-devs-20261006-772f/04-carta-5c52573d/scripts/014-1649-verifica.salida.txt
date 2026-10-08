@@ -1,0 +1,6 @@
+Monday
+2026-10-09 2026-10-16
+holidays 0.105 2026-09-21
+....Camilo Santiago Espinosa 528274.55
+.
+5 passed in 0.15s

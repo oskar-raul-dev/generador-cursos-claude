@@ -1,0 +1,28 @@
+ANTES: mecanismo principal de consolidación del curso: ocupa el lugar que en los cursos hermanos del
+repositorio ocupa el cuaderno de incidentes.
+# 🧱 Formato de los miniproyectos
+## Python para desarrolladores Java senior
+
+Cada fase cierra con **un miniproyecto obligatorio**. Es la sección 7 de la plantilla y el
+mecanismo principal de consolidación del curso: ocupa el lugar que en los cursos hermanos del
+repositorio ocupa el cuaderno de incidentes.
+
+Este documento define qué es, cómo se calibra y qué forma tiene. Se sigue literal.
+
+---
+
+> 🍽️ **Qué aplica al material a la carta.** En las secciones opcionales
+> (`propuestas-temas-opcionales.md`) **el miniproyecto no es obligatorio**: se incluye solo cuando
+> el tema lo pide, y lo normal es que baste un ejercicio. Lo que sí heredan es la regla de
+--- 40-50 ---
+---
+
+## 2. Por qué existe, y por qué sustituye al cuaderno de incidentes
+
+Los cursos de legacy del repositorio enseñan a **arreglar** un sistema que ya existe, y por eso
+su unidad de práctica es el incidente: un síntoma, una reproducción, una causa raíz.
+
+Este curso enseña a **decidir y construir**, y su unidad de práctica tiene que ser un encargo.
+La pregunta que el lector se hace al empezar un miniproyecto es la misma que se va a hacer el
+lunes en su trabajo: *¿esto es un script, una herramienta o una aplicación, y qué me cuesta
+cada respuesta?*

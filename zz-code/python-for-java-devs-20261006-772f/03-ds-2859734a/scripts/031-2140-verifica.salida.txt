@@ -1,0 +1,6 @@
+etapas.csv                   fecha_hora         max=2026-08-17 min=2024-01-02
+planes_de_tratamiento.csv    fecha_aceptacion   max=2026-07-28 min=2024-01-06
+cuotas.csv                   fecha_pago         max=2026-05-23 min=2024-01-06
+cuotas.csv                   fecha_programada   max=2026-03-31 min=2024-01-06
+toques.csv                   fecha_hora         max=2026-06-17 min=2024-01-01
+leads.csv                    creado             max=2026-03-31 min=2024-01-01

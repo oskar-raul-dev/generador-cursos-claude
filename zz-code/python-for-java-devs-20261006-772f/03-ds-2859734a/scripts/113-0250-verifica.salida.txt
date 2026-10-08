@@ -1,0 +1,34 @@
+=== ia03 agent_runner: la inyección ===
+
+from agenda_client import AgendaClient
+from tools import find_availability as _find_availability
+
+agenda: AgendaClient  # se inyecta al arrancar el proceso
+
+
+--- y en la prosa:
+656-        minutes: Duración necesaria; un control de ortodoncia son 20 minutos.
+657-    """
+658:    return _find_availability(agenda, branch, day, minutes)
+659-
+660-
+
+=== ia06 statistics_helpers ===
+    Fácil de leer y engañoso: si el 90% de las respuestas son buenas, un juez que diga
+    siempre "correcta" saca 0.90 y no sirve para nada. Por eso nunca va solo.
+    """
+    if len(a) != len(b):
+        raise ValueError("Las dos series de juicios tienen que tener el mismo largo.")
+    if not a:
+        return 0.0
+    return sum(1 for x, y in zip(a, b) if x == y) / len(a)
+
+
+def cohen_kappa(a: Sequence[str], b: Sequence[str]) -> float:
+--- y en la prosa:
+399-        raise ValueError("Las dos series de juicios tienen que tener el mismo largo.")
+400-    if not a:
+401-        return 0.0
+402:    return sum(1 for x, y in zip(a, b) if x == y) / len(a)
+403-
+404-

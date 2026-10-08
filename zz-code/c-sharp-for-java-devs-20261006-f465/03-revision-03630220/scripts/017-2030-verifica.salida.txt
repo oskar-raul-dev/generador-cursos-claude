@@ -1,0 +1,29 @@
+── A. Secciones narrativas obligatorias (guía §7.3) ──
+  (vacío = las cuatro presentes donde toca)
+
+── B. Marcadores declarados en la guía vs usados ──
+  🪞  fases=25
+  🩻  fases=25
+  📖  fases=25
+  ⚖️  fases=25
+  💸  fases=23
+  📏  fases=25
+  🧱  fases=25
+  🧬  fases=16
+  📌  fases=25
+  🔜  fases=3
+  ⏳  fases=25
+  🪦  fases=4
+  💲  fases=5
+
+── C. Tracks opcionales ──
+   2 `ar`
+   2 `au`
+   9 `cv`
+   2 `db`
+   2 `ui`
+
+── D. §2.6 citado por cuántos documentos ──
+  documentos publicados que lo citan: 25
+prompts/formato-de-mediciones.md:94:> otras cinco.** Porque **veinticinco documentos publicados citan `§2.6`** para la forma de un
+BENCHMARKS.md:70:> error: §2.6 es la convención ⏳, que **veinticinco documentos publicados citan por ese número**, y

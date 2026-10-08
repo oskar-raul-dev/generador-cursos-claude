@@ -1,0 +1,4 @@
+105,620 citas · 12,400 pacientes · inasistencia 19.3%
+python3 generar_ausentismo.py --salida  2>&1  1.23s user 0.04s system 90% cpu 1.398 total
+head -1  0.00s user 0.00s system 0% cpu 1.389 total
+3912 citas/mes

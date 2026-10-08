@@ -1,0 +1,164 @@
+# Contrato asíncrono del taller 08 (colas con JMS y ActiveMQ Artemis). Describe lo que el backend
+# Java recibe por `orders.inbound` y responde por `orders.reply`. Es la contraparte de openapi.yaml
+# para el borde de mensajes: mismos tipos de dinero, mismos códigos de rechazo.
+#
+# Convenciones:
+#   - un mensaje OrderRequested equivale a POST /api/v1/orders con Idempotency-Key = operationId
+#   - la respuesta lleva JMSCorrelationID = JMSCorrelationID de la petición (o su JMSMessageID si no traía)
+#   - un rechazo de negocio se RESPONDE y se confirma; solo un mensaje ilegible se reintenta y acaba en DLQ
+asyncapi: 3.0.0
+info:
+  title: hex-orders · mensajes
+  version: 1.0.0
+  description: |
+    Un sistema externo (por ejemplo, un canal de venta) pide crear pedidos por una cola y recibe
+    la respuesta por otra. El consumidor es un adaptador de entrada del mismo caso de uso
+    `CreateOrder` que sirve la API HTTP: misma reserva atómica, misma idempotencia.
+
+servers:
+  artemis:
+    host: localhost:61616
+    protocol: jms
+    description: ActiveMQ Artemis del laboratorio (`hex-artemis`); usuario `hex`
+    bindings:
+      jms:
+        bindingVersion: 0.0.1
+
+channels:
+  ordersInbound:
+    address: orders.inbound
+    description: Peticiones de pedido. Cola anycast; los consumidores compiten.
+    messages:
+      orderRequested:
+        $ref: '#/components/messages/OrderRequested'
+  ordersReply:
+    address: orders.reply
+    description: Respuestas, correlacionadas por `JMSCorrelationID`.
+    messages:
+      orderReply:
+        $ref: '#/components/messages/OrderReply'
+  ordersDlq:
+    address: DLQ
+    description: |
+      Cola de mensajes muertos del broker (por defecto en Artemis). Un mensaje que falla
+      `max-delivery-attempts` veces (10 por defecto) acaba aquí sin bloquear la cola.
+
+operations:
+  receiveOrderRequested:
+    action: receive
+    channel:
+      $ref: '#/channels/ordersInbound'
+    summary: El backend consume OrderRequested y crea el pedido (o lo rechaza) en una transacción.
+    reply:
+      channel:
+        $ref: '#/channels/ordersReply'
+      address:
+        location: '$message.header#/JMSReplyTo'
+        description: Si la petición trae JMSReplyTo se usa; si no, `orders.reply`.
+  sendOrderReply:
+    action: send
+    channel:
+      $ref: '#/channels/ordersReply'
+    summary: El backend publica la respuesta en la misma transacción que el pedido.
+
+components:
+  messages:
+    OrderRequested:
+      name: OrderRequested
+      title: Petición de pedido
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          JMSCorrelationID:
+            type: string
+            description: Lo elige el emisor; vuelve tal cual en la respuesta.
+          hexChaos:
+            type: string
+            enum: [crash-after-commit]
+            description: Solo laboratorio. Hace que el consumidor caiga tras confirmar en la base y antes de confirmar el mensaje.
+      payload:
+        $ref: '#/components/schemas/OrderRequested'
+      examples:
+        - name: dos teclados
+          payload:
+            operationId: ext-000001
+            customerEmail: ana@hex.local
+            lines:
+              - sku: SKU-001
+                quantity: 2
+    OrderReply:
+      name: OrderReply
+      title: Respuesta a una petición de pedido
+      contentType: application/json
+      headers:
+        type: object
+        properties:
+          JMSCorrelationID:
+            type: string
+      payload:
+        $ref: '#/components/schemas/OrderReply'
+      examples:
+        - name: aceptado
+          payload:
+            operationId: ext-000001
+            status: ACCEPTED
+            orderId: 9b2c5b64-1f77-4a2b-9f0f-0a1d0f6c2b11
+            orderStatus: CONFIRMED
+            total: { amount: "99.80", currency: USD }
+            replayed: false
+        - name: rechazado
+          payload:
+            operationId: ext-000002
+            status: REJECTED
+            code: INSUFFICIENT_INVENTORY
+            message: "SKU-004: requested 1, available 0"
+
+  schemas:
+    OrderRequested:
+      type: object
+      required: [operationId, customerEmail, lines]
+      additionalProperties: false
+      properties:
+        operationId:
+          type: string
+          minLength: 8
+          maxLength: 128
+          description: Clave de idempotencia del emisor. Repetir el mensaje con la misma clave no crea otro pedido.
+        customerEmail:
+          type: string
+          format: email
+          description: A nombre de quién se crea el pedido. El emisor es un sistema de confianza (autenticado en el broker).
+        lines:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            type: object
+            required: [sku, quantity]
+            properties:
+              sku: { type: string, pattern: '^SKU-[0-9]{3,}$' }
+              quantity: { type: integer, minimum: 1, maximum: 1000 }
+    Money:
+      type: object
+      required: [amount, currency]
+      properties:
+        amount: { type: string, pattern: '^-?[0-9]+\.[0-9]{2}$', description: Decimal como texto, nunca número flotante }
+        currency: { type: string, pattern: '^[A-Z]{3}$' }
+    OrderReply:
+      type: object
+      required: [operationId, status]
+      properties:
+        operationId: { type: string }
+        status: { type: string, enum: [ACCEPTED, REJECTED] }
+        orderId: { type: string, format: uuid }
+        orderStatus: { type: string, enum: [CONFIRMED, PAID, PAYMENT_REJECTED, PAYMENT_PENDING, CANCELLED] }
+        total: { $ref: '#/components/schemas/Money' }
+        replayed:
+          type: boolean
+          description: true si el operationId ya se había procesado y esta es la misma respuesta de entonces.
+        code:
+          type: string
+          enum: [VALIDATION_FAILED, UNKNOWN_CUSTOMER, PRODUCT_NOT_FOUND, INSUFFICIENT_INVENTORY, IDEMPOTENCY_KEY_REUSED]
+          description: Los mismos códigos estables que problem+json en openapi.yaml.
+        message: { type: string }

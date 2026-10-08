@@ -1,0 +1,82 @@
+# pricing en el cluster: el Deployment de la Fase 12, con huecos donde cambia algo por perfil o por cadena.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pricing
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+spec:
+  {{- include "lab-common.deploymentSpec" . | nindent 2 }}
+  selector:
+    matchLabels:
+      {{- include "lab-common.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "lab-common.podLabels" . | nindent 8 }}
+      annotations:
+        # El hash de la tabla de topes: si la tabla cambia, cambia el pod, y el Deployment lo reemplaza.
+        # Es la prevención del incidente 09 cuando el cambio pasa por Helm.
+        checksum/regulated-caps: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+    spec:
+      # El plazo entre SIGTERM y SIGKILL: el preStop más el apagado del proceso caben de sobra (Fase 16).
+      terminationGracePeriodSeconds: 30
+      {{- include "lab-common.podSecurity" . | nindent 6 }}
+      containers:
+        - name: pricing
+          image: {{ include "lab-common.image" . }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          {{- include "lab-common.containerSecurity" . | nindent 10 }}
+          ports:
+            - name: http
+              containerPort: 8080
+            {{- if .Values.global.mtls.enabled }}
+            - name: tls
+              containerPort: 8443
+            - name: grpc
+              containerPort: 9090
+            {{- end }}
+          {{- include "lab-common.probes" . | trim | nindent 10 }}
+          {{- include "lab-common.shutdown" . | trim | nindent 10 }}
+          {{- include "lab-common.resources" . | nindent 10 }}
+          envFrom:
+            - configMapRef:
+                name: neighbors
+          env:
+            {{- include "lab-common.databaseEnv" . | nindent 12 }}
+            - name: REGULATED_CAP_ENABLED
+              value: {{ .Values.regulatedCap.enabled | quote }}
+            {{- if .Values.global.mtls.enabled }}
+            # G8 (Fase 19): el certificado de servidor que emite cert-manager y la CA que reparte trust-manager.
+            - {name: TLS_CERT_FILE, value: /etc/tls/server/tls.crt}
+            - {name: TLS_KEY_FILE, value: /etc/tls/server/tls.key}
+            - {name: TLS_CLIENT_CA_FILE, value: /etc/tls/ca/ca.crt}
+            {{- end }}
+            {{- if and .Values.global.grpc.enabled .Values.global.grpc.maxConnectionAge }}
+            # G10 (Fase 23): pricing cierra cada conexión gRPC al cumplir esa edad, y el cliente vuelve a elegir.
+            - {name: GRPC_MAX_CONNECTION_AGE, value: {{ .Values.global.grpc.maxConnectionAge | quote }}}
+            {{- end }}
+            {{- include "lab-common.otelEnv" . | nindent 12 }}
+          volumeMounts:
+            - {name: tmp, mountPath: /tmp}
+            - name: regulated-caps
+              mountPath: /etc/pricing        # regulated-caps.csv, la ruta por defecto de REGULATED_CAP_FILE
+              readOnly: true
+            {{- if .Values.global.mtls.enabled }}
+            - {name: tls-server, mountPath: /etc/tls/server, readOnly: true}
+            - {name: lab-ca, mountPath: /etc/tls/ca, readOnly: true}
+            {{- end }}
+      volumes:
+        # Fase 20: lo único escribible del contenedor (la raíz es de solo lectura).
+        - name: tmp
+          emptyDir: {}
+        - name: regulated-caps
+          configMap:
+            name: pricing-regulated-caps
+        {{- if .Values.global.mtls.enabled }}
+        # Sin subPath: así el kubelet actualiza los archivos cuando cert-manager renueva el Secret.
+        - name: tls-server
+          secret: {secretName: pricing-tls}
+        - name: lab-ca
+          configMap: {name: lab-ca}
+        {{- end }}

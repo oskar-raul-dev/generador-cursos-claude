@@ -1,0 +1,33 @@
+# 🔥 inventory con el AOT cache de la JVM (Fase 15, sección corta; la comparación completa es el apéndice a08).
+# Es el Dockerfile de la Fase 04 con un paso más: una corrida de entrenamiento que deja en la imagen lo
+# que la JVM aprendió al arrancar (clases cargadas y enlazadas, y perfiles de métodos), para no rehacerlo.
+
+# ── Etapa de build: idéntica a la del Dockerfile ──
+# eclipse-temurin:25-jdk
+FROM eclipse-temurin@sha256:8c0a84ea11c8f6ed52600fc19f1040121f2a162998e9f50a5faebbbad9172dcc AS build
+WORKDIR /src
+COPY .mvn .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw -q -B dependency:go-offline
+COPY src src
+RUN ./mvnw -q -B package -DskipTests
+RUN java -Djarmode=tools -jar target/inventory-0.0.1-SNAPSHOT.jar extract --layers --destination /out
+
+# ── Etapa final: el JRE, y la corrida de entrenamiento ──
+# eclipse-temurin:25-jre
+FROM eclipse-temurin@sha256:fcd7fd7b387f94bb2ac461478a7436ad8e349924c374ea8313919624dceae636
+RUN useradd --system --uid 10001 --no-create-home inventory \
+    && mkdir -p /var/lib/inventory && chown inventory /var/lib/inventory
+WORKDIR /app
+COPY --from=build /out/dependencies/ ./
+COPY --from=build /out/spring-boot-loader/ ./
+COPY --from=build /out/snapshot-dependencies/ ./
+COPY --from=build /out/application/ ./
+# El entrenamiento: arranca la aplicación hasta que el contexto de Spring queda listo, y sale
+# (spring.context.exit=onRefresh). Sin DATABASE_URL usa el SQLite de la imagen, y no atiende nada.
+# Con el mismo JRE y el mismo classpath que en producción: si cambian, la JVM ignora el cache.
+RUN java -XX:AOTCacheOutput=app.aot -Dspring.context.exit=onRefresh -jar inventory-0.0.1-SNAPSHOT.jar \
+    && chown inventory app.aot
+USER inventory
+EXPOSE 8080
+CMD ["java", "-XX:AOTCache=app.aot", "-jar", "inventory-0.0.1-SNAPSHOT.jar"]

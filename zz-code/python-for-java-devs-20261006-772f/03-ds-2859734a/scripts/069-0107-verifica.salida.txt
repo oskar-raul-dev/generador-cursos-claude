@@ -1,0 +1,20 @@
+azar-sin-semilla.ipynb
+celda-borrada.ipynb
+dependencia-no-declarada.ipynb
+estado-oculto.ipynb
+limpio.ipynb
+ruta-absoluta.ipynb
+  File "/Users/oskar/.cache/uv/archive-v0/-7xGNvf8cwKOulJ0/lib/python3.14/site-packages/jupyter_client/manager.py", line 528, in _async_start_kernel
+    kernel_cmd, kw = await self._async_pre_start_kernel(**kw)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/oskar/.cache/uv/archive-v0/-7xGNvf8cwKOulJ0/lib/python3.14/site-packages/jupyter_client/manager.py", line 490, in _async_pre_start_kernel
+    self.kernel_spec,
+    ^^^^^^^^^^^^^^^^
+  File "/Users/oskar/.cache/uv/archive-v0/-7xGNvf8cwKOulJ0/lib/python3.14/site-packages/jupyter_client/manager.py", line 267, in kernel_spec
+    self._kernel_spec = self.kernel_spec_manager.get_kernel_spec(self.kernel_name)
+                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "/Users/oskar/.cache/uv/archive-v0/-7xGNvf8cwKOulJ0/lib/python3.14/site-packages/jupyter_client/kernelspec.py", line 295, in get_kernel_spec
+    raise NoSuchKernel(kernel_name)
+jupyter_client.kernelspec.NoSuchKernel: No such kernel named python3
+uv run --python 3.14 --with 'papermill==2.7.0' python check_reproducibility.p  0.59s user 0.34s system 33% cpu 2.745 total
+tail -12  0.00s user 0.00s system 0% cpu 2.744 total

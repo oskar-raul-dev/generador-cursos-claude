@@ -1,0 +1,8 @@
+     279 01-encaje-con-lab-docker.md
+     364 02-mapa-de-fases.md
+     246 README.md
+     889 total
+--- enlaces internos ---
+OK   ../README.md
+OK   01-encaje-con-lab-docker.md
+OK   02-mapa-de-fases.md

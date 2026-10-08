@@ -1,0 +1,4 @@
+enlaces rotos en prompts/: 0
+— 0 errores, 10 avisos
+cursos-algoritmos-lenguajes/python-for-java-devs/.gitignore:16:__pycache__/	prompts/__pycache__
+verificador_base.cpython-313.pyc

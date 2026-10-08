@@ -1,0 +1,6 @@
+uv   import #1: 2277 ms
+uv   import #2: 322 ms
+uv   import #3: 326 ms
+pip  import #1: 326 ms
+pip  import #2: 322 ms
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

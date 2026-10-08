@@ -1,0 +1,40 @@
+# La puerta compartida del sistema (Fase 10). La escribe plataforma; las rutas las escribe cada equipo.
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: lab
+  namespace: gateway
+spec:
+  gatewayClassName: eg
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 8080          # el puerto del Service del proxy; el NodePort 30080 y el host 8080 llegan aquí
+      # Qué namespaces pueden colgar rutas de esta puerta: los del sistema, y ninguno más.
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchExpressions:
+              - key: kubernetes.io/metadata.name
+                operator: In
+                values: [apps, legacy, apps-b, observability]
+    # HTTPS desde la Fase 19: la puerta termina TLS con el certificado del Secret lab-tls (de la CA del
+    # laboratorio; desde la sección de cert-manager, emitido y renovado por él) y le pasa HTTP a los servicios.
+    # Las rutas no cambian: sin sectionName, cada HTTPRoute cuelga de los dos listeners.
+    - name: https
+      protocol: HTTPS
+      port: 8443          # el NodePort 30443 y el host 8443 llegan aquí
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: lab-tls
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchExpressions:
+              - key: kubernetes.io/metadata.name
+                operator: In
+                values: [apps, legacy, apps-b, observability]

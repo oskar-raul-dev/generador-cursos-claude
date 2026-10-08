@@ -1,0 +1,6 @@
+OK
+bucle               28 líneas
+pandas              25 líneas
+polars (lazy)       27 líneas
+duckdb (csv)        33 líneas
+duckdb (parquet)    32 líneas

@@ -1,0 +1,684 @@
+# Contrato del sistema de ejemplo del bloque 06 · Talleres (corpus de microservicios).
+# Es la invariante de la serie: la suite hurl/v1 tiene que seguir en verde después de cada
+# extracción, cambiando solo la URL base (el monolito en 06/01, Envoy desde 06/02).
+#
+# Convenciones (06/01 §4):
+#   - dinero como { amount: "49.90", currency: "USD" }; amount es texto decimal, nunca un flotante
+#   - errores como application/problem+json (RFC 9457) con un `code` estable propio
+#   - crear un pedido y pagarlo exigen Idempotency-Key; la repetición devuelve la misma respuesta
+#   - `x-suite` dice qué suite cubre cada operación; `v2` nace en 06/08, y `x-taller` dice qué
+#     taller añadió la operación
+openapi: 3.1.0
+info:
+  title: ms-orders
+  version: 2.0.0
+  summary: Tienda del bloque 06 — contrato síncrono heredado (v1, obsoleto) y asíncrono (v2)
+  description: |
+    Dos actores: `customer` (crea, paga y cancela sus pedidos) y `operator` (ve todo).
+
+    Reglas que el contrato expone y que un mock **no** implementa:
+    - un pedido reserva el stock de todas sus líneas en el mismo acto, o no se crea (`409`);
+    - el pago lo decide el proveedor externo: total > 1000.00 → rechazado; total == 666.00 →
+      resultado incierto (el proveedor no responde a tiempo); resto → autorizado;
+    - un pedido pagado no se cancela; cancelar libera la reserva y deja una notificación.
+
+    Desde 06/08, `/api/v2/orders` registra el pedido y responde `202` con estado `PENDING`: la
+    reserva y el cobro los decide después una saga, y el cliente consulta el pedido hasta un estado
+    final. Las operaciones de `/api/v1/orders` siguen funcionando, marcadas `deprecated`, con los
+    encabezados `Deprecation` (RFC 9745), `Sunset` (RFC 8594) y `Link` (`successor-version`).
+
+servers:
+  - url: http://localhost:28081
+    description: ms-monolith (06/01)
+  - url: http://localhost:28080
+    description: api-gateway, Envoy (desde 06/02)
+  - url: http://localhost:24010
+    description: Mock del contrato (Prism)
+
+tags:
+  - name: health
+  - name: auth
+  - name: products
+  - name: orders
+  - name: payments
+  - name: cancellation
+
+security:
+  - bearerAuth: []
+
+paths:
+  /health:
+    get:
+      tags: [health]
+      summary: Vida del proceso
+      operationId: health
+      x-suite: v1
+      security: []
+      responses:
+        "200":
+          description: El proceso responde
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [status]
+                properties:
+                  status: { type: string, const: UP }
+              example: { status: UP }
+
+  /api/v1/auth/login:
+    post:
+      tags: [auth]
+      summary: Obtener un token de acceso
+      operationId: login
+      x-suite: v1
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/LoginRequest" }
+            example: { email: ana@ms.local, password: ana-12345 }
+      responses:
+        "200":
+          description: Credenciales válidas
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/TokenResponse" }
+        "400": { $ref: "#/components/responses/ValidationFailed" }
+        "401":
+          description: Credenciales inválidas; el mismo cuerpo exista o no el correo
+          content:
+            application/problem+json:
+              schema: { $ref: "#/components/schemas/Problem" }
+              example: { type: about:blank, title: Invalid credentials, status: 401, code: INVALID_CREDENTIALS, instance: /api/v1/auth/login }
+
+  /api/v1/products:
+    get:
+      tags: [products]
+      summary: El catálogo con su stock disponible
+      operationId: listProducts
+      x-suite: v1
+      responses:
+        "200":
+          description: Todos los productos
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/Product" }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+        "503": { $ref: "#/components/responses/Unavailable" }
+
+  /api/v1/products/{sku}:
+    get:
+      tags: [products]
+      summary: Un producto con su stock
+      operationId: getProduct
+      x-suite: v1
+      parameters:
+        - $ref: "#/components/parameters/Sku"
+      responses:
+        "200":
+          description: Producto
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Product" }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+        "404": { $ref: "#/components/responses/ProductNotFound" }
+
+  /api/v1/orders:
+    get:
+      tags: [orders]
+      summary: Listar pedidos
+      description: Un `customer` ve los suyos; un `operator`, todos. Los más recientes primero.
+      operationId: listOrders
+      x-suite: v1
+      deprecated: true            # taller 08: Deprecation y Sunset en cada respuesta; sustituto en /api/v2/orders
+      responses:
+        "200":
+          description: Pedidos
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/Order" }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+    post:
+      tags: [orders]
+      summary: Crear un pedido reservando el stock
+      description: |
+        Reserva el stock de **todas** las líneas en el mismo acto o no crea nada. El pedido nace
+        `CONFIRMED` (stock reservado, sin pagar). La misma `Idempotency-Key` con el mismo cuerpo
+        devuelve `200` con el pedido original y `Idempotent-Replay: true`; con otro cuerpo, `422`.
+      operationId: createOrder
+      x-suite: v1
+      deprecated: true            # taller 08: Deprecation y Sunset en cada respuesta; sustituto en /api/v2/orders
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreateOrderRequest" }
+            example:
+              lines:
+                - { sku: SKU-001, quantity: 2 }
+                - { sku: SKU-002, quantity: 1 }
+      responses:
+        "201":
+          description: Pedido creado con el stock reservado
+          headers:
+            Location:
+              schema: { type: string }
+              example: /api/v1/orders/7c9e6679-7425-40de-944b-e07fc1f90ae7
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Order" }
+        "200":
+          description: Repetición idempotente de una creación anterior
+          headers:
+            Idempotent-Replay:
+              schema: { type: boolean }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Order" }
+        "400":
+          description: Cuerpo inválido o falta `Idempotency-Key`
+          content:
+            application/problem+json:
+              schema: { $ref: "#/components/schemas/Problem" }
+              example: { type: about:blank, title: Idempotency-Key required, status: 400, code: IDEMPOTENCY_KEY_REQUIRED, instance: /api/v1/orders }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+        "404": { $ref: "#/components/responses/ProductNotFound" }
+        "409":
+          description: Stock insuficiente en al menos una línea; no se creó nada
+          content:
+            application/problem+json:
+              schema: { $ref: "#/components/schemas/Problem" }
+              example:
+                type: about:blank
+                title: Insufficient inventory
+                status: 409
+                code: INSUFFICIENT_INVENTORY
+                detail: "SKU-004: requested 1, available 0"
+                instance: /api/v1/orders
+                errors: [{ field: "lines[0].quantity", message: "requested 1, available 0" }]
+        "422":
+          description: La misma `Idempotency-Key` ya se usó con otro cuerpo
+          content:
+            application/problem+json:
+              schema: { $ref: "#/components/schemas/Problem" }
+              example: { type: about:blank, title: Idempotency-Key reused with a different payload, status: 422, code: IDEMPOTENCY_KEY_REUSED, instance: /api/v1/orders }
+        "503": { $ref: "#/components/responses/Unavailable" }
+
+  /api/v2/orders:
+    post:
+      tags: [orders]
+      summary: Registrar un pedido; la saga decide después
+      description: |
+        No reserva ni cobra: guarda el pedido en `PENDING`, registra el hecho `OrderPlaced` y responde
+        `202`. La saga coreografiada lo lleva a `PAID`, `PAYMENT_REJECTED` o `CANCELLED`, y el cliente
+        consulta `GET /api/v2/orders/{orderId}`. Sin stock ya no es un `409` inmediato: es un pedido
+        que termina `CANCELLED`. La misma `Idempotency-Key` con el mismo cuerpo devuelve otra vez `202`
+        con el pedido original e `Idempotent-Replay: true`; con otro cuerpo, `422`.
+      operationId: placeOrder
+      x-suite: v2
+      x-taller: "08"
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreateOrderRequest" }
+            example:
+              lines:
+                - { sku: SKU-002, quantity: 2 }
+      responses:
+        "202":
+          description: Pedido registrado; la saga está en curso
+          headers:
+            Location:
+              schema: { type: string }
+              example: /api/v2/orders/7c9e6679-7425-40de-944b-e07fc1f90ae7
+            Idempotent-Replay:
+              schema: { type: boolean }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Order" }
+        "400": { $ref: "#/components/responses/ValidationFailed" }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+        "404": { $ref: "#/components/responses/ProductNotFound" }
+        "422":
+          description: La misma `Idempotency-Key` ya se usó con otro cuerpo
+          content:
+            application/problem+json:
+              schema: { $ref: "#/components/schemas/Problem" }
+        "503": { $ref: "#/components/responses/Unavailable" }
+
+  /api/v2/orders/overview:
+    get:
+      tags: [orders]
+      summary: Mis pedidos con su estado de pago, por composición o por read model
+      description: |
+        `source=composition` junta los pedidos de `orders` con el estado real de cada pago, que pregunta a
+        `payments` en una llamada por lote; si `payments` no responde a tiempo, devuelve los pedidos con el
+        pago `UNKNOWN` y `degraded: true`. `source=projection` (por defecto) lee un read model alimentado por
+        `orders.events`: responde siempre, puede ir por detrás y solo sabe lo que se publica. El encabezado
+        `Server-Timing` dice cuánto tardó cada una.
+      operationId: getOrdersOverview
+      x-suite: v2
+      x-taller: "11"
+      parameters:
+        - name: source
+          in: query
+          schema: { type: string, enum: [composition, projection], default: projection }
+      responses:
+        "200":
+          description: La vista
+          headers:
+            Server-Timing:
+              schema: { type: string }
+              example: "composition;dur=17.4"
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [source, items, paidOrders, paidAmount, degraded]
+                properties:
+                  source: { type: string, enum: [composition, projection] }
+                  items:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        orderId: { type: string, format: uuid }
+                        status: { type: string }
+                        paymentStatus: { type: [string, "null"] }
+                        total: { type: string, example: "9.90" }
+                  paidOrders: { type: integer }
+                  paidAmount: { type: string, example: "39.60" }
+                  degraded: { type: boolean }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+
+  /api/v2/orders/{orderId}/events:
+    get:
+      tags: [orders]
+      summary: Seguir la saga de un pedido (Server-Sent Events)
+      description: |
+        Una respuesta `text/event-stream` que no termina hasta que la saga llega a un estado final. Un
+        evento `snapshot` (sin `id`) con el estado al conectar; un `step` por transición de la saga, con
+        `id` creciente; y `end` al terminar, tras el cual el servidor cierra. Con `Last-Event-ID`, continúa
+        después de ese evento. Un comentario `: ping` cada ≈ 15 s mantiene viva la conexión.
+      operationId: followOrder
+      x-suite: v2
+      x-taller: "11"
+      parameters:
+        - $ref: "#/components/parameters/OrderId"
+        - name: Last-Event-ID
+          in: header
+          schema: { type: integer }
+      responses:
+        "200":
+          description: El flujo de eventos
+          content:
+            text/event-stream:
+              schema: { type: string }
+              example: "event:step\nid:3\ndata:{\"step\":\"COMMIT_INVENTORY\",\"outcome\":\"payment authorized psp-1a2b3c4d\",\"orderStatus\":\"PAID\"}\n\n"
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+        "404": { $ref: "#/components/responses/OrderNotFound" }
+
+  /api/v2/orders/{orderId}:
+    get:
+      tags: [orders]
+      summary: Un pedido y el punto en que está su saga
+      description: |
+        `PENDING` → `CONFIRMED` (stock reservado) → `PAID`, o `PAYMENT_REJECTED` (stock liberado), o
+        `CANCELLED` (sin stock). Es la vista de `orders`: una proyección de lo que los otros servicios
+        publicaron, no la verdad de la saga (06/08 §7).
+      operationId: getPlacedOrder
+      x-suite: v2
+      x-taller: "08"
+      parameters:
+        - $ref: "#/components/parameters/OrderId"
+      responses:
+        "200":
+          description: Pedido
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Order" }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+        "404": { $ref: "#/components/responses/OrderNotFound" }
+
+  /api/v1/orders/{orderId}:
+    get:
+      tags: [orders]
+      summary: Un pedido
+      description: El pedido de otro cliente responde `404`, no `403`, para no revelar que existe.
+      operationId: getOrder
+      x-suite: v1
+      deprecated: true            # taller 08: Deprecation y Sunset en cada respuesta; sustituto en /api/v2/orders
+      parameters:
+        - $ref: "#/components/parameters/OrderId"
+      responses:
+        "200":
+          description: Pedido
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Order" }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+        "404": { $ref: "#/components/responses/OrderNotFound" }
+
+  /api/v1/orders/{orderId}/payment:
+    post:
+      tags: [payments]
+      summary: Cobrar el pedido
+      description: |
+        Solo un pedido `CONFIRMED` es pagable. El resultado lo mueve a `PAID`, `PAYMENT_REJECTED`
+        (stock liberado) o `PAYMENT_PENDING` (el proveedor no respondió a tiempo: no se sabe si
+        cobró, y nunca se convierte en rechazo). La `Idempotency-Key` viaja al proveedor como clave
+        de operación. Desde el taller 03, repetir con la misma clave un pago `PAYMENT_PENDING` vuelve
+        a preguntar al proveedor: si ya hay respuesta firme, el pedido se resuelve (`PAID` o
+        `PAYMENT_REJECTED`) y la respuesta guardada se sustituye.
+      operationId: authorizePayment
+      x-suite: v1
+      deprecated: true            # taller 08: Deprecation y Sunset en cada respuesta; sustituto en /api/v2/orders
+      parameters:
+        - $ref: "#/components/parameters/OrderId"
+        - $ref: "#/components/parameters/IdempotencyKey"
+      responses:
+        "200":
+          description: Resultado del intento
+          headers:
+            Idempotent-Replay:
+              schema: { type: boolean }
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/PaymentResponse" }
+        "400":
+          description: Falta `Idempotency-Key`
+          content:
+            application/problem+json:
+              schema: { $ref: "#/components/schemas/Problem" }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+        "404": { $ref: "#/components/responses/OrderNotFound" }
+        "503": { $ref: "#/components/responses/Unavailable" }
+        "409":
+          description: El pedido no está en un estado pagable
+          content:
+            application/problem+json:
+              schema: { $ref: "#/components/schemas/Problem" }
+              example: { type: about:blank, title: Order not payable, status: 409, code: ORDER_NOT_PAYABLE, detail: order is PAID }
+
+  /api/v1/orders/{orderId}/cancel:
+    post:
+      tags: [cancellation]
+      summary: Cancelar el pedido y liberar su reserva
+      description: |
+        Cancela un pedido `CONFIRMED`, `PAYMENT_REJECTED` o `PAYMENT_PENDING`; uno `PAID` responde
+        `409`. Libera la reserva y deja una notificación `ORDER_CANCELLED`. Cancelar un pedido ya
+        cancelado responde `200` sin efecto.
+      operationId: cancelOrder
+      x-suite: v1
+      deprecated: true            # taller 08: Deprecation y Sunset en cada respuesta; sustituto en /api/v2/orders
+      parameters:
+        - $ref: "#/components/parameters/OrderId"
+      responses:
+        "200":
+          description: Pedido cancelado (o ya cancelado)
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Order" }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+        "404": { $ref: "#/components/responses/OrderNotFound" }
+        "409":
+          description: El pedido está pagado
+          content:
+            application/problem+json:
+              schema: { $ref: "#/components/schemas/Problem" }
+              example: { type: about:blank, title: Order not cancellable, status: 409, code: ORDER_NOT_CANCELLABLE, detail: order is PAID }
+
+  /api/v1/notifications:
+    get:
+      tags: [cancellation]
+      summary: Notificaciones enviadas al actor (todas, para el operador)
+      operationId: listNotifications
+      x-suite: v1
+      responses:
+        "200":
+          description: Notificaciones
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: "#/components/schemas/Notification" }
+        "401": { $ref: "#/components/responses/Unauthenticated" }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: Clave elegida por el cliente, única por operación y actor.
+      schema: { type: string, minLength: 8, maxLength: 128 }
+      example: 6f1c2a4e-order-0001
+    Sku:
+      name: sku
+      in: path
+      required: true
+      schema: { type: string, pattern: "^SKU-[0-9]{3,}$" }
+      example: SKU-001
+    OrderId:
+      name: orderId
+      in: path
+      required: true
+      schema: { type: string, format: uuid }
+      example: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+
+  responses:
+    Unauthenticated:
+      description: Sin token, o token inválido o expirado
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/Problem" }
+          example: { type: about:blank, title: Unauthenticated, status: 401, code: UNAUTHENTICATED, instance: /api/v1/orders }
+    ValidationFailed:
+      description: El cuerpo no tiene la forma esperada
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/Problem" }
+          example: { type: about:blank, title: Validation failed, status: 400, code: VALIDATION_FAILED, instance: /api/v1/orders }
+    ProductNotFound:
+      description: No existe un producto con ese SKU
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/Problem" }
+          example: { type: about:blank, title: Product not found, status: 404, code: PRODUCT_NOT_FOUND, detail: SKU-999, instance: /api/v1/products/SKU-999 }
+    Unavailable:
+      description: Una dependencia no respondió a tiempo (INVENTORY_UNAVAILABLE), o el gateway no alcanzó el servicio
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/Problem" }
+          example: { type: about:blank, title: Inventory unavailable, status: 503, code: INVENTORY_UNAVAILABLE, instance: /api/v1/orders }
+    OrderNotFound:
+      description: No existe el pedido, o no pertenece al actor
+      content:
+        application/problem+json:
+          schema: { $ref: "#/components/schemas/Problem" }
+          example: { type: about:blank, title: Order not found, status: 404, code: ORDER_NOT_FOUND }
+
+  schemas:
+    Problem:
+      description: RFC 9457 más `code`, estable para máquinas, y `errors` opcional.
+      type: object
+      required: [title, status, code]
+      properties:
+        type: { type: string, default: about:blank }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        instance: { type: string }
+        code:
+          type: string
+          enum: [VALIDATION_FAILED, INVALID_CREDENTIALS, UNAUTHENTICATED, PRODUCT_NOT_FOUND, ORDER_NOT_FOUND,
+                 INSUFFICIENT_INVENTORY, IDEMPOTENCY_KEY_REQUIRED, IDEMPOTENCY_KEY_REUSED, ORDER_NOT_PAYABLE,
+                 ORDER_NOT_CANCELLABLE, INTERNAL_ERROR, INVENTORY_UNAVAILABLE, SERVICE_UNAVAILABLE, GATEWAY_TIMEOUT,
+                 PAYMENTS_UNAVAILABLE]
+          description: |
+            `INVENTORY_UNAVAILABLE` (503) nace en el taller 02: el inventario es remoto y puede no
+            responder. `SERVICE_UNAVAILABLE` (503) y `GATEWAY_TIMEOUT` (504) los genera Envoy.
+            `PAYMENTS_UNAVAILABLE` (503) nace en el taller 03: es SEGURO que no se cobró (no se pudo
+            conectar, o el circuit breaker no dejó llamar) y el pedido sigue pagable; repetir con la
+            misma `Idempotency-Key` es seguro.
+        errors:
+          type: array
+          items:
+            type: object
+            required: [field, message]
+            properties:
+              field: { type: string }
+              message: { type: string }
+
+    Money:
+      type: object
+      required: [amount, currency]
+      properties:
+        amount: { type: string, pattern: "^-?[0-9]+\\.[0-9]{2}$", description: Decimal con dos cifras, como texto }
+        currency: { type: string, pattern: "^[A-Z]{3}$" }
+      example: { amount: "49.90", currency: USD }
+
+    LoginRequest:
+      type: object
+      required: [email, password]
+      properties:
+        email: { type: string, format: email }
+        password: { type: string, minLength: 8 }
+
+    TokenResponse:
+      type: object
+      required: [accessToken, tokenType, expiresIn]
+      properties:
+        accessToken: { type: string }
+        tokenType: { type: string, const: Bearer }
+        expiresIn: { type: integer, description: Segundos de vida del token, example: 900 }
+      example: { accessToken: eyJhbGciOiJIUzI1NiJ9.demo.demo, tokenType: Bearer, expiresIn: 900 }
+
+    Product:
+      type: object
+      required: [sku, name, unitPrice, stock]
+      properties:
+        sku: { type: string, pattern: "^SKU-[0-9]{3,}$" }
+        name: { type: string }
+        unitPrice: { $ref: "#/components/schemas/Money" }
+        stock: { type: integer, minimum: 0, description: Unidades disponibles (existencias menos reservas vivas) }
+      example: { sku: SKU-001, name: Mechanical keyboard, unitPrice: { amount: "49.90", currency: USD }, stock: 20 }
+
+    CreateOrderRequest:
+      type: object
+      required: [lines]
+      properties:
+        lines:
+          type: array
+          minItems: 1
+          maxItems: 50
+          items:
+            type: object
+            required: [sku, quantity]
+            properties:
+              sku: { type: string, pattern: "^SKU-[0-9]{3,}$" }
+              quantity: { type: integer, minimum: 1, maximum: 1000 }
+
+    OrderLine:
+      type: object
+      required: [sku, name, quantity, unitPrice, lineTotal]
+      properties:
+        sku: { type: string }
+        name: { type: string, description: Nombre del producto en el momento de la venta }
+        quantity: { type: integer, minimum: 1 }
+        unitPrice: { $ref: "#/components/schemas/Money" }
+        lineTotal: { $ref: "#/components/schemas/Money" }
+
+    OrderStatus:
+      type: string
+      enum: [PENDING, CONFIRMED, PAID, PAYMENT_REJECTED, PAYMENT_PENDING, CANCELLED]
+      description: |
+        `PENDING`: la saga en curso (solo `v2`) · `CONFIRMED`: stock reservado, sin pagar · `PAID` ·
+        `PAYMENT_REJECTED`: stock liberado · `PAYMENT_PENDING`: resultado incierto del proveedor
+        (solo `v1`) · `CANCELLED`: reserva liberada, o sin stock en `v2`.
+
+    Payment:
+      type: object
+      required: [status, operationId, reference]
+      properties:
+        status: { type: string, enum: [AUTHORIZED, REJECTED, PENDING] }
+        operationId: { type: string, description: La Idempotency-Key del intento }
+        reference: { type: [string, "null"], description: Referencia del proveedor, si respondió }
+
+    Order:
+      type: object
+      required: [id, customerId, status, lines, total, payment, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        customerId: { type: string, format: uuid }
+        status: { $ref: "#/components/schemas/OrderStatus" }
+        lines:
+          type: array
+          items: { $ref: "#/components/schemas/OrderLine" }
+        total: { $ref: "#/components/schemas/Money" }
+        payment:
+          oneOf:
+            - $ref: "#/components/schemas/Payment"
+            - type: "null"
+        createdAt: { type: string, format: date-time }
+      example:
+        id: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+        customerId: 11111111-1111-4111-8111-111111111111
+        status: CONFIRMED
+        lines:
+          - { sku: SKU-001, name: Mechanical keyboard, quantity: 2, unitPrice: { amount: "49.90", currency: USD }, lineTotal: { amount: "99.80", currency: USD } }
+          - { sku: SKU-002, name: USB-C cable, quantity: 1, unitPrice: { amount: "9.90", currency: USD }, lineTotal: { amount: "9.90", currency: USD } }
+        total: { amount: "109.70", currency: USD }
+        payment: null
+        createdAt: "2026-09-29T15:04:05Z"
+
+    PaymentResponse:
+      type: object
+      required: [orderId, orderStatus, payment]
+      properties:
+        orderId: { type: string, format: uuid }
+        orderStatus: { $ref: "#/components/schemas/OrderStatus" }
+        payment: { $ref: "#/components/schemas/Payment" }
+      example:
+        orderId: 7c9e6679-7425-40de-944b-e07fc1f90ae7
+        orderStatus: PAID
+        payment: { status: AUTHORIZED, operationId: 6f1c2a4e-pay-0001, reference: psp-1a2b3c4d }
+
+    Notification:
+      type: object
+      required: [id, orderId, type, recipient, createdAt]
+      properties:
+        id: { type: string, format: uuid }
+        orderId: { type: string, format: uuid }
+        type: { type: string, enum: [ORDER_CANCELLED] }
+        recipient: { type: string, format: email }
+        createdAt: { type: string, format: date-time }

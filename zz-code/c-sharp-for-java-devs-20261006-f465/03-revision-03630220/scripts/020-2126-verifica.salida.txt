@@ -1,0 +1,12 @@
+── I. §6: ¿alguna celda con número en vez de ⏳? ──
+  04-ceremonia-delegados-y-recursos.md: | Forma | 0% de fallos | 5% de fallos | 100% de fallos | Asignado (5%) |
+  (vacío = ninguna cifra inventada en una tabla de medición)
+
+── J. §2 de cada fase declara avance de proyecto ──
+  ✅ las 25
+
+── K. Batería completa ──
+  ✅ cero referencias a otros cursos
+  ✅ enlaces
+
+════ TODO EN VERDE ════

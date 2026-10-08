@@ -1,0 +1,60 @@
+# La base de Contingencia, como en compose (a16). Un Deployment con emptyDir, a propósito: el patrimonio
+# entra al cluster para que el Gateway le reparta tráfico, no para cuidar sus datos. La Fase 12 muestra
+# cómo se cuida una base de verdad.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contingencia-db
+  namespace: legacy
+  labels:
+    app.kubernetes.io/name: contingencia-db
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/component: database
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: contingencia-db
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: contingencia-db
+        app.kubernetes.io/part-of: lab
+        app.kubernetes.io/component: database
+    spec:
+      containers:
+        - name: postgres
+          # postgres:18.6
+          image: postgres@sha256:5a5a84b19854a9ffaa54082c166ff4ec27473a361e496e5ea167f298f2da9722
+          # Recursos (Fase 15): 41 MiB medidos.
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {memory: 256Mi}
+          env:
+            - {name: TZ, value: America/Bogota}
+            - {name: POSTGRES_DB, value: contingencia}
+            - {name: POSTGRES_USER, value: contingencia}
+            - {name: POSTGRES_PASSWORD, value: contingencia-lab}   # solo de laboratorio; la Fase 11 lo vuelve Secret
+          ports:
+            - {name: postgres, containerPort: 5432}
+          volumeMounts:
+            - {name: data, mountPath: /var/lib/postgresql}
+            # El esquema, el procedimiento del préstamo y los datos iniciales, desde los mismos archivos de a16.
+            - {name: init, mountPath: /docker-entrypoint-initdb.d, readOnly: true}
+      volumes:
+        - {name: data, emptyDir: {}}
+        - {name: init, configMap: {name: contingencia-db-init}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: contingencia-db
+  namespace: legacy
+  labels:
+    app.kubernetes.io/name: contingencia-db
+    app.kubernetes.io/part-of: lab
+spec:
+  selector:
+    app.kubernetes.io/name: contingencia-db
+  ports:
+    - {name: postgres, port: 5432, targetPort: postgres}

@@ -1,0 +1,11 @@
+.......................                                                  [100%]
+23 passed in 2.17s
+--- ¿cambió la atribución? ---
+canal                 primer toque          último toque                lineal           decaimiento
+google            2.76 [2.59–3.04]      1.55 [1.47–1.64]      2.01 [1.94–2.10]      1.90 [1.83–1.98]
+instagram         1.14 [1.09–1.18]      3.35 [3.08–3.67]      1.74 [1.66–1.80]      1.81 [1.73–1.88]
+tiktok            1.06 [1.03–1.11]      7.96 [7.01–9.07]      1.93 [1.87–2.02]      2.14 [2.07–2.25]
+
+=== Lo que cuesta ignorar la madurez (último toque) ===
+  google     sin filtro    1,588,548 → maduros    1,553,096  (-2.2%)
+  instagram  sin filtro    3,557,016 → maduros    3,346,105  (-5.9%)

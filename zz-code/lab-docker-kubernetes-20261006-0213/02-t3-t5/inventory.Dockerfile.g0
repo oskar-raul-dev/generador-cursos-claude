@@ -1,0 +1,10 @@
+# Dockerfile de G0: una sola etapa, a propósito. La Fase 04 lo reescribe.
+# eclipse-temurin:25-jdk
+FROM eclipse-temurin@sha256:8c0a84ea11c8f6ed52600fc19f1040121f2a162998e9f50a5faebbbad9172dcc
+WORKDIR /app
+COPY .mvn .mvn
+COPY mvnw pom.xml ./
+COPY src src
+RUN ./mvnw -q -B package -DskipTests
+EXPOSE 8080
+CMD ["java", "-jar", "target/inventory-0.0.1-SNAPSHOT.jar"]

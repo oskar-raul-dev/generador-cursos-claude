@@ -1,0 +1,13 @@
+# El generador de caos (Fase 22). Lo enciende global.chaos.enabled; global.chaos.target dice entre inventory
+# y qué vecino se pone (catalog por defecto: pricing va con mTLS desde la Fase 19, y el caos no lo habla).
+component: chaos
+image:
+  repository: lab/chaos
+  tag: f22
+# La configuración inicial: ninguna falla. Se cambia en caliente con task chaos:set.
+faults: {}
+securityContext:
+  runAsUser: 65532
+resources:
+  requests: {cpu: 20m, memory: 16Mi}
+  limits: {memory: 64Mi}

@@ -1,0 +1,15 @@
+# Estado local del laboratorio: no se versiona.
+.engine.env
+.venv/
+# Los archivos de imagen que task images:load arma con Podman.
+.images/
+__pycache__/
+# Los interruptores de observabilidad encendidos en esta máquina (Fase 17, task obs:on).
+.observability.json
+# Claves privadas de las CA de laboratorio (Fase 19): nunca.
+*.key
+# Los valores de los Secret del laboratorio (Fase 11): se escriben a mano en cada máquina.
+.secrets/
+# El .env del portal SÍ se versiona: es la maña del patrimonio (a16) que cobra la Fase 11. La raíz
+# del repositorio ignora todos los .env, y sin esta excepción el portal llegaría a git sin él.
+!legacy/portal/.env

@@ -1,0 +1,52 @@
+=== lint ===
+I001 [*] Import block is un-sorted or un-formatted
+  --> src/ds07-scikit-learn/test_ausentismo.py:10:1
+   |
+ 8 |   """
+ 9 |
+10 | / from __future__ import annotations
+11 | |
+12 | | import subprocess
+13 | | import sys
+14 | | from pathlib import Path
+15 | |
+16 | | import pytest
+17 | | from baseline import (
+18 | |     always_attends,
+19 | |     precision_recall,
+20 | |     roc_auc,
+21 | |     three_variable_rule,
+22 | |     threshold_for_capacity,
+23 | | )
+24 | | from features import (
+25 | |     HONEST,
+26 | |     LEAKY,
+27 | |     PRIOR_CAP,
+28 | |     build_matrix,
+29 | |     cutoff_of,
+30 | |     load_rows,
+31 | |     split_temporal,
+32 | | )
+   | |_^
+33 |
+34 |   HERE = Path(__file__).parent
+   |
+help: Organize imports
+   |
+16 | import pytest
+17 +
+18 | from baseline import (
+   |
+
+Found 1 error.
+[*] 1 fixable with the `--fix` option.
+  ds01-numpy-y-el-modelo-vectorizado            OK
+  ds02-pandas                                   OK
+  ds03-polars-y-el-modelo-lazy                  OK
+  ds04-embudo                                   OK
+  ds05-visualizacion                            OK
+  ds06-notebooks-y-reproducibilidad             OK
+  ds07-scikit-learn                             FALLA
+=== links ===
+links rotos: ninguno
+     686 ds07-scikit-learn.md

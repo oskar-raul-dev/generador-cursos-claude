@@ -1,0 +1,168 @@
+openapi: 3.1.0
+info:
+  title: catalog
+  version: 1.0.0
+  description: |
+    El maestro de productos y categorías. Sale del portal (PPVW), que tiene su catálogo propio.
+    Cada operación dice en `x-lab-paso` en qué paso se implementa; lo que todavía no existe responde 404 (o 405, si la ruta ya existe con otro método) hasta su paso.
+servers:
+  - url: http://catalog:8080
+tags:
+  - name: plataforma
+  - name: catálogo
+paths:
+  /health/live:
+    get:
+      tags: [plataforma]
+      summary: El proceso puede atender. Nunca consulta dependencias.
+      x-lab-paso: G0
+      responses:
+        '200': {description: Vivo, content: {application/json: {schema: {$ref: '#/components/schemas/Health'}}}}
+  /health/ready:
+    get:
+      tags: [plataforma]
+      summary: El servicio puede atender tráfico de verdad (trivial hasta G4).
+      x-lab-paso: G0
+      responses:
+        '200': {description: Listo, content: {application/json: {schema: {$ref: '#/components/schemas/Health'}}}}
+        '503': {description: No listo (desde G4), content: {application/json: {schema: {$ref: '#/components/schemas/Health'}}}}
+  /metrics:
+    get:
+      tags: [plataforma]
+      summary: Métricas en formato de exposición de Prometheus. Pendiente hasta G6 (Fase 17).
+      description: |
+        Iguales en los cuatro backends, para que un solo tablero los lea: un histograma
+        http_server_requests_seconds (en segundos) con las etiquetas method, uri (la ruta con sus
+        parámetros sin reemplazar, como /prices/{sku}) y status. Cada servicio puede sumar las suyas.
+      x-lab-paso: G6
+      responses:
+        '200': {description: Métricas, content: {text/plain: {schema: {type: string}}}}
+  /products:
+    get:
+      tags: [catálogo]
+      summary: Los productos del catálogo. En G0 devuelve una lista fija.
+      x-lab-paso: G0
+      parameters:
+        - name: status
+          in: query
+          required: false
+          description: 'Desde G1. Sin el parámetro, solo los ACTIVE; `all` trae también los descontinuados.'
+          schema: {type: string, enum: [ACTIVE, DISCONTINUED, all], default: ACTIVE}
+      responses:
+        '200': {description: Productos, content: {application/json: {schema: {type: array, items: {$ref: '#/components/schemas/Product'}}}}}
+    post:
+      tags: [catálogo]
+      summary: Crea un producto, siempre en ACTIVE. Pendiente hasta G1 (Fase 09).
+      x-lab-paso: G1
+      requestBody:
+        required: true
+        content: {application/json: {schema: {$ref: '#/components/schemas/ProductRequest'}}}
+      responses:
+        '201': {description: Producto creado, content: {application/json: {schema: {$ref: '#/components/schemas/Product'}}}}
+        '409': {description: El SKU ya existe, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+  /products/{sku}:
+    get:
+      tags: [catálogo]
+      summary: Un producto. Pendiente hasta G1 (Fase 09).
+      x-lab-paso: G1
+      parameters:
+        - {name: sku, in: path, required: true, schema: {$ref: '#/components/schemas/Sku'}}
+      responses:
+        '200': {description: Producto, content: {application/json: {schema: {$ref: '#/components/schemas/Product'}}}}
+        '404': {description: No existe, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+    patch:
+      tags: [catálogo]
+      summary: Cambia el nombre, la categoría o el estado de un producto. Pendiente hasta G1 (Fase 09).
+      description: |
+        Descontinuar exige `reasonCode`; reactivar no. Un producto descontinuado no se borra: sale de
+        la lista por defecto y sigue respondiendo en `GET /products/{sku}`.
+      x-lab-paso: G1
+      parameters:
+        - {name: sku, in: path, required: true, schema: {$ref: '#/components/schemas/Sku'}}
+      requestBody:
+        required: true
+        content: {application/merge-patch+json: {schema: {$ref: '#/components/schemas/ProductPatch'}}}
+      responses:
+        '200': {description: Producto actualizado, content: {application/json: {schema: {$ref: '#/components/schemas/Product'}}}}
+        '404': {description: No existe, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+        '422': {description: 'Descontinuar sin `reasonCode`, o un código que no existe', content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}
+  /reason-codes:
+    get:
+      tags: [catálogo]
+      summary: La tabla de códigos de razón para descontinuar un producto. Pendiente hasta G1 (Fase 09).
+      description: |
+        Es una tabla de datos, no un enum del contrato. G1 la siembra con DISCONTINUED_BY_SUPPLIER,
+        SANITARY_RECALL, LOW_ROTATION y REPLACED.
+      x-lab-paso: G1
+      responses:
+        '200': {description: Códigos de razón, content: {application/json: {schema: {type: array, items: {$ref: '#/components/schemas/ReasonCode'}}}}}
+  /categories:
+    get:
+      tags: [catálogo]
+      summary: Las categorías. Pendiente hasta G1 (Fase 09).
+      x-lab-paso: G1
+      responses:
+        '200': {description: Categorías, content: {application/json: {schema: {type: array, items: {type: string}}}}}
+components:
+  schemas:
+    Sku: {type: string, pattern: '^SKU-[0-9]{4}$', examples: [SKU-0003]}
+    StoreId: {type: string, pattern: '^DRO-[0-9]{3}$', examples: [DRO-007]}
+    Health:
+      type: object
+      required: [status]
+      properties:
+        status: {type: string, enum: [live, ready, not_ready]}
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error: {type: string, examples: [not_found]}
+        message: {type: string}
+    Category: {type: string, enum: [venta libre, cuidado personal, bebés, nutrición]}
+    ProductStatus: {type: string, enum: [ACTIVE, DISCONTINUED]}
+    ReasonCodeValue:
+      type: string
+      pattern: '^[A-Z][A-Z_]{1,29}$'
+      description: Un código de la tabla de `GET /reason-codes`.
+      examples: [SANITARY_RECALL]
+    ReasonCode:
+      type: object
+      required: [code, description, active]
+      properties:
+        code: {$ref: '#/components/schemas/ReasonCodeValue'}
+        description: {type: string, examples: [Retiro sanitario ordenado por el INVIMA]}
+        active: {type: boolean, description: 'Un código inactivo se conserva para los productos viejos y no se acepta en los cambios nuevos.'}
+    ProductRequest:
+      type: object
+      required: [sku, name, category]
+      properties:
+        sku: {$ref: '#/components/schemas/Sku'}
+        name: {type: string, examples: [Salbutamol inhalador 100 mcg]}
+        category: {$ref: '#/components/schemas/Category'}
+    ProductPatch:
+      type: object
+      minProperties: 1
+      additionalProperties: false
+      properties:
+        name: {type: string}
+        category: {$ref: '#/components/schemas/Category'}
+        status: {$ref: '#/components/schemas/ProductStatus'}
+        reasonCode: {$ref: '#/components/schemas/ReasonCodeValue'}
+      if:
+        properties: {status: {const: DISCONTINUED}}
+        required: [status]
+      then:
+        required: [reasonCode]
+    Product:
+      type: object
+      required: [sku, name, category]
+      properties:
+        sku: {$ref: '#/components/schemas/Sku'}
+        name: {type: string, examples: [Salbutamol inhalador 100 mcg]}
+        category: {$ref: '#/components/schemas/Category'}
+        status:
+          allOf: [{$ref: '#/components/schemas/ProductStatus'}]
+          description: Desde G1; G0 no lo devuelve.
+        statusReasonCode:
+          oneOf: [{$ref: '#/components/schemas/ReasonCodeValue'}, {type: 'null'}]
+          description: 'Desde G1: el código con que se descontinuó; null si está ACTIVE.'

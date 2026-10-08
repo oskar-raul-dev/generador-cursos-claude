@@ -1,0 +1,20 @@
+[
+  {
+    "name": "psp",
+    "listen": "0.0.0.0:28185",
+    "upstream": "host.docker.internal:28085",
+    "enabled": true
+  },
+  {
+    "name": "inventory",
+    "listen": "0.0.0.0:28183",
+    "upstream": "host.docker.internal:28083",
+    "enabled": true
+  },
+  {
+    "name": "payments",
+    "listen": "0.0.0.0:28184",
+    "upstream": "host.docker.internal:28084",
+    "enabled": true
+  }
+]

@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pricing-suelto
+  labels:
+    app.kubernetes.io/name: pricing-suelto
+spec:
+  containers:
+    - name: pricing
+      image: lab/pricing:g0
+      imagePullPolicy: IfNotPresent

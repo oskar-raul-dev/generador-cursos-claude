@@ -1,0 +1,7 @@
+# containerd de cada nodo de kind (Fase 19): cómo llegar al registry propio y con qué CA validarlo.
+# Va en /etc/containerd/certs.d/lab-registry:5000/, al lado de ca.crt (task registry:trust).
+server = "https://lab-registry:5000"
+
+[host."https://lab-registry:5000"]
+  capabilities = ["pull", "resolve"]
+  ca = "/etc/containerd/certs.d/lab-registry:5000/ca.crt"

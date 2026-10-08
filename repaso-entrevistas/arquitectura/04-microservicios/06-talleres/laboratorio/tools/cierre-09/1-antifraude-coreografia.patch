@@ -1,0 +1,253 @@
+diff --git a/fraud/.gitignore b/fraud/.gitignore
+new file mode 100644
+index 0000000..21d0b89
+--- /dev/null
++++ b/fraud/.gitignore
+@@ -0,0 +1 @@
++.venv/
+diff --git a/fraud/fraud.py b/fraud/fraud.py
+new file mode 100644
+index 0000000..5c39cf3
+--- /dev/null
++++ b/fraud/fraud.py
+@@ -0,0 +1,89 @@
++"""fraud: el control antifraude del cierre de 06/09. Un stub: la regla es de juguete.
++
++Regla: una línea con más de 5 unidades es sospechosa.
++
++  --mode http   (orquestación)  POST /checks {"orderId", "lines"} → {"passed": true|false, "reason"}
++  --mode kafka  (coreografía)   InventoryReserved (inventory.reservations) → FraudCheckPassed | FraudCheckFailed
++                                en fraud.results. Sin base: publica directo, sin outbox ni inbox (un stub).
++"""
++import argparse
++import asyncio
++import json
++import uuid
++from datetime import datetime, timezone
++from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
++
++MAX_UNITS = 5
++
++
++def check(lines):
++    worst = max((l["quantity"] for l in lines), default=0)
++    return (True, None) if worst <= MAX_UNITS else (False, f"a line with {worst} units (max {MAX_UNITS})")
++
++
++class Handler(BaseHTTPRequestHandler):
++    def _body(self):
++        # el cliente HTTP del JDK (orders) manda el cuerpo chunked, sin Content-Length (06/01 §8)
++        if "chunked" in (self.headers.get("Transfer-Encoding") or "").lower():
++            raw = b""
++            while (size := int(self.rfile.readline().split(b";")[0].strip(), 16)) > 0:
++                raw += self.rfile.read(size)
++                self.rfile.readline()
++            self.rfile.readline()
++            return raw
++        return self.rfile.read(int(self.headers.get("Content-Length") or 0))
++
++    def do_POST(self):
++        body = json.loads(self._body())
++        passed, reason = check(body["lines"])
++        out = json.dumps({"passed": passed, "reason": reason}).encode()
++        self.send_response(200)
++        self.send_header("Content-Type", "application/json")
++        self.send_header("Content-Length", str(len(out)))
++        self.end_headers()
++        self.wfile.write(out)
++        print(f"check order={body['orderId'][:8]} → {'passed' if passed else 'FAILED: ' + reason}", flush=True)
++
++    def log_message(self, *args):
++        pass
++
++
++async def run_kafka(brokers):
++    from aiokafka import AIOKafkaConsumer, AIOKafkaProducer
++    consumer = AIOKafkaConsumer("inventory.reservations", bootstrap_servers=brokers, group_id="fraud",
++                                enable_auto_commit=False, auto_offset_reset="earliest")
++    producer = AIOKafkaProducer(bootstrap_servers=brokers)
++    await consumer.start()
++    await producer.start()
++    print("fraud consuming inventory.reservations", flush=True)
++    try:
++        async for msg in consumer:
++            ev = json.loads(msg.value)
++            if ev.get("type") == "InventoryReserved":
++                passed, reason = check(ev["lines"])
++                fact = {"eventId": str(uuid.uuid4()), "type": "FraudCheckPassed" if passed else "FraudCheckFailed",
++                        "version": 1, "occurredAt": datetime.now(timezone.utc).isoformat(), "orderId": ev["orderId"],
++                        "causationId": ev["eventId"], "lines": ev["lines"], "total": ev["total"], "reason": reason}
++                await producer.send_and_wait("fraud.results", json.dumps(fact).encode(), key=msg.key)
++                print(f"InventoryReserved order={ev['orderId'][:8]} → {fact['type']}", flush=True)
++            await consumer.commit()
++    finally:
++        await consumer.stop()
++        await producer.stop()
++
++
++def main():
++    p = argparse.ArgumentParser(description=__doc__.splitlines()[0])
++    p.add_argument("--mode", choices=["http", "kafka"], required=True)
++    p.add_argument("--port", type=int, default=28086)
++    p.add_argument("--kafka", default="localhost:29092")
++    args = p.parse_args()
++    if args.mode == "kafka":
++        asyncio.run(run_kafka(args.kafka))
++    else:
++        print(f"fraud listening on :{args.port}", flush=True)
++        ThreadingHTTPServer(("0.0.0.0", args.port), Handler).serve_forever()
++
++
++if __name__ == "__main__":
++    main()
+diff --git a/fraud/pyproject.toml b/fraud/pyproject.toml
+new file mode 100644
+index 0000000..3ba6de2
+--- /dev/null
++++ b/fraud/pyproject.toml
+@@ -0,0 +1,12 @@
++# fraud: stub del cierre de 06/09. Sin base de datos: decide y contesta (o publica). Versiones fijadas.
++[project]
++name = "ms-fraud"
++version = "1.0.0"
++requires-python = ">=3.14"
++dependencies = [
++    "aiokafka==0.14.0",          # solo en modo kafka (coreografía)
++    "cramjam==2.13.0",           # snappy: lo que produce franz-go (06/08 §9)
++]
++
++[tool.uv]
++package = false
+diff --git a/inventory/internal/consumer/consumer.go b/inventory/internal/consumer/consumer.go
+index ba76289..e4f8425 100644
+--- a/inventory/internal/consumer/consumer.go
++++ b/inventory/internal/consumer/consumer.go
+@@ -49,7 +49,7 @@ func Run(ctx context.Context, st *store.Store, opt Options) error {
+ 	cl, err := kgo.NewClient(
+ 		kgo.SeedBrokers(opt.Brokers...),
+ 		kgo.ConsumerGroup(Group),
+-		kgo.ConsumeTopics(Topic, TopicPlaced, TopicPayments), // taller 08: + los dos de la saga
++		kgo.ConsumeTopics(Topic, TopicPlaced, TopicPayments, TopicFraud), // taller 08: + los de la saga
+ 		kgo.ConsumeResetOffset(kgo.NewOffset().AtStart()), // grupo nuevo: desde el principio del log
+ 		kgo.DisableAutoCommit(),                           // el offset lo decide el código, no un temporizador
+ 	)
+diff --git a/inventory/internal/consumer/saga.go b/inventory/internal/consumer/saga.go
+index d8ea6ed..d9b81bc 100644
+--- a/inventory/internal/consumer/saga.go
++++ b/inventory/internal/consumer/saga.go
+@@ -19,6 +19,7 @@ import (
+ const (
+ 	TopicPlaced       = "orders.placed"          // OrderPlaced (contrato v2)
+ 	TopicPayments     = "payments.results"       // PaymentAuthorized · PaymentRejected
++	TopicFraud        = "fraud.results"          // cierre de 06/09: FraudCheckFailed también libera
+ 	TopicReservations = "inventory.reservations" // InventoryReserved · InventoryReservationFailed · InventoryReleased
+ )
+ 
+@@ -62,7 +63,7 @@ func react(ctx context.Context, tx pgx.Tx, ev event, tc string, verdict *string)
+ 		*verdict = "InventoryReserved"
+ 		// el importe NO es de inventory: viaja porque payments lo necesita y no quiere preguntar a orders
+ 		return []store.Event{fact(ev, "InventoryReserved", tc, map[string]any{"lines": ev.Lines, "total": ev.Total})}, nil
+-	case "PaymentRejected":
++	case "PaymentRejected", "FraudCheckFailed":
+ 		back, err := store.ReleaseTx(ctx, tx, ev.OrderID)
+ 		if err != nil {
+ 			return nil, err
+diff --git a/orders/src/main/java/dev/ms/orders/saga/SagaListener.java b/orders/src/main/java/dev/ms/orders/saga/SagaListener.java
+index e340332..ef6cf0a 100644
+--- a/orders/src/main/java/dev/ms/orders/saga/SagaListener.java
++++ b/orders/src/main/java/dev/ms/orders/saga/SagaListener.java
+@@ -44,7 +44,7 @@ public class SagaListener {
+ 
+     // El offset se confirma cuando este método vuelve sin excepción (ack-mode record); si lanza, el
+     // manejador de errores reintenta y, al final, aparta el mensaje a <topic>.dlq (KafkaErrorConfig).
+-    @KafkaListener(topics = {"inventory.reservations", "payments.results"}, groupId = "orders")
++    @KafkaListener(topics = {"inventory.reservations", "payments.results", "fraud.results"}, groupId = "orders")
+     public void on(ConsumerRecord<String, String> rec) {
+         JsonNode ev = json.readTree(rec.value());
+         var eventId = UUID.fromString(ev.get("eventId").asString());
+@@ -67,6 +67,7 @@ public class SagaListener {
+         return switch (type) {
+             case "InventoryReserved" -> move(order, "CONFIRMED", "PENDING");
+             case "InventoryReservationFailed" -> move(order, "CANCELLED", "PENDING");
++            case "FraudCheckFailed" -> move(order, "CANCELLED", "CONFIRMED", "PENDING");
+             case "PaymentAuthorized" -> {
+                 record(order, ev);
+                 var result = move(order, "PAID", "CONFIRMED", "PENDING");
+diff --git a/payments/app/consumer.py b/payments/app/consumer.py
+index 1bf091d..4e63ee8 100644
+--- a/payments/app/consumer.py
++++ b/payments/app/consumer.py
+@@ -22,7 +22,7 @@ log = logging.getLogger("payments.consumer")
+ 
+ BROKERS = os.environ.get("PAYMENTS_KAFKA", "")
+ GROUP, TOPIC = "payments", "orders.events"
+-RESERVATIONS, RESULTS = "inventory.reservations", "payments.results"   # taller 08: la saga
++FRAUD, RESULTS = "fraud.results", "payments.results"   # cierre de 06/09: se cobra tras el antifraude
+ MAX_ATTEMPTS = 3
+ # taller 07: continuar la traza que llega en los encabezados. Con "0", cada mensaje abre una traza nueva.
+ TRACE_KAFKA = os.environ.get("PAYMENTS_TRACE_KAFKA", "1") == "1"
+@@ -30,13 +30,13 @@ tracer = trace.get_tracer("payments.consumer")
+ 
+ 
+ async def run(pool, psp: httpx.AsyncClient):
+-    consumer = AIOKafkaConsumer(TOPIC, RESERVATIONS, bootstrap_servers=BROKERS, group_id=GROUP,
++    consumer = AIOKafkaConsumer(TOPIC, FRAUD, bootstrap_servers=BROKERS, group_id=GROUP,
+                                 enable_auto_commit=False,          # el offset, después del efecto
+                                 auto_offset_reset="earliest")
+     producer = AIOKafkaProducer(bootstrap_servers=BROKERS)
+     await consumer.start()
+     await producer.start()
+-    log.info("consumer %s on %s, %s", GROUP, TOPIC, RESERVATIONS)
++    log.info("consumer %s on %s, %s", GROUP, TOPIC, FRAUD)
+     try:
+         async for msg in consumer:
+             await handle(pool, producer, msg, psp)
+@@ -64,8 +64,8 @@ async def process(pool, producer, msg, psp):
+         try:
+             event = json.loads(msg.value)
+             trace.get_current_span().set_attribute("ms.event.type", str(event.get("type")))
+-            if msg.topic == RESERVATIONS:                     # taller 08
+-                if event.get("type") == "InventoryReserved":
++            if msg.topic == FRAUD:                            # cierre de 06/09
++                if event.get("type") == "FraudCheckPassed":
+                     await authorize(pool, psp, event)
+                 return
+             if event.get("type") != "OrderCancelled":
+diff --git a/scripts/lab.py b/scripts/lab.py
+index 5af8939..acb329f 100644
+--- a/scripts/lab.py
++++ b/scripts/lab.py
+@@ -325,6 +325,13 @@ def cmd_payments(args):
+          "--log-level", "warning"], cwd=project, env=env, check=False)
+ 
+ 
++def cmd_fraud(args):
++    """Cierre de 06/09: el stub antifraude, por HTTP (orquestación) o por Kafka (coreografía)."""
++    project = LAB / "fraud"
++    run(["uv", "sync", "--quiet", "--python", "3.14"], cwd=project)
++    run(["uv", "run", "--python", "3.14", "python", "fraud.py", "--mode", args.mode], cwd=project, check=False)
++
++
+ def cmd_psp(args):
+     """Arranca psp-simulator en primer plano."""
+     run([sys.executable, str(LAB / "psp-simulator" / "psp_simulator.py"), "--port", str(args.port)], check=False)
+@@ -353,7 +360,8 @@ def slow(proxy, latency, off):
+ TOPICS = {"orders.events": 3, "orders.events.dlq": 1,
+           # taller 08: los tres topics de la saga coreografiada, cada uno con su DLQ
+           "orders.placed": 3, "orders.placed.dlq": 1, "inventory.reservations": 3,
+-          "inventory.reservations.dlq": 1, "payments.results": 3, "payments.results.dlq": 1}
++          "inventory.reservations.dlq": 1, "payments.results": 3, "payments.results.dlq": 1,
++          "fraud.results": 3, "fraud.results.dlq": 1}         # cierre de 06/09 (coreografía)
+ KAFKA_SH = ["docker", "exec", "ms-kafka"]
+ 
+ 
+@@ -680,6 +688,9 @@ def main():
+     m.add_argument("--no-payment-key", action="store_true",
+                    help="no propagar la Idempotency-Key a payments (provocación del taller 03)")
+     m.set_defaults(fn=cmd_monolith)
++    fr = sub.add_parser("fraud", help=cmd_fraud.__doc__)
++    fr.add_argument("--mode", choices=["http", "kafka"], default="http")
++    fr.set_defaults(fn=cmd_fraud)
+     ps = sub.add_parser("psp", help=cmd_psp.__doc__)
+     ps.add_argument("--port", type=int, default=28085)
+     ps.set_defaults(fn=cmd_psp)

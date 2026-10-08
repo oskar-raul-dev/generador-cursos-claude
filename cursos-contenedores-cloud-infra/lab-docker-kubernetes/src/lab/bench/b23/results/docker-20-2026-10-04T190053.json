@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-04T19:00:53",
+  "rate": 20,
+  "scale": {
+    "client": {
+      "calls": {
+        "pricing-d598f5466-c9b49": 600,
+        "pricing-d598f5466-wdmgc": 0,
+        "pricing-d598f5466-z6mp6": 600
+      },
+      "new": [
+        "pricing-d598f5466-wdmgc"
+      ],
+      "new_calls": 0,
+      "total": 1200
+    },
+    "client+age": {
+      "calls": {
+        "pricing-f9d6cf87-62zsg": 237,
+        "pricing-f9d6cf87-65758": 482,
+        "pricing-f9d6cf87-95krh": 482
+      },
+      "new": [
+        "pricing-f9d6cf87-62zsg"
+      ],
+      "new_calls": 237,
+      "total": 1201
+    }
+  }
+}

@@ -1,0 +1,6 @@
+syntax = "proto3";
+package aurea.v1;
+message CitaConfirmada {
+  string sede = 1;
+  string hora = 2;
+}

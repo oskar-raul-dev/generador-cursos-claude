@@ -1,0 +1,5 @@
+apiVersion: v2
+name: loki
+description: Loki del laboratorio (Fase 18), un solo proceso con los datos en un emptyDir
+type: application
+version: 0.18.0

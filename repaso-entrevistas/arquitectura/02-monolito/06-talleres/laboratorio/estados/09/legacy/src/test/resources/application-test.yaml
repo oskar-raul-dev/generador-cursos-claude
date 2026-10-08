@@ -1,0 +1,8 @@
+# Taller 05: las pruebas corren contra PostgreSQL en Testcontainers, la misma base que en ejecución.
+# La URL la pone @ServiceConnection (PostgresTestConfig).
+# Taller 09: el esquema ya no lo crea Hibernate (create-drop) sino las mismas migraciones de Flyway que
+# en ejecución; Hibernate solo lo valida. La base de prueba tiene el esquema de producción.
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: validate

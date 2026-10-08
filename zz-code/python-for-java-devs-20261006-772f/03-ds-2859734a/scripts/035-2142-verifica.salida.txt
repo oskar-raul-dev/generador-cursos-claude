@@ -1,0 +1,11 @@
+etapas 64062 toques 62748 merge: 133288
+cuotas crudo 15.43 MB · filas 81,274
+planes crudo 1.84 MB · filas 6,065
+cuotas category 11.39 MB · planes category 1.16 MB
+merge catastrófico: 351,979,120 filas · 21.1 GB · google: 16420 × 8574
+--- 1,000 filas · 5 repeticiones ---
+bucle               0.128 ms    0.131 ms    0.00 MB
+--- 49,260 filas · 5 repeticiones ---
+bucle               7.002 ms    7.087 ms    0.00 MB
+--- 2,000,000 filas · 3 repeticiones ---
+bucle             296.329 ms  296.329 ms    0.00 MB

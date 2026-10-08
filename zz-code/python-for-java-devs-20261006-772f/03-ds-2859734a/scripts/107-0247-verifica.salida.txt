@@ -1,0 +1,22 @@
+# 🪞 INSTINTOS
+## Los reflejos de Java, y qué hacer con ellos
+
+Este documento recoge los reflejos que aparecieron a lo largo de las dieciocho fases: qué te
+empuja a escribir tu experiencia previa, por qué eso era correcto donde lo aprendiste, y qué se
+escribe en su lugar aquí.
+
+No es un resumen del curso. Es la lista que conviene releer **antes de una revisión de código**,
+tuya o ajena, y la que explica por qué un desarrollador con once años de oficio escribe Python
+que funciona y que nadie de ese ecosistema habría escrito.
+
+> 🧭 **Ninguno de estos reflejos es un error de quien lo tiene.** Todos fueron correctos en el
+> lugar donde se aprendieron, y casi todos siguen siéndolo allá. Lo que cambia es el **mapa de
+> costos**: qué es barato y qué es caro es distinto en cada ecosistema, y recalibrar ese mapa es
+> lo que el curso vino a hacer.
+
+---
+
+## 1. La ceremonia
+
+=== los 18 del camino base ===
+18 reflejos de camino base · ## 1. La ceremonia ... ## 18. Comparar contra un competidor de paja

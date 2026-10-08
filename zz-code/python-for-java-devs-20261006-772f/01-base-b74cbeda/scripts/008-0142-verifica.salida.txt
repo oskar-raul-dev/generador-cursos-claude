@@ -1,0 +1,3 @@
+uv run con caché FRIA: 1.7s -> httpx 0.28.1
+5.5M	/tmp/claude-501/cache-pep723
+Shell cwd was reset to /Users/oskar/Developer/Learning/courses-ia-generated

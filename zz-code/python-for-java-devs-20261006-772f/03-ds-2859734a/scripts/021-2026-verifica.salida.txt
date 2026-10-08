@@ -1,0 +1,3 @@
+str: str 4.638222 <class 'str'>
+obj: object 4.638222 <class 'str'>
+infer_string option: True

@@ -1,0 +1,17 @@
+{
+  "AutoStart": false,
+  "DisplayedOnboarding": true,
+  "DockerAppLaunchPath": "/Applications/Docker.app",
+  "DockerBinInstallPath": "user",
+  "EnableCLIHints": true,
+  "EnableDockerAI": false,
+  "LastContainerdSnapshotterEnable": 1749069336,
+  "LicenseTermsVersion": 2,
+  "SettingsVersion": 46,
+  "ShowInstallScreen": false,
+  "UpdateInstallTime": 0,
+  "UpdateInstallerPid": 0,
+  "UpdatePreviousVersion": "",
+  "UseContainerdSnapshotter": true,
+  "UseVirtualizationFramework": true
+}

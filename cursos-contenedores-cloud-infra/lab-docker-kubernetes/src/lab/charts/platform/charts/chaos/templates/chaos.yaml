@@ -1,0 +1,52 @@
+{{- if .Values.global.chaos.enabled }}
+# El generador de caos (Fase 22): un proxy entre inventory y su vecino. inventory lo usa porque su variable
+# <VECINO>_URL apunta aquí (charts/inventory, deployment.yaml), y él le pasa el tráfico al vecino de verdad.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: chaos
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: chaos
+  template:
+    metadata:
+      labels:
+        {{- include "lab-common.labels" . | nindent 8 }}
+    spec:
+      {{- include "lab-common.podSecurity" . | nindent 6 }}
+      containers:
+        - name: chaos
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.global.imagePullPolicy }}
+          {{- include "lab-common.containerSecurity" . | nindent 10 }}
+          env:
+            - name: CHAOS_UPSTREAM
+              value: http://{{ .Values.global.chaos.target }}.{{ .Release.Namespace }}.svc.cluster.local:8080
+            - name: CHAOS_FAULTS
+              value: {{ .Values.faults | toJson | quote }}
+          ports:
+            - name: http
+              containerPort: 8080
+          readinessProbe:
+            httpGet: {path: /health/ready, port: http}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: chaos
+  labels:
+    {{- include "lab-common.labels" . | nindent 4 }}
+spec:
+  selector:
+    app.kubernetes.io/name: chaos
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
+{{- end }}

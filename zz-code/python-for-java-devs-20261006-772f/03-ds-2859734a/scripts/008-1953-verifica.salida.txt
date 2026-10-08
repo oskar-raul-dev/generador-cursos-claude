@@ -1,0 +1,130 @@
+########## 01
+"""Genera los diez exports de marzo de 2026, con la suciedad del mundo real.
+
+Uso:  python generar_datos_f01.py
+Produce data/<sede>-2026-03.csv para las diez sedes.
+"""
+
+import random
+import unicodedata
+from pathlib import Path
+
+BRANCHES = ["Centro", "Chapinero", "Suba", "Kennedy", "Usaquen",
+            "Engativa", "Fontibon", "Restrepo", "Soacha", "Zipaquira"]
+CODES = {"D8010": 180000, "D8020": 95000, "D2740": 890000,
+         "D7140": 210000, "D1110": 75000, "D8670": 120000}
+FIRST = ["Ana María", "Carlos Efrén", "Luz Dary", "Jhon Fredy", "Diana Marcela",
+         "Óscar Iván", "Yenny Paola", "Wílmer Andrés", "Sandra Milena", "José Ángel",
+         "Nubia Esther", "Édinson Alberto", "Leidy Johana", "Fabián Ricardo",
+         "Martha Liliana", "Héctor Julio", "Claudia Patricia", "Freddy Alexánder",
+         "Rocío del Pilar", "Gustavo Adolfo", "Mónica Andrea", "Jairo Enrique",
+         "Astrid Carolina", "Néstor Fabio"]
+LAST = ["Robledo", "Neira", "Peña", "Chaparro", "Ocampo", "Guzmán", "Rojas",
+        "Buitrago", "Cárdenas", "Quintero", "Mahecha", "Bermúdez", "Alfonso",
+        "Chacón", "Piraquive", "Urrego", "Salamanca", "Bohórquez", "Trujillo",
+        "Velandia", "Camargo", "Sáenz", "Pulido", "Lozano", "Forero", "Amaya",
+        "Barbosa", "Gaitán", "Rincón", "Támara"]
+
+
+def strip_accents(text):
+    """Quita tildes. Algunas sedes digitan sin ellas y otras no."""
+    return "".join(c for c in unicodedata.normalize("NFD", text)
+                   if unicodedata.category(c) != "Mn")
+
+
+def main():
+    random.seed(2026)
+    Path("data").mkdir(exist_ok=True)
+
+    # 2.800 pacientes reales en la red, cada uno con su documento canónico y su nombre.
+    # Los nombres se muestrean SIN repetición del producto completo: así el único homónimo
+    # de los datos es el que sembramos abajo a propósito, y la señal no se pierde entre
+    # coincidencias de azar. (En los datos reales de Áurea sí hay homónimos de verdad;
+    # el ejercicio 🔥 del final te pide qué cambiaría si los hubiera.)
+    all_names = [f"{first} {last1} {last2}"
+                 for first in FIRST for last1 in LAST for last2 in LAST if last1 != last2]
+    people = [(str(random.randint(10_000_000, 1_299_999_999)), name)
+              for name in random.sample(all_names, 2800)]
+
+    # 340 de ellos se atienden en una segunda sede: son los duplicados de verdad.
+    shared = random.sample(people, 340)
+
+    # Y los dos casos que ninguna normalización resuelve, sembrados a propósito y
+    # repartidos en sedes concretas para que no dependan del azar del muestreo.
+    # Están aquí porque existen en Áurea, no para hacer el ejercicio más difícil.
+    document_a, name_a = people[7]
+    document_b, name_b = people[11]
+    swapped = document_b[:-2] + document_b[-1] + document_b[-2]   # dígitos cambiados al digitar
+
+    seeded = {
+        # Mismo documento, dos personas: alguien digitó mal la cédula al admitir a Gloria.
+        "Centro": [(document_a, name_a)],
+        "Kennedy": [(document_a, "Gloria Esperanza Mahecha Vargas")],
+        # Misma persona, dos documentos: Suba le invirtió dos dígitos.
+        "Chapinero": [(document_b, name_b)],
+        "Suba": [(swapped, name_b)],
+    }
+
+    for branch in BRANCHES:
+        rows = []
+        for document, name in (random.sample(people, 260) + random.sample(shared, 40)
+                               + seeded.get(branch, [])):
+            # La suciedad: cada sede digita a su manera.
+            if random.random() < 0.15:
+                document = f"{document[:-3]}.{document[-3:]}"   # con puntos
+            if random.random() < 0.10:
+                document = document + " "                        # con espacio al final
+            if random.random() < 0.25:
+                name = strip_accents(name)                       # sin tildes
+            if random.random() < 0.10:
+                name = name.upper()                              # en mayúsculas
+            for _ in range(random.randint(1, 3)):
+########## 02 citas
+"""Genera el archivo de citas del primer trimestre de 2026 de toda la red.
+
+Uso:  python generar_citas.py
+Produce data/citas-2026-Q1.csv, unas 500.000 filas, con semilla fija.
+Es el archivo grande del curso: las fases 02, 06, 14, 15 y 16 lo usan.
+"""
+
+import random
+from datetime import date, timedelta
+from pathlib import Path
+
+BRANCHES = ["Centro", "Chapinero", "Suba", "Kennedy", "Usaquen",
+            "Engativa", "Fontibon", "Restrepo", "Soacha", "Zipaquira"]
+STATUSES = ["asistio", "no_show", "cancelada", "reprogramada"]
+WEIGHTS = [76, 19, 3, 2]          # el 19% de inasistencia es dato del dominio
+CODES = ["D8010", "D8020", "D2740", "D7140", "D1110", "D8670"]
+
+
+def main() -> None:
+    random.seed(2026)
+    Path("data").mkdir(exist_ok=True)
+    target = Path("data") / "citas-2026-Q1.csv"
+
+    start = date(2026, 1, 1)
+    with target.open("w", encoding="utf-8", newline="\n") as file:
+        file.write("documento,sede,fecha,hora,estado,codigo,valor\n")
+        rows = 0
+        for day_offset in range(90):
+            day = start + timedelta(days=day_offset)
+            if day.weekday() == 6:          # domingo no se atiende
+                continue
+            for branch in BRANCHES:
+                for _ in range(random.randint(550, 700)):
+                    document = random.randint(10_000_000, 1_299_999_999)
+                    hour = random.randint(7, 18)
+                    minute = random.choice((0, 20, 40))
+                    status = random.choices(STATUSES, WEIGHTS)[0]
+                    code = random.choice(CODES)
+                    value = random.choice((75000, 95000, 120000, 180000, 210000, 890000))
+                    file.write(f"{document},{branch},{day.isoformat()},"
+                               f"{hour:02d}:{minute:02d},{status},{code},{value}\n")
+                    rows += 1
+    size_mb = target.stat().st_size / 1e6
+    print(f"{target}: {rows:,} filas · {size_mb:.1f} MB")
+
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,13 @@
+=== verificación final ===
+-- entradas B:
+29
+-- ejercicios y plantilla:
+plantilla 10 secciones: 18/18 OK · ejercicios: 460
+-- refs externas:
+   ninguna ✅
+-- enlaces:
+   ninguno roto ✅
+-- pendientes abiertos:
+14-observabilidad-y-hardening.md:2341:  tipados no). **Decidir antes de publicar.**
+15-rendimiento-y-profiling.md:1781:  del curso sin resolver. Se mide aquí porque es la fase donde el banco ya existe
+17-capstone.md:1465:| Hook de pre-commit (💸 sin pagar) | F00 | F14 §6.6: `.githooks/` + `core.hooksPath` + `--new-from-rev` |

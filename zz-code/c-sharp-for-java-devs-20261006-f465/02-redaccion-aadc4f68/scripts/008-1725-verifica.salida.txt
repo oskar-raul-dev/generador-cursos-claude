@@ -1,0 +1,6 @@
+== enlaces internos rotos ==
+  (ninguno)
+== documentos de encuadre ==
+0-ESTRUCTURA-CURSO.md 00-convencion-de-git-y-tags.md BENCHMARKS.md INSTINTOS.md README.md 
+== total ==
+   32984 total

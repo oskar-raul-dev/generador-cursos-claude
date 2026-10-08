@@ -1,0 +1,46 @@
+# El aviso de traslados de la Braqui como CronJob (Fase 12, D30). El script es el mismo de a16, con sus
+# mañas; lo que cambia es quién lo programa. Un pod por corrida: el archivo de bloqueo vive y muere
+# con él, y la plataforma hace lo que el bloqueo intentaba hacer.
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: braqui-traslados
+  namespace: legacy
+  labels:
+    app.kubernetes.io/name: braqui-traslados
+    app.kubernetes.io/part-of: lab
+spec:
+  # Cada minuto en el laboratorio (cada cinco en la historia).
+  schedule: "* * * * *"
+  timeZone: America/Bogota
+  # Si una corrida sigue andando, la siguiente no arranca: lo que hacía el archivo de bloqueo.
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 3
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      # Una corrida colgada se mata a los dos minutos: lo que el bloqueo no sabía hacer.
+      activeDeadlineSeconds: 120
+      backoffLimit: 0
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: braqui-traslados
+            app.kubernetes.io/part-of: lab
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: traslados
+              image: lab/legacy-braqui-traslados:a16
+              imagePullPolicy: IfNotPresent
+              command: ["/app/.venv/bin/python", "/app/process_transfers.py"]
+              env:
+                - {name: TZ, value: America/Bogota}
+                - {name: DATABASE_URL, value: "postgresql://contingencia:contingencia-lab@contingencia-db:5432/contingencia"}
+                - {name: TRANSFER_DIR, value: /var/lib/contingencia/traslados}
+                # El bloqueo, dentro del pod: si la corrida muere, el bloqueo muere con ella.
+                - {name: LOCK_FILE, value: /tmp/traslados.lock}
+              volumeMounts:
+                - {name: traslados, mountPath: /var/lib/contingencia/traslados}
+          volumes:
+            - {name: traslados, persistentVolumeClaim: {claimName: traslados}}

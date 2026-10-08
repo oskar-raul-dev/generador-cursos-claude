@@ -1,0 +1,10 @@
+color      contraste  texto  barra   gris
+dorado         3.25  NO    sí     #8D8D8D
+carbon        14.16  sí    sí     #2F2F2F
+arena          1.36  NO    NO     #DCDCDC
+teja           5.71  sí    sí     #666666
+pizarra        6.13  sí    sí     #626262
+
+legibles para texto: ['#2B2B2B', '#4A6670', '#A34E2A']
+¿se distinguen impresos los cinco? False
+¿y los tres oscuros? False

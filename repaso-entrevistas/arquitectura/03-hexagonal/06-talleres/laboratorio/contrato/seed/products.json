@@ -1,0 +1,7 @@
+[
+  { "_id": "SKU-001", "sku": "SKU-001", "name": "Mechanical keyboard", "unitPrice": { "amount": "49.90",   "currency": "USD" } },
+  { "_id": "SKU-002", "sku": "SKU-002", "name": "USB-C cable",         "unitPrice": { "amount": "9.90",    "currency": "USD" } },
+  { "_id": "SKU-003", "sku": "SKU-003", "name": "27\" monitor",        "unitPrice": { "amount": "222.00",  "currency": "USD" } },
+  { "_id": "SKU-004", "sku": "SKU-004", "name": "Webcam",              "unitPrice": { "amount": "59.00",   "currency": "USD" } },
+  { "_id": "SKU-005", "sku": "SKU-005", "name": "Workstation",         "unitPrice": { "amount": "1499.00", "currency": "USD" } }
+]

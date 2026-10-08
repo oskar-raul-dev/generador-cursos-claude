@@ -1,0 +1,14 @@
+# La tabla de topes regulados de pricing (D23, Fase 11): una línea SKU,tope en pesos.
+# La cambia cada circular de precios. pricing la lee AL ARRANCAR: cambiar este ConfigMap no cambia
+# ningún precio hasta reiniciar el pod (incidente 09).
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pricing-regulated-caps
+  namespace: apps
+  labels:
+    app.kubernetes.io/name: pricing
+    app.kubernetes.io/part-of: lab
+data:
+  regulated-caps.csv: |
+    SKU-0003,20000

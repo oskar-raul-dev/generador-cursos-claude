@@ -1,0 +1,38 @@
+# El aviso de traslados como estaba (Fase 12, para la autopsia): el contenedor de a16 con su cron y su
+# archivo de bloqueo en una carpeta que sobrevive a los reinicios del contenedor. task legacy:up no
+# aplica esta carpeta: se aplica a mano, y se borra antes de crear el CronJob.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: braqui-traslados-cron
+  namespace: legacy
+  labels:
+    app.kubernetes.io/name: braqui-traslados
+    app.kubernetes.io/part-of: lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: braqui-traslados-cron
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: braqui-traslados-cron
+        app.kubernetes.io/part-of: lab
+    spec:
+      containers:
+        - name: traslados
+          image: lab/legacy-braqui-traslados:a16
+          imagePullPolicy: IfNotPresent
+          env:
+            - {name: TZ, value: America/Bogota}
+            - {name: DATABASE_URL, value: "postgresql://contingencia:contingencia-lab@contingencia-db:5432/contingencia"}
+            - {name: TRANSFER_DIR, value: /var/lib/contingencia/traslados}
+            - {name: TRANSFER_CRON, value: "* * * * *"}
+          volumeMounts:
+            - {name: traslados, mountPath: /var/lib/contingencia/traslados}
+            - {name: estado, mountPath: /var/lib/braqui}
+      volumes:
+        - {name: traslados, persistentVolumeClaim: {claimName: traslados}}
+        # El estado del script (su bloqueo): vive lo que vive el pod, no lo que vive el contenedor.
+        - {name: estado, emptyDir: {}}

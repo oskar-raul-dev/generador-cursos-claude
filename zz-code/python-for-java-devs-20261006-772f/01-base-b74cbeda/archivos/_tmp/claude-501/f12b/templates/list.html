@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Planes de tratamiento</h1>
+<form method="get"><input name="q" value="{{ q }}" placeholder="paciente">
+<select name="branch_id"><option value="">Todas las sedes</option>
+{% for b in branches %}<option value="{{ b.id }}">{{ b.name }}</option>{% endfor %}</select>
+<button>Buscar</button></form>
+<table border="1">
+<tr><th>Paciente</th><th>Documento</th><th>Sede</th><th>Apertura</th><th>Valor</th><th>Estado</th><th></th></tr>
+{% for plan in plans %}
+<tr><td>{{ plan.patient_name }}</td><td>{{ plan.patient_document }}</td>
+<td>{{ plan.branch_id }}</td><td>{{ plan.opened_on }}</td>
+<td>{{ "{:,.0f}".format(plan.total_amount) }}</td><td>{{ plan.status }}</td>
+<td><a href="/plans/{{ plan.id }}?motivo=consulta">editar</a></td></tr>
+{% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,45 @@
+00-convencion-de-git-y-tags.md:14 [text] 6l | src/
+00-convencion-de-git-y-tags.md:42 [text] 3l | fase 09: mapea MOVINVEN a InventoryMovement con el borde en un solo si
+00-instalacion-ambiente-visual-studio-y-ecosistema.md:213 [text] 9l | src/
+01-tipos-valor-y-referencia.md:835 [text] 9l | CODEDIT;ISBN;TITULO;SELLO;FORMATO;PRECIO;MONEDA;CANTIDAD
+02-nullable-y-pattern-matching.md:660 [text] 9l | NROMOVTO|CODALMA|CODEDIT|FECMOVTO|TIPOMOVTO|CANTIDAD|VLRUNIT|NRODOCTO|
+03-linq-y-evaluacion-diferida.md:536 [text] 9l | FECVENTA;CODEDIT;CODCLIEN;CODALMA;CODDISTR;CANTIDAD;VLRUNIT;VLRTOTAL;M
+04-ceremonia-delegados-y-recursos.md:767 [text] 4l | SEMANA;CODEDIT;CANTIDAD;VLRUNIT;MONEDA;TIPOVENTA
+04-ceremonia-delegados-y-recursos.md:776 [text] 3l | 20260112ED00001234000012000068000.00COPI
+04-ceremonia-delegados-y-recursos.md:785 [text] 3l | 2026-01-Q1	ED00001241	9	110000,00	ARS	I
+06-memoria-span-y-flujo.md:600 [text] 4l | FECVENTA;CODEDIT;CODCLIEN;CODALMA;CODDISTR;CANTIDAD;VLRUNIT;VLRTOTAL;M
+10-strangler-fig.md:145 [text] 2l | Propuesta: reescribir el sistema en dos años y medio, en microservicio
+10-strangler-fig.md:158 [text] 2l | Propuesta: dedicar seis meses a limpiar el código heredado —normalizar
+10-strangler-fig.md:168 [text] 8l | ✅ Lo que esta fase hace en su lugar:
+11-migrar-el-runtime.md:122 [text] 3l | ❌ El plan que sale de ese instinto:
+11-migrar-el-runtime.md:134 [text] 3l | ✅ El plan de esta fase:
+11-migrar-el-runtime.md:313 [text] 25l | ┌─────────────────────────────────────────────────────────────────────
+11-migrar-el-runtime.md:418 [text] 4l | Paquetes de packages.config, y qué les pasó:
+12-winforms-en-net-10.md:128 [text] 4l | ❌ El plan que sale de ese instinto, y es el que se presenta en la reun
+12-winforms-en-net-10.md:151 [text] 5l | ✅ Lo que esta fase propone en su lugar, y es una de las cuatro opcione
+12-winforms-en-net-10.md:423 [text] 7l | Controles de terceros en los 340 formularios, y qué les pasó:
+13-wpf-y-mvvm.md:200 [text] 3l | 3. Y la que de verdad sostiene: probar el modelo de vista. Un binding 
+14-veredicto-del-escritorio.md:111 [text] 4l | ❌ El razonamiento, y es tan común que casi no se nota que es un razona
+14-veredicto-del-escritorio.md:130 [text] 2l | ❌ La suposición: "WinUI 3 es la plataforma moderna, así que el desplie
+16-identidad-secretos-y-configuracion.md:99 [text] 5l | 1. appsettings.json                     ← se versiona. Nada secreto.
+16-identidad-secretos-y-configuracion.md:448 [text] 20l | Las cuatro formas de migrar contraseñas que no se pueden leer, con su 
+16-identidad-secretos-y-configuracion.md:491 [text] 14l | Qué se hace, en este orden y sin saltarse el primero:
+18-blazor-server-wasm-mvc.md:128 [text] 3l | ❌ El razonamiento, y viene con buena intención:
+18-blazor-server-wasm-mvc.md:144 [text] 4l | ✅ Lo que esta fase hace en su lugar:
+19-observabilidad-y-operacion.md:147 [text] 3l | ❌ El razonamiento, y viene de una experiencia real:
+19-observabilidad-y-operacion.md:162 [text] 4l | ✅ Lo que el ecosistema espera en su lugar:
+20-contenedor-y-la-factura.md:154 [text] 3l | ❌ El razonamiento, y no es tonto:
+20-contenedor-y-la-factura.md:169 [text] 3l | ✅ Lo que el ecosistema espera en su lugar:
+20-contenedor-y-la-factura.md:329 [text] 10l | Y lo que NO se conteneriza, con su razón escrita:
+21-datos-y-onnx.md:157 [text] 3l | ❌ El razonamiento, y es el instinto correcto en cualquier otro dominio
+21-datos-y-onnx.md:171 [text] 4l | ✅ Lo que hay que escribir en su lugar:
+22-ia-aplicada.md:169 [text] 3l | ❌ El razonamiento, y es entusiasmo legítimo:
+22-ia-aplicada.md:184 [text] 4l | ✅ Lo que esta fase hace en su lugar:
+23-el-duelo.md:138 [text] 6l | ❌ Cómo se ve, y nadie lo hace a propósito:
+23-el-duelo.md:151 [text] 4l | ✅ Lo que hay que hacer en su lugar:
+23-el-duelo.md:636 [text] 12l | src/duelo/
+24-veredicto-y-defensa.md:196 [text] 3l | ❌ El reflejo, y con veinticuatro fases encima todavía cuesta:
+24-veredicto-y-defensa.md:271 [text] 60l | ¿Tienes un sistema heredado que funciona y da dinero?
+prompts/congelamiento-de-nombres.md:491 [text] 52l | src/
+prompts/propuesta-fases-y-alcance.md:76 [text] 7l | Bloque 0   El ambiente. Una fase.
+prompts/propuesta-fases-y-alcance.md:1270 [text] 12l | README.md

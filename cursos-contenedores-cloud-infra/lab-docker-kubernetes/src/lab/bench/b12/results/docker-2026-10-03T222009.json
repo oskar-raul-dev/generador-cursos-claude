@@ -1,0 +1,143 @@
+{
+  "engine": "docker",
+  "date": "2026-10-03T22:20:09",
+  "sqlite": [
+    {
+      "wall_s": 4.97,
+      "passed": [
+        "TestLargePrice",
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": []
+    },
+    {
+      "wall_s": 4.25,
+      "passed": [
+        "TestLargePrice",
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": []
+    },
+    {
+      "wall_s": 5.31,
+      "passed": [
+        "TestLargePrice",
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": []
+    },
+    {
+      "wall_s": 6.05,
+      "passed": [
+        "TestLargePrice",
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": []
+    },
+    {
+      "wall_s": 5.18,
+      "passed": [
+        "TestLargePrice",
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": []
+    }
+  ],
+  "postgres": [
+    {
+      "wall_s": 11.13,
+      "passed": [
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": [
+        "TestLargePrice"
+      ]
+    },
+    {
+      "wall_s": 8.82,
+      "passed": [
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": [
+        "TestLargePrice"
+      ]
+    },
+    {
+      "wall_s": 10.82,
+      "passed": [
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": [
+        "TestLargePrice"
+      ]
+    },
+    {
+      "wall_s": 10.26,
+      "passed": [
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": [
+        "TestLargePrice"
+      ]
+    },
+    {
+      "wall_s": 12.49,
+      "passed": [
+        "TestListIsSortedBySku",
+        "TestMissingPriceIs404",
+        "TestNegativePriceIs400",
+        "TestPutThenGet",
+        "TestPutTwiceUpdates",
+        "TestRegulatedCap"
+      ],
+      "failed": [
+        "TestLargePrice"
+      ]
+    }
+  ]
+}

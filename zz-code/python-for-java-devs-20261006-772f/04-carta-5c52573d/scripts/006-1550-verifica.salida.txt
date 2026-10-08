@@ -1,0 +1,9 @@
+xsdata           26.2 2026-02-15
+python-pkcs11    0.10.0 2026-09-07
+bots-edi         NO EXISTE
+bots             3.3.0 2016-11-22
+pydifact         0.2.3 2026-04-10
+fhir.resources   8.3.0 2026-07-03
+hl7              0.4.5 2022-03-31
+hl7apy           1.3.5 2024-03-13
+python-hl7       NO EXISTE

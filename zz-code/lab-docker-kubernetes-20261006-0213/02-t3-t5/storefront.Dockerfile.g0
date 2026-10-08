@@ -1,0 +1,11 @@
+# Dockerfile de G0: una sola etapa, a propósito. La Fase 04 lo reescribe para servir con nginx.
+# node:24.21.0-alpine
+FROM node@sha256:ebfe2f90462722a7a4de65e91990e97fe0d401c70e0e762c5b53302f905ec1c1
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+EXPOSE 8080
+# vite preview sirve dist/; en todas las interfaces, o desde fuera del contenedor no llega nadie.
+CMD ["sh", "-c", "npx vite preview --host 0.0.0.0 --port ${PORT:-8080} --strictPort"]

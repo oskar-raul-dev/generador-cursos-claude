@@ -1,0 +1,81 @@
+# Contingencia en el cluster (Fase 10): la misma imagen de a16, con su fachada REST de precios para el strangler.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: contingencia
+  namespace: legacy
+  labels:
+    app.kubernetes.io/name: contingencia
+    app.kubernetes.io/part-of: lab
+    app.kubernetes.io/component: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: contingencia
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: contingencia
+        app.kubernetes.io/part-of: lab
+        app.kubernetes.io/component: backend
+    spec:
+      containers:
+        - name: contingencia
+          image: lab/legacy-contingencia:a16
+          # Recursos (Fase 15). GlassFish arranca con su -Xmx512m de fábrica, y el contenedor ocupa unos 600 MiB:
+          # el límite deja lugar a lo que no es heap. Sin esto era BestEffort, el primero en morir (Fase 12).
+          resources:
+            requests: {cpu: 250m, memory: 640Mi}
+            limits: {memory: 896Mi}
+          imagePullPolicy: IfNotPresent
+          env:
+            - {name: TZ, value: America/Bogota}
+            - {name: DB_HOST, value: contingencia-db}
+            - {name: DB_NAME, value: contingencia}
+            - {name: DB_USER, value: contingencia}
+            - {name: DB_PASSWORD, value: contingencia-lab}
+            # La otra punta de las credenciales del portal (Fase 11): el mismo Secret. Rotarlas es cambiar
+            # el Secret y reiniciar los dos; si solo se reinicia uno, el SOAP contesta "No autorizado".
+            - name: SOAP_USER
+              valueFrom:
+                secretKeyRef: {name: portal-contingencia, key: CONTINGENCIA_SOAP_USER}
+            - name: SOAP_PASSWORD
+              valueFrom:
+                secretKeyRef: {name: portal-contingencia, key: CONTINGENCIA_SOAP_PASSWORD}
+            - {name: TRANSFER_BATCH_MINUTES, value: "2"}
+            - {name: TRANSFER_DIR, value: /var/lib/contingencia/traslados}
+          ports:
+            - {name: http, containerPort: 8080}
+          volumeMounts:
+            - {name: traslados, mountPath: /var/lib/contingencia/traslados}
+        # La fachada del strangler: /prices/… en la raíz, como pricing (fachada-nginx.conf).
+        - name: fachada
+          # nginxinc/nginx-unprivileged:1.30.5-alpine
+          image: nginxinc/nginx-unprivileged@sha256:ed04ec1ff34502c339ee5c3ae3f855442398edc1d05591e2b98981dcbbd20b1e
+          resources:
+            requests: {cpu: 20m, memory: 16Mi}
+            limits: {memory: 32Mi}
+          ports:
+            - {name: fachada, containerPort: 8081}
+          volumeMounts:
+            - {name: fachada-conf, mountPath: /etc/nginx/conf.d}
+      volumes:
+        # La carpeta de los traslados, compartida con el aviso de la Braqui (Fase 12).
+        - {name: traslados, persistentVolumeClaim: {claimName: traslados}}
+        - {name: fachada-conf, configMap: {name: contingencia-fachada}}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: contingencia
+  namespace: legacy
+  labels:
+    app.kubernetes.io/name: contingencia
+    app.kubernetes.io/part-of: lab
+spec:
+  selector:
+    app.kubernetes.io/name: contingencia
+  ports:
+    - {name: http, port: 8080, targetPort: http}
+    - {name: fachada, port: 8081, targetPort: fachada}
